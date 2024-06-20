@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom
 import './App.css'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,7 +14,7 @@ function App() {
         <Route path="/" element={<Navigate to="/auth/login"/>} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register"element={<Register />} />
-        <Route path="/dashboard" element={<div>Dashboard</div>} />
+        <Route path="/dashboard" element={<Dashboard />}/>
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </Router>
