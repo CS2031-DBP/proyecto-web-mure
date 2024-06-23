@@ -1,27 +1,54 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080";
+class Api {
+    constructor(config) {
+        this.basePath = "http://localhost:8080"; // Asegúrate de que esta es tu basePath
+    }
 
-export const fetchLogin = async (data) => {
-    try {
-        const res = await axios.post(`${URL}/auth/login`, data);
-        if(res.status === 200){
-            localStorage.setItem('token', res.data.token)
+    async request(options) {
+        let configOptions = {
+            ...options,
+            baseUrl: this.basePath,
+        };
+
+        let path = this.basePath + options.url;
+
+        let headers = {
+            "Content-type": "application/json",
+        };
+
+        const token = localStorage.getItem("token");
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
         }
-        return res;
-    } catch (error) {
-        return error;
+
+        let config = {
+            ...configOptions,
+            headers: headers,
+        };
+
+        console.log(config);
+        return axios(path, config);
+    }
+
+    get(options) {
+        let configOptions = {
+            ...options,
+            method: "get",
+        };
+
+        return this.request(configOptions);
+    }
+
+    post(data, options) {
+        let configOptions = {
+            ...options,
+            method: "post",
+            data: JSON.stringify(data),
+        };
+
+        return this.request(configOptions);
     }
 }
 
-export const fetchRegister = async (data) => {
-    try {
-        const res = await axios.post(`${URL}/auth/signin`, data);
-        if(res.status === 200){
-            localStorage.setItem('token', res.data.token)
-        }
-        return res;
-    } catch (error) {
-        return error;
-    }
-}
+export default Api;
