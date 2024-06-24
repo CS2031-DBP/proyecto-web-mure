@@ -4,6 +4,8 @@ import { fetchCurrentUser } from '../services/profile/getUserInfo';
 import { searchSong } from '../services/songs/searchSong';
 import { searchAlbum } from '../services/album/searchAlbum';
 import { useNavigate } from 'react-router-dom';
+import SearchInput from '../components/post/SearchInput';
+import SearchResults from '../components/post/SearchResults';
 
 const CreatePost = () => {
     const navigate = useNavigate();
@@ -15,7 +17,6 @@ const CreatePost = () => {
         imageUrl: '',
         audioUrl: '',
     });
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [songSearchTerm, setSongSearchTerm] = useState('');
@@ -29,37 +30,56 @@ const CreatePost = () => {
 
     const handleSongSearchTermChange = (e) => {
         setSongSearchTerm(e.target.value);
+        if (e.target.value) {
+            setAlbumSearchTerm('');
+            setAlbumSearchResults([]);
+            setData((prevData) => ({ ...prevData, albumId: '' }));
+        }
     };
 
     const handleAlbumSearchTermChange = (e) => {
         setAlbumSearchTerm(e.target.value);
+        if (e.target.value) {
+            setSongSearchTerm('');
+            setSongSearchResults([]);
+            setData((prevData) => ({ ...prevData, songId: '' }));
+        }
     };
 
     const handleSearch = async (type) => {
-        setLoading(true);
         setError('');
         setSuccess('');
-        
+    
         try {
             if (type === 'song') {
                 const results = await searchSong(songSearchTerm);
                 if (results.status === 200) {
                     setSongSearchResults([results.data]);
-                } else {
-                    setError('Error al buscar canciones.');
                 }
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                setError('No se han encontrado canciones con ese título :(');
+                setSongSearchResults([]);
             } else {
+                setError('Error al buscar canciones.');
+            }
+        }
+    
+        try {
+            if (type === 'album') {
                 const results = await searchAlbum(albumSearchTerm);
                 if (results.status === 200) {
                     setAlbumSearchResults([results.data]);
-                } else {
-                    setError('Error al buscar álbumes.');
                 }
             }
-            setLoading(false);
         } catch (error) {
-            setError('Error al buscar.');
-            setLoading(false);
+            if (error.response && error.response.status === 404) {
+                setError('No se han encontrado álbumes con ese título :(');
+                setAlbumSearchResults([]);
+            } else {
+                setError('Error al buscar álbumes.');
+            }
         }
     };
 
@@ -73,6 +93,7 @@ const CreatePost = () => {
             setAlbumSearchResults([]);
             setAlbumSearchTerm('');
         }
+        console.log('Form data:', data);  
     };
 
     useEffect(() => {
@@ -89,7 +110,6 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
         setError('');
         setSuccess('');
 
@@ -106,13 +126,11 @@ const CreatePost = () => {
             const res = await createPost(payload);
             if (res.status === 201) {
                 setSuccess('Post creado con éxito.');
-                setLoading(false);
                 navigate('/dashboard');
             }
         } catch (error) {
             setError('Error al crear el post.');
             console.error('Error creating post:', error);
-            setLoading(false);
         }
     };
 
@@ -121,65 +139,42 @@ const CreatePost = () => {
             <h1>Create Post</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
+
+            <button onClick={() => { console.log(data) }}>Depurar</button>
+
             <form onSubmit={handleSubmit}>
-                <label>Song ID</label>
-                <input type="text" name="songId" value={data.songId} onChange={handleChange} readOnly />
-                <label>Album ID</label>
-                <input type="text" name="albumId" value={data.albumId} onChange={handleChange} readOnly />
-                <label>Description</label>
+                <label>En que estas pensando?</label>
                 <input type="text" name="description" value={data.description} onChange={handleChange} />
                 <label>Image URL</label>
                 <input type="text" name="imageUrl" value={data.imageUrl} onChange={handleChange} />
                 <label>Audio URL</label>
                 <input type="text" name="audioUrl" value={data.audioUrl} onChange={handleChange} />
                 
-                <div>
-                    <h2>Search Song</h2>
-                    <input type="text" value={songSearchTerm} onChange={handleSongSearchTermChange} />
-                    <button type="button" onClick={() => handleSearch('song')}>Search Song</button>
-                </div>
-                <div>
-                    {loading && <p>Loading...</p>}
-                    {songSearchResults.length > 0 && (
-                        <div>
-                            <h2>Song Search Results</h2>
-                            {songSearchResults.map((result, index) => (
-                                <div key={index}>
-                                    <p>Title: {result.title}</p>
-                                    <p>Artist: {result.artistsNames.join(', ')}</p>
-                                    <p>Genre: {result.genre}</p>
-                                    <button type="button" onClick={() => handleAdd(result.id, 'song')}>Add +</button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                <SearchInput
+                    searchTerm={songSearchTerm}
+                    handleSearchTermChange={handleSongSearchTermChange}
+                    handleSearch={handleSearch}
+                    type="song"
+                />
+                <SearchResults
+                    results={songSearchResults}
+                    handleAdd={handleAdd}
+                    type="song"
+                />
+                
+                <SearchInput
+                    searchTerm={albumSearchTerm}
+                    handleSearchTermChange={handleAlbumSearchTermChange}
+                    handleSearch={handleSearch}
+                    type="album"
+                />
+                <SearchResults
+                    results={albumSearchResults}
+                    handleAdd={handleAdd}
+                    type="album"
+                />
 
-                <div>
-                    <h2>Search Album</h2>
-                    <input type="text" value={albumSearchTerm} onChange={handleAlbumSearchTermChange} />
-                    <button type="button" onClick={() => handleSearch('album')}>Search Album</button>
-                </div>
-                <div>
-                    {loading && <p>Loading...</p>}
-                    {albumSearchResults.length > 0 && (
-                        <div>
-                            <h2>Album Search Results</h2>
-                            {albumSearchResults.map((result, index) => (
-                                <div key={index}>
-                                    <p>Title: {result.title}</p>
-                                    <p>Artist: {result.artistName}</p>
-                                    <p>Release Date: {result.releaseDate}</p>
-                                    <p>Songs Count: {result.songsCount}</p>
-                                    <p>Songs: {result.songsTitles.join(', ')}</p>
-                                    <button type="button" onClick={() => handleAdd(result.id, 'album')}>Add +</button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                <button type="submit" disabled={loading}>Create Post</button>
+                <button type="submit">Create Post</button>
             </form>
         </div>
     );
