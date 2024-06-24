@@ -5,7 +5,7 @@ import { fetchPosts } from '../serivces/posts/getAllPosts';
 const Dashboard = () => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(10);
+    const [size, setSize] = useState(7);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true); 
     const observer = useRef();
