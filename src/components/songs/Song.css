@@ -1,0 +1,49 @@
+.song-container {
+    width: 500px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.song-title {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.song-artist,
+.song-album,
+.song-duration,
+.song-genre,
+.song-likes,
+.song-timesPlayed,
+.song-releaseDate {
+    margin: 4px 0;
+    color: #666;
+}
+
+.song-coverImage {
+    margin-top: 16px;
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.song-container button {
+    margin: 4px 4px 0 0;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.song-container button:hover {
+    background-color: #0056b3;
+}
