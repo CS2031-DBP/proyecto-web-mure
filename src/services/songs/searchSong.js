@@ -1,10 +1,10 @@
 import Api from '../api';
 
-const api = new Api({ });
+const api = new Api({});
 
-export async function fetchSongs(page, size) {
+export async function searchSong(title) {
     let options = {
-        url: `/songs/songs/all?page=${page}&size=${size}`,
+        url: `/songs/title?title=${title}`,
     };
 
     try {

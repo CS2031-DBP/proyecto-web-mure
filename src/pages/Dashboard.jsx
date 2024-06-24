@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Post from '../components/post/Post';
 import { fetchPosts } from '../services/posts/getAllPosts';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(7);
@@ -52,6 +54,8 @@ const Dashboard = () => {
     return (
         <div>
             <h1>Posts</h1>
+            <button onClick={() => navigate('/post/create')}>Create Post</button>
+
             <ul>
                 {posts.map((post, index) => {
                     if (posts.length === index + 1) {
