@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { fetchSongs } from '../services/songs/getAllSongs';
 import Song from '../components/songs/Song';
 import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
+import { useNavigate } from 'react-router-dom';
 
 const SongView = () => {
     const [songs, setSongs] = useState([]);
@@ -11,6 +12,7 @@ const SongView = () => {
     const [hasMore, setHasMore] = useState(true);
     const [role, setRole] = useState(null);
     const observer = useRef();
+    const navigate = useNavigate();
 
     const loadSongs = async () => {
         if (isLoading || !hasMore) return;
@@ -57,10 +59,14 @@ const SongView = () => {
         setSongs((prevSongs) => prevSongs.filter((song) => song.id !== id));
     };
 
+    const handleAddSongClick = () => {
+        navigate('/addsong');
+    };
+
     return (
         <div>
             <h1>Songs</h1>
-            {role === 'ROLE_ADMIN' && <button>Agregar Canción</button>}
+            {role === 'ROLE_ADMIN' && <button onClick={handleAddSongClick}>Agregar Canción</button>}
             <ul>
                 {songs.map((song, index) => {
                     if (songs.length === index + 1) {
