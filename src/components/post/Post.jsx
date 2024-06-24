@@ -8,6 +8,7 @@ const Post = forwardRef(({ post }, ref) => {
       <MusicPost albumTitle={post.albumTitle} songTitle={post.songTitle} />
       <p>{post.owner}</p>
       <p>{post.description}</p>
+      <p>{post.likes}</p>
     </div>
   );
 });
