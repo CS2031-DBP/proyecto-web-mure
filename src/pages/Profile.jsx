@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCurrentUser } from '../serivces/profile/getUserInfo';
-import { fetchUserFriends } from '../serivces/profile/getUserFriends';
-import { fetchUserPosts } from '../serivces/profile/getMyPosts';
+import { fetchCurrentUser } from '../services/profile/getUserInfo';
+import { fetchUserFriends } from '../services/profile/getUserFriends';
+import { fetchUserPosts } from '../services/profile/getMyPosts';
 import ProfileInfo from '../components/profile/ProfileInfo';
 import Friends from '../components/profile/Friends';
 import Post from '../components/post/Post';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({});
     const [friends, setFriends] = useState([]);
     const [myposts, setMyPosts] = useState([]);
@@ -17,6 +19,7 @@ const Profile = () => {
                 const userdata = await fetchCurrentUser();
                 const friendsResponse = await fetchUserFriends();
                 const myposts = await fetchUserPosts();
+                console.log(userdata.data)
                 setUserData(userdata.data);
                 setFriends(friendsResponse.data);
                 setMyPosts(myposts.data);
@@ -43,6 +46,8 @@ const Profile = () => {
                     <Post key={post.id} post={post} />
                 ))
             }
+
+            <button onClick={() => {navigate("/edit")}}> Editar Perfil </button>
 
         </div>
     );

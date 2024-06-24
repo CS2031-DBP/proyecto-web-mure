@@ -49,6 +49,35 @@ class Api {
 
         return this.request(configOptions);
     }
+
+    patch(data, options) {
+        let configOptions = {
+            ...options,
+            method: "patch",
+            data: JSON.stringify(data),
+        };
+
+        return this.request(configOptions);
+    }
+
+    put(data, options) {
+        let configOptions = {
+            ...options,
+            method: "put",
+            data: JSON.stringify(data),
+        };
+
+        return this.request(configOptions);
+    }
+
+    delete(options) {
+        let configOptions = {
+            ...options,
+            method: "delete",
+        };
+
+        return this.request(configOptions);
+    }
 }
 
 export default Api;

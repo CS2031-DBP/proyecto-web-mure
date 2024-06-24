@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Post from '../components/post/Post';
-import { fetchPosts } from '../serivces/posts/getAllPosts';
+import { fetchPosts } from '../services/posts/getAllPosts';
 
 const Dashboard = () => {
     const [posts, setPosts] = useState([]);
