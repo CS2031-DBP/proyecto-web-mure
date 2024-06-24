@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { fetchSongs } from '../services/songs/getAllSongs'
+import { fetchSongs } from '../services/songs/getAllSongs';
 import Song from '../components/songs/Song';
 import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
 
 const SongView = () => {
- const [songs, setSongs] = useState([]);
+    const [songs, setSongs] = useState([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
@@ -53,16 +53,20 @@ const SongView = () => {
         };
     }, []);
 
+    const handleDeleteSong = (id) => {
+        setSongs((prevSongs) => prevSongs.filter((song) => song.id !== id));
+    };
+
     return (
-    <div>
+        <div>
             <h1>Songs</h1>
             {role === 'ROLE_ADMIN' && <button>Agregar Canción</button>}
             <ul>
                 {songs.map((song, index) => {
                     if (songs.length === index + 1) {
-                        return <Song ref={lastSongElementRef} key={song.id} song={song} role={role} />;
+                        return <Song ref={lastSongElementRef} key={song.id} song={song} role={role} onDelete={handleDeleteSong} />;
                     } else {
-                        return <Song key={song.id} song={song} role={role} />;
+                        return <Song key={song.id} song={song} role={role} onDelete={handleDeleteSong} />;
                     }
                 })}
             </ul>
@@ -70,6 +74,6 @@ const SongView = () => {
             {!hasMore && <p>No more songs</p>}
         </div>
     );
-}
+};
 
 export default SongView;
