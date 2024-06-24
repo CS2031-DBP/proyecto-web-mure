@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Edit from './pages/Edit'
+import CreatePost from './pages/CreatePost'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,6 +20,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit" element={<Edit />} />
+        <Route path="/post/create" element={<CreatePost/>} />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </Router>
