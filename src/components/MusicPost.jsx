@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const MusicPost = ({ albumTitle, songTitle }) => {
   return (
@@ -6,8 +6,7 @@ const MusicPost = ({ albumTitle, songTitle }) => {
       <p>{albumTitle}</p>
       <p>{songTitle}</p>
     </div>
-    
-  )
-}
+  );
+};
 
-export default MusicPost
+export default MusicPost;
