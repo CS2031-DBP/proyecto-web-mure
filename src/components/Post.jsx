@@ -1,16 +1,15 @@
-import React from 'react'
-import MusicPost from './MusicPost'
-import './postStyle.css'
+import React, { forwardRef } from 'react';
+import MusicPost from './MusicPost';
+import './postStyle.css';
 
-const Post = ({post}) => {
+const Post = forwardRef(({ post }, ref) => {
   return (
-    <div key={post.id} className='post'>
-    <MusicPost albumTitle={post.albumTitle} songTitle={post.songTitle} />
+    <div key={post.id} className='post' ref={ref}>
+      <MusicPost albumTitle={post.albumTitle} songTitle={post.songTitle} />
+      <p>{post.owner}</p>
+      <p>{post.description}</p>
+    </div>
+  );
+});
 
-    <p> {post.owner}</p>
-    <p>{post.description}</p>    
-  </div>
-  )
-}
-
-export default Post
+export default Post;
