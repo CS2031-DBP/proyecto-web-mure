@@ -6,7 +6,7 @@ const Post = forwardRef(({ post }, ref) => {
   return (
     <div key={post.id} className='post' ref={ref}>
       <MusicPost albumTitle={post.albumTitle} songTitle={post.songTitle} />
-      <p>{post.owner}</p>
+      <button>@{post.owner}</button>
       <p>{post.description}</p>
       <p>{post.likes}</p>
     </div>
