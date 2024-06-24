@@ -28,7 +28,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
             {song.coverImage && <img src={song.coverImage} alt={`${song.title} cover`} className="song-coverImage" />}
             {role === 'ROLE_ADMIN' && (
                 <div>
-                    <button>Editar Canción</button>
+                    <button>Cambiar Imagen</button>
                     <button onClick={() => handleDelete(song.id)}>Eliminar Canción</button>
                 </div>
             )}
