@@ -3,8 +3,10 @@ import { createSong } from '../services/songs/createSong';
 import { searchArtist } from '../services/artist/getArtistByName';
 import ArtistSearchInput from '../components/artist/ArtistSearchInput';
 import ArtistSearchResults from '../components/artist/ArtistSearchResults';
+import { useNavigate } from 'react-router-dom';
 
 const AddSong = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState({
         title: '',
         artistsIds: [],
@@ -52,7 +54,6 @@ const AddSong = () => {
         }));
         setArtistSearchResults([]);
         setArtistSearchTerm('');
-        console.log('Form data:', data);  // Print form data for debugging
     };
 
     const handleSubmit = async (e) => {
@@ -73,6 +74,7 @@ const AddSong = () => {
             const res = await createSong(payload);
             if (res.status === 201) {
                 setSuccess('Canción creada con éxito.');
+                navigate("/songs")
             } else {
                 setError('Error al crear la canción.');
             }
@@ -86,7 +88,6 @@ const AddSong = () => {
             <h1>Add Song</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
-            <button onClick={() => console.log(data)}>Print form data</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Title</label>
                 <input type="text" id="title" name="title" value={data.title} onChange={handleChange} />
