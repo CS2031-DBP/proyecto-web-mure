@@ -32,7 +32,7 @@ const Profile = () => {
             <ProfileInfo key={userData.id} data={userData} />
             {
                 friends.length === 0 
-                ? <p>Aún no tienes amigos, prueba ir a la pestaña de comunidad para ver post y hacer amigos</p>
+                ? <p>Aún no tienes amigos, prueba ir a la pestaña de comunidad para ver posts y hacer amigos</p>
                 : <Friends friends={friends} />
             }
             <h1>My Posts</h1>
