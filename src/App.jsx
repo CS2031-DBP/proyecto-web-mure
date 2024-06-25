@@ -9,6 +9,7 @@ import Edit from './pages/Edit'
 import CreatePost from './pages/CreatePost'
 import SongView from './pages/SongView'
 import AddSong from './pages/AddSong'
+import UserProfile from './pages/UserProfile'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -25,6 +26,7 @@ function App() {
         <Route path="/post/create" element={<CreatePost/>} />
         <Route path="/songs" element={<SongView/>} />
         <Route path='/addsong' element={<AddSong/>} />
+        <Route path="/user/:id" element={<UserProfile />} />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </Router>
