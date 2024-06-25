@@ -11,7 +11,6 @@ export async function searchAlbum(title) {
         const res = await api.get(options);
         return res;
     } catch (error) {
-        console.error('Error searching album:', error);
         throw error;
     }
 }
