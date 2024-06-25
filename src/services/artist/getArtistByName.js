@@ -11,6 +11,6 @@ export async function searchArtist(name) {
         const res = await api.get(options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }

@@ -11,7 +11,7 @@ export async function login(user) {
         const res = await api.post(user, options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }
 
@@ -24,6 +24,6 @@ export async function register(user) {
         const res = await api.post(user, options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }

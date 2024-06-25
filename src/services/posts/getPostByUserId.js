@@ -11,6 +11,6 @@ export async function getPostsByUser(userId) {
         const res = await api.get(options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }

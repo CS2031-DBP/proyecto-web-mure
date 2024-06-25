@@ -11,6 +11,6 @@ export async function createPost(post) {
         const res = await api.post(post, options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }

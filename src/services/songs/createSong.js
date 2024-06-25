@@ -11,6 +11,6 @@ export async function createSong(songs) {
         const res = await api.post(songs, options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }
