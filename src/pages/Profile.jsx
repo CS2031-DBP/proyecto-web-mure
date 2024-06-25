@@ -33,6 +33,7 @@ const Profile = () => {
     return (
         <div>
             <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+            <button onClick={() => navigate("/playlist/create")}>Crear Playlist</button>
             <ProfileInfo key={userData.id} data={userData} />
             {
                 friends.length === 0 

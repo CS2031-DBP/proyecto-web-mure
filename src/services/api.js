@@ -2,7 +2,7 @@ import axios from "axios";
 
 class Api {
     constructor(config) {
-        this.basePath = "http://localhost:8080"; // Asegúrate de que esta es tu basePath
+        this.basePath = "http://localhost:8080";
     }
 
     async request(options) {
