@@ -92,7 +92,7 @@ const CreatePlaylist = () => {
             const res = await createPlaylist(payload);
             if (res.status === 201) {
                 setSuccess('Playlist creada con éxito.');
-                navigate("/playlists");
+                navigate('/profile');
             } else {
                 setError('Error al crear la playlist.');
             }
@@ -105,7 +105,6 @@ const CreatePlaylist = () => {
         <div>
             <h1>Create Playlist</h1>
             <button onClick={() => {console.log(data)}}>Depurar</button>   
-            <button onClick={() => navigate('/playlists')}>Playlists</button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handleSubmit}>
