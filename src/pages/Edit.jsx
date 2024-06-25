@@ -45,6 +45,7 @@ const Edit = () => {
     return (
         <div>
             <h1>Editar Perfil</h1>
+            <button onClick={() => navigate('/profile')}>Mi Perfil</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Nombre</label>
                 <input type="text" id="name" name="name" value={data.name} onChange={handleChange} />

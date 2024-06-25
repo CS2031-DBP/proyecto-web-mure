@@ -142,6 +142,8 @@ const CreatePost = () => {
 
             <button onClick={() => { console.log(data) }}>Depurar</button>
 
+            <button onClick={() => navigate('/dashboard')}>Dashboard</button>
+
             <form onSubmit={handleSubmit}>
                 <label>En que estas pensando?</label>
                 <input type="text" name="description" value={data.description} onChange={handleChange} />

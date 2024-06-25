@@ -32,6 +32,7 @@ const Profile = () => {
 
     return (
         <div>
+            <button onClick={() => navigate("/dashboard")}>Dashboard</button>
             <ProfileInfo key={userData.id} data={userData} />
             {
                 friends.length === 0 

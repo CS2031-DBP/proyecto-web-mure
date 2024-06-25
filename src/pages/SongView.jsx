@@ -66,6 +66,7 @@ const SongView = () => {
     return (
         <div>
             <h1>Songs</h1>
+            <button onClick={() => navigate('/dashboard')}>Dashboard</button>
             {role === 'ROLE_ADMIN' && <button onClick={handleAddSongClick}>Agregar Canción</button>}
             <ul>
                 {songs.map((song, index) => {

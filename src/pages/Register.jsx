@@ -33,6 +33,8 @@ const Register = () => {
     }
 
     return (
+        <div>
+            <button onClick={() => navigate('/auth/login')}>Login</button>
         <form onSubmit={handleSubmit}>
             <label htmlFor="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Email" onChange={handleChange} required />
@@ -44,6 +46,7 @@ const Register = () => {
             <input type="date" id="birthdate" name="birthdate" onChange={handleChange} required />
             <button type="submit">Register</button>
         </form>
+        </div>
     )
 }
 

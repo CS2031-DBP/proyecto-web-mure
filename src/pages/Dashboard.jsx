@@ -54,6 +54,8 @@ const Dashboard = () => {
     return (
         <div>
             <h1>Posts</h1>
+            <button onClick={() => navigate('/profile')}>My Profile</button>
+            <button onClick={() => navigate('/songs')}>Songs</button>
             <button onClick={() => navigate('/post/create')}>Create Post</button>
 
             <ul>
