@@ -4,8 +4,8 @@ import { fetchCurrentUser } from '../services/profile/getUserInfo';
 import { searchSong } from '../services/songs/searchSong';
 import { searchAlbum } from '../services/album/searchAlbum';
 import { useNavigate } from 'react-router-dom';
-import SearchInput from '../components/post/SearchInput';
-import SearchResults from '../components/post/SearchResults';
+import SearchInput from '../components/search/SearchInput';
+import SearchResults from '../components/search/SearchResults';
 
 const CreatePost = () => {
     const navigate = useNavigate();

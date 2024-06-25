@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createSong } from '../services/songs/createSong';
 import { searchArtist } from '../services/artist/getArtistByName';
-import ArtistSearchInput from '../components/artist/ArtistSearchInput';
-import ArtistSearchResults from '../components/artist/ArtistSearchResults';
 import { useNavigate } from 'react-router-dom';
+import SearchInput from '../components/search/SearchInput';
+import SearchResults from '../components/search/SearchResults';
 
 const AddSong = () => {
     const navigate = useNavigate();
@@ -28,19 +28,21 @@ const AddSong = () => {
         setArtistSearchTerm(e.target.value);
     };
 
-    const handleSearch = async () => {
+    const handleSearch = async (type) => {
         setError('');
         setSuccess('');
 
         try {
-            const results = await searchArtist(artistSearchTerm);
-            if (results.status === 200) {
-                setArtistSearchResults([results.data]);
-            } else if (results.response && results.response.status === 404) {
-                setError('No se han encontrado artistas con ese nombre :(');
-                setArtistSearchResults([]);
-            } else {
-                setError('Error al buscar artistas.');
+            if (type === 'artist') {
+                const results = await searchArtist(artistSearchTerm);
+                if (results.status === 200) {
+                    setArtistSearchResults([results.data]);
+                } else if (results.response && results.response.status === 404) {
+                    setError('No se han encontrado artistas con ese nombre :(');
+                    setArtistSearchResults([]);
+                } else {
+                    setError('Error al buscar artistas.');
+                }
             }
         } catch (error) {
             setError('Error al buscar.');
@@ -101,14 +103,16 @@ const AddSong = () => {
                 <label htmlFor="coverImage">Cover Image</label>
                 <input type="text" id="coverImage" name="coverImage" value={data.coverImage} onChange={handleChange} />
                 
-                <ArtistSearchInput
+                <SearchInput
                     searchTerm={artistSearchTerm}
                     handleSearchTermChange={handleArtistSearchTermChange}
                     handleSearch={handleSearch}
+                    type="artist"
                 />
-                <ArtistSearchResults
+                <SearchResults
                     results={artistSearchResults}
                     handleAdd={handleAdd}
+                    type="artist"
                 />
 
                 <button type="submit">Add Song</button>
