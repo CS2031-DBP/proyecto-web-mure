@@ -8,9 +8,9 @@ export async function likePost(postId) {
     };
 
     try {   
-        const res = await api.patch({}, options);
+        const res = await api.patch(options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }

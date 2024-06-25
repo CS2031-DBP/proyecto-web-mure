@@ -11,6 +11,6 @@ export async function dislikePost(postId) {
         const res = await api.patch({}, options);
         return res;
     } catch (error) {
-        return error;
+        throw error;
     }
 }

@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
-export const getRoleBasedOnToken = () => {
+export function getRoleBasedOnToken() {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
@@ -11,6 +11,4 @@ export const getRoleBasedOnToken = () => {
   } catch (error) {
     throw new Error('Invalid token format');
   }
-};
-
-
+}
