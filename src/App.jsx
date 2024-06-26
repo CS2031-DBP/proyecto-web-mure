@@ -12,12 +12,14 @@ import AddSong from './pages/AddSong'
 import UserProfile from './pages/UserProfile'
 import CreatePlaylist from './pages/CreatePlaylist'
 import EditPlaylist from './pages/EditPlaylist'
+import Navbar from './components/navbar/navbar'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/auth/login"/>} />
         <Route path="/auth/login" element={<Login />} />
