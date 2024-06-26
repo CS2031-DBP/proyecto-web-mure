@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getUserById } from '../services/profile/getUserById';
 import { getPostsByUser } from '../services/posts/getPostByUserId';
 import { getUserPlaylists } from '../services/playlists/getPlaylistsByUserId';
+import { isFriends } from '../services/friends/isFriends';
+import { addFriend } from '../services/friends/addFriend';
+import { deleteFriend } from '../services/friends/deleteFriend';
 import Post from '../components/post/Post';
 import ProfileInfo from '../components/profile/ProfileInfo';
 import Playlist from '../components/playlist/Playlist';
 
 const UserProfile = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState('');
+  const [friends, setFriends] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,10 +48,7 @@ const UserProfile = () => {
 
     const fetchPlaylists = async () => {
       try {
-        console.log("Owo")
         const response = await getUserPlaylists(id);
-
-        console.log(response);
         if (response.status === 200) {
           setPlaylists(response.data);
         } else {
@@ -57,9 +59,23 @@ const UserProfile = () => {
       }
     };
 
+    const checkFriendship = async () => {
+      try {
+        const response = await isFriends(id);
+        if (response.status === 200) {
+          setFriends(response.data);
+        } else {
+          setFriends(false);
+        }
+      } catch (err) {
+        setFriends(false);
+      }
+    };
+
     fetchUser();
     fetchPosts();
     fetchPlaylists();
+    checkFriendship();
   }, [id]);
 
   if (error) {
@@ -70,10 +86,42 @@ const UserProfile = () => {
     return <p>Loading...</p>;
   }
 
+  const handleAdd = async () => {
+    try {
+      const response = await addFriend(id);
+      if (response.status === 204) {
+        setFriends(true);
+      }      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteFriend = async () => {
+    try {
+      const response = await deleteFriend(id);
+      if (response.status === 204) {
+        setFriends(false);
+      }      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
+      <button onClick={() => navigate(-1)}>Go back</button>
       <ProfileInfo data={user} />
-
+      <div>
+        {friends ? (
+            <>
+                      <div>Tu y {user.name} ya son amigos!</div>
+                      <button onClick={() => {handleDeleteFriend()}}>Eliminar amigo</button>
+            </>
+        ) : (
+          <button onClick={handleAdd}>Añadir amigo</button>
+        )}
+      </div>
       <div className='contenido' style={{ display: 'flex' }}>
         <div className='posts' style={{ flex: 1, marginRight: '20px' }}>
           <h2>Posts</h2>
@@ -85,7 +133,6 @@ const UserProfile = () => {
             ))
           }
         </div>
-
         <div className='playlists' style={{ flex: 1 }}>
           <h2>Playlists</h2>
           {
