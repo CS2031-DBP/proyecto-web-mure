@@ -17,23 +17,22 @@ const Profile = () => {
     const [playlists, setPlaylists] = useState([]);
     const [error, setError] = useState('');
 
-    const fetchData = async () => {
-        try {
-            const userdata = await fetchCurrentUser();
-            const friendsResponse = await fetchUserFriends();
-            const myposts = await fetchUserPosts();
-            const userPlaylists = await fetchMyPlaylists();
-            setUserData(userdata.data);
-            setFriends(friendsResponse.data);
-            setMyPosts(myposts.data);
-            setPlaylists(userPlaylists.data);
-        } catch (error) {
-            setError('Error al obtener los datos del usuario.');
-            console.log(error);
-        }
-    };
-
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userdata = await fetchCurrentUser();
+                const friendsResponse = await fetchUserFriends();
+                const myposts = await fetchUserPosts();
+                const userPlaylists = await fetchMyPlaylists();
+                setUserData(userdata.data);
+                setFriends(friendsResponse.data);
+                setMyPosts(myposts.data);
+                setPlaylists(userPlaylists.data);
+            } catch (error) {
+                setError('Error al obtener los datos del usuario.');
+                console.log(error);
+            }
+        };
         fetchData();
     }, []);
 
@@ -50,9 +49,9 @@ const Profile = () => {
                 <div className='posts' style={{ flex: 1, marginRight: '20px' }}>
                     <h1>My Posts</h1>
                     {myposts.length === 0 
-                        ? <p>No has hecho ningun post aún</p>
+                        ? <p>No has hecho ningún post aún</p>
                         : myposts.map((post) => (
-                            <Post key={post.id} post={post} />
+                            <Post key={post.id} post={post} currUserName={userData.name} currId={userData.id} />
                         ))
                     }
                 </div>
@@ -61,7 +60,7 @@ const Profile = () => {
                     {playlists.length === 0 
                         ? <p>No tienes playlists aún</p>
                         : playlists.map((playlist) => (
-                            <Playlist key={playlist.id} playlist={playlist} edit={false} onUpdate={fetchData} />
+                            <Playlist key={playlist.id} playlist={playlist} edit={false} />
                         ))
                     }
                 </div>

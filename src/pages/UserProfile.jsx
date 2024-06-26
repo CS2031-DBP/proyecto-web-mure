@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { fetchCurrentUser } from '../services/profile/getUserInfo';
 import { getUserById } from '../services/profile/getUserById';
 import { getPostsByUser } from '../services/posts/getPostByUserId';
 import { getUserPlaylists } from '../services/playlists/getPlaylistsByUserId';
@@ -18,6 +19,7 @@ const UserProfile = () => {
   const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState('');
   const [friends, setFriends] = useState(false);
+  const [currUserId, setCurrUserId] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -72,10 +74,22 @@ const UserProfile = () => {
       }
     };
 
+    const fetchCurrentUserId = async () => {
+      try {
+        const res = await fetchCurrentUser();
+        if (res.status === 200) {
+          setCurrUserId(res.data.id);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchUser();
     fetchPosts();
     fetchPlaylists();
     checkFriendship();
+    fetchCurrentUserId();
   }, [id]);
 
   if (error) {
@@ -106,7 +120,7 @@ const UserProfile = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <div>
@@ -114,10 +128,10 @@ const UserProfile = () => {
       <ProfileInfo data={user} />
       <div>
         {friends ? (
-            <>
-                      <div>Tu y {user.name} ya son amigos!</div>
-                      <button onClick={() => {handleDeleteFriend()}}>Eliminar amigo</button>
-            </>
+          <>
+            <div>Tu y {user.name} ya son amigos!</div>
+            <button onClick={handleDeleteFriend}>Eliminar amigo</button>
+          </>
         ) : (
           <button onClick={handleAdd}>Añadir amigo</button>
         )}
@@ -129,7 +143,7 @@ const UserProfile = () => {
             posts.length === 0 
             ? <p>This user has not made any posts yet.</p>
             : posts.slice(0, 2).map((post) => (
-                <Post key={post.id} post={post} />
+                <Post key={post.id} post={post} currUserName={user.name} currId={currUserId} />
             ))
           }
         </div>
