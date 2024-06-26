@@ -17,23 +17,23 @@ const Profile = () => {
     const [playlists, setPlaylists] = useState([]);
     const [error, setError] = useState('');
 
+    const fetchData = async () => {
+        try {
+            const userdata = await fetchCurrentUser();
+            const friendsResponse = await fetchUserFriends();
+            const myposts = await fetchUserPosts();
+            const userPlaylists = await fetchMyPlaylists();
+            setUserData(userdata.data);
+            setFriends(friendsResponse.data);
+            setMyPosts(myposts.data);
+            setPlaylists(userPlaylists.data);
+        } catch (error) {
+            setError('Error al obtener los datos del usuario.');
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const userdata = await fetchCurrentUser();
-                const friendsResponse = await fetchUserFriends();
-                const myposts = await fetchUserPosts();
-                const userPlaylists = await fetchMyPlaylists();
-                console.log(userdata.data);
-                setUserData(userdata.data);
-                setFriends(friendsResponse.data);
-                setMyPosts(myposts.data);
-                setPlaylists(userPlaylists.data);
-            } catch (error) {
-                setError('Error al obtener los datos del usuario.');
-                console.log(error);
-            }
-        };
         fetchData();
     }, []);
 
@@ -61,7 +61,7 @@ const Profile = () => {
                     {playlists.length === 0 
                         ? <p>No tienes playlists aún</p>
                         : playlists.map((playlist) => (
-                            <Playlist key={playlist.id} playlist={playlist} />
+                            <Playlist key={playlist.id} playlist={playlist} edit={false} onUpdate={fetchData} />
                         ))
                     }
                 </div>

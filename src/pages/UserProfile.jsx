@@ -43,7 +43,9 @@ const UserProfile = () => {
 
     const fetchPlaylists = async () => {
       try {
+        console.log("Owo")
         const response = await getUserPlaylists(id);
+
         console.log(response);
         if (response.status === 200) {
           setPlaylists(response.data);
@@ -90,7 +92,7 @@ const UserProfile = () => {
             playlists.length === 0 
             ? <p>This user has not created any playlists yet.</p>
             : playlists.map((playlist) => (
-                <Playlist key={playlist.id} playlist={playlist} />
+                <Playlist key={playlist.id} playlist={playlist} edit={true} />
             ))
           }
         </div>
