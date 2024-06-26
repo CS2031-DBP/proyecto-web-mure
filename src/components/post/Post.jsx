@@ -7,7 +7,7 @@ import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import './postStyle.css';
 
-const Post = forwardRef(({ post }, ref) => {
+const Post = forwardRef(({ post, currUserName }, ref) => {
   const [likes, setLikes] = useState(post.likes);
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +37,11 @@ const Post = forwardRef(({ post }, ref) => {
   return (
     <div key={post.id} className='post' ref={ref}>
       <MusicPost albumTitle={post.albumTitle} songTitle={post.songTitle} />
-      <button onClick={handleUserClick}> @{post.owner} </button>
+      {post.owner === currUserName ? (
+        <div>{post.owner}</div>
+      ) : (
+        <button onClick={handleUserClick}>@{post.owner}</button>
+      )}
       <p>{post.ownerId}</p>
       <p>{post.description}</p>
       <p>Likes: {likes}</p>
