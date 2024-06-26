@@ -1,12 +1,12 @@
 import React from 'react'
 
 const Friends = ({ friends }) => {
+  console.log(friends)
   return (
     <div>
-
-        <h1>Friends</h1>
+        <h1>Amigos:</h1>
         {friends.map((friend) => (
-            <h2 key={friend.id}>{friend.name}</h2>
+            <h2 key={friend.id}>@{friend.name}</h2>
         ))}
     </div>
   )

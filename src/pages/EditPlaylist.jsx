@@ -78,7 +78,7 @@ const EditPlaylist = () => {
 
   return (
     <div>
-      <h1>Edit Playlist</h1>
+      <h1>Editar PlayList</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <Playlist playlist={playlist} edit={true} onUpdate={fetchPlaylist} />
       <SearchInput

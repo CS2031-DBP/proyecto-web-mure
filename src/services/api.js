@@ -27,7 +27,6 @@ class Api {
             headers: headers,
         };
 
-        console.log(config);
         return axios(path, config);
     }
 

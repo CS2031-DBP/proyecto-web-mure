@@ -28,7 +28,7 @@ const Dashboard = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
+
         }
         setIsLoading(false);
     };
@@ -41,7 +41,7 @@ const Dashboard = () => {
                 setCurrId(res.data.id);
             }
         } catch (error) {
-            console.log(error);
+
         }
     }
 
@@ -71,9 +71,9 @@ const Dashboard = () => {
         <div>
             <h1>Posts</h1>
             <button onClick={() => console.log(currUserName)}>Depurar</button>
-            <button onClick={() => navigate('/profile')}>My Profile</button>
-            <button onClick={() => navigate('/songs')}>Songs</button>
-            <button onClick={() => navigate('/post/create')}>Create Post</button>
+            <button onClick={() => navigate('/profile')}>Mi Perfil</button>
+            <button onClick={() => navigate('/songs')}>Lista de Canciones</button>
+            <button onClick={() => navigate('/post/create')}>Crear Post</button>
 
             <ul>
                 {posts.map((post, index) => {

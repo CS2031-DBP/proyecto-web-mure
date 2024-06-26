@@ -87,21 +87,21 @@ const AddSong = () => {
 
     return (
         <div>
-            <h1>Add Song</h1>
-            <button onClick={() => navigate('/songs')}>Songs</button>
+            <h1>Añadir Canción</h1>
+            <button onClick={() => navigate('/songs')}>Canciones</button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
-                <input type="text" id="title" name="title" value={data.title} onChange={handleChange} />
-                <label htmlFor="releaseDate">Release Date</label>
-                <input type="date" id="releaseDate" name="releaseDate" value={data.releaseDate} onChange={handleChange} />
-                <label htmlFor="genre">Genre</label>
-                <input type="text" id="genre" name="genre" value={data.genre} onChange={handleChange} />
-                <label htmlFor="duration">Duration</label>
-                <input type="text" id="duration" name="duration" value={data.duration} onChange={handleChange} />
+                <label htmlFor="title">Titulo: </label>
+                <input type="text" id="title" name="title" value={data.title} onChange={handleChange} required/>
+                <label htmlFor="releaseDate">Fecha de Lanzamiento</label>
+                <input type="date" id="releaseDate" name="releaseDate" value={data.releaseDate} onChange={handleChange} required />
+                <label htmlFor="genre">Genero</label>
+                <input type="text" id="genre" name="genre" value={data.genre} onChange={handleChange} required/>
+                <label htmlFor="duration">Duración: </label>
+                <input type="text" id="duration" name="duration" value={data.duration} onChange={handleChange} required/>
                 <label htmlFor="coverImage">Cover Image</label>
-                <input type="text" id="coverImage" name="coverImage" value={data.coverImage} onChange={handleChange} />
+                <input type="text" id="coverImage" name="coverImage" value={data.coverImage} onChange={handleChange} required/>
                 
                 <SearchInput
                     searchTerm={artistSearchTerm}
@@ -115,7 +115,7 @@ const AddSong = () => {
                     type="artist"
                 />
 
-                <button type="submit">Add Song</button>
+                <button type="submit">Agregar Canción</button>
             </form>
         </div>
     );

@@ -27,7 +27,7 @@ const SongView = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
         setIsLoading(false);
     };
@@ -66,7 +66,7 @@ const SongView = () => {
     return (
         <div>
             <h1>Songs</h1>
-            <button onClick={() => navigate('/dashboard')}>Dashboard</button>
+            <button onClick={() => navigate('/dashboard')}>Menu</button>
             {role === 'ROLE_ADMIN' && <button onClick={handleAddSongClick}>Agregar Canción</button>}
             <ul>
                 {songs.map((song, index) => {

@@ -30,7 +30,7 @@ const Profile = () => {
                 setPlaylists(userPlaylists.data);
             } catch (error) {
                 setError('Error al obtener los datos del usuario.');
-                console.log(error);
+                console.error(error);
             }
         };
         fetchData();
@@ -47,7 +47,7 @@ const Profile = () => {
             }
             <div className='contenido' style={{ display: 'flex' }}>
                 <div className='posts' style={{ flex: 1, marginRight: '20px' }}>
-                    <h1>My Posts</h1>
+                    <h1>Mis Posts</h1>
                     {myposts.length === 0 
                         ? <p>No has hecho ningún post aún</p>
                         : myposts.map((post) => (
@@ -56,7 +56,7 @@ const Profile = () => {
                     }
                 </div>
                 <div className='playlists' style={{ flex: 1 }}>
-                    <h1>My Playlists</h1>
+                    <h1>Mis PlayLists</h1>
                     {playlists.length === 0 
                         ? <p>No tienes playlists aún</p>
                         : playlists.map((playlist) => (

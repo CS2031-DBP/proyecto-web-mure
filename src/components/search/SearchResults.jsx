@@ -8,33 +8,32 @@ const SearchResults = ({ results, handleAdd, type }) => {
             <div key={index}>
                 {type === 'artist' ? (
                     <>
-                        <p>Name: {result.name}</p>
-                        <p>Top Songs: {result.songTitles ? result.songTitles.slice(0, 4).join(', ') : 'No songs available'}</p>
-                        <p>Verified: {result.verified ? 'Yes' : 'No'}</p>
+                        <p>Artista: {result.name}</p>
+                        <p>Algunas canciones: {result.songTitles ? result.songTitles.slice(0, 4).join(', ') : 'No songs available'}</p>
+                        <p>Verificado?: {result.verified ? 'Yes' : 'No'}</p>
                     </>
                 ) : (
                     <>
-                        <p>Title: {result.title}</p>
-                        <p>Artist: {type === 'song' ? result.artistsNames.join(', ') : result.artistName}</p>
+                        <p>Título: {result.title}</p>
+                        <p>Artista: {type === 'song' ? result.artistsNames.join(', ') : result.artistName}</p>
                         {type === 'song' ? (
-                            <p>Genre: {result.genre}</p>
+                            <p>Genero: {result.genre}</p>
                         ) : (
                             <>
-                                <p>Release Date: {result.releaseDate}</p>
-                                <p>Songs Count: {result.songsCount}</p>
-                                <p>Songs: {result.songsTitles.join(', ')}</p>
+                                <p>Fecha de Lanzamiento: {result.releaseDate}</p>
+                                <p>Cancion: {result.songsTitles.join(', ')}</p>
                             </>
                         )}
                     </>
                 )}
-                <button type="button" onClick={() => handleAdd(result.id, type)}>Add +</button>
+                <button type="button" onClick={() => handleAdd(result.id, type)}>Añadir +</button>
             </div>
         ));
     };
 
     return (
         <div>
-            <h2>{type === 'artist' ? 'Artist' : type === 'song' ? 'Song' : 'Album'} Search Results</h2>
+            <h2>Resultados de Busqueda</h2>
             {renderResults()}
         </div>
     );

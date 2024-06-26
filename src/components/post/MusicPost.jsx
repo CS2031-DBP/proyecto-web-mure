@@ -1,10 +1,10 @@
 import React from 'react';
 
-const MusicPost = ({ albumTitle, songTitle }) => {
+const MusicPost = ({ post }) => {
   return (
     <div>
-      <p>{albumTitle}</p>
-      <p>{songTitle}</p>
+      {post.albumTitle && <p>Album: {post.albumTitle}</p>}
+      {post.songTitle && <p>Canción: {post.songTitle}</p>}
     </div>
   );
 };

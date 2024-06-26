@@ -26,7 +26,7 @@ const Login = () => {
                 navigate('/dashboard');
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -36,8 +36,8 @@ const Login = () => {
             <input type="email" id="email" name="email" placeholder="Email" onChange={handleChange} required />
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Password" onChange={handleChange} required />
-            <button type="submit">Login</button>
-            <button onClick={() => navigate('/auth/register')}>Register</button>
+            <button type="submit">Logeate!</button>
+            <button onClick={() => navigate('/auth/register')}>Registrarse</button>
         </form>
     )
 }
