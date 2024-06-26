@@ -10,6 +10,7 @@ const Dashboard = () => {
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(7);
     const [currUserName, setCurrUserName] = useState('');
+    const [currId, setCurrId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true); 
     const observer = useRef();
@@ -37,6 +38,7 @@ const Dashboard = () => {
             const res = await fetchCurrentUser();
             if (res.status === 200) {
                 setCurrUserName(res.data.name);
+                setCurrId(res.data.id);
             }
         } catch (error) {
             console.log(error);
@@ -76,9 +78,9 @@ const Dashboard = () => {
             <ul>
                 {posts.map((post, index) => {
                     if (posts.length === index + 1) {
-                        return <Post ref={lastPostElementRef} key={post.id} post={post} currUserName={currUserName} />;
+                        return <Post ref={lastPostElementRef} key={post.id} post={post} currUserName={currUserName} currId ={currId}/>;
                     } else {
-                        return <Post key={post.id} post={post} currUserName={currUserName}/>;
+                        return <Post key={post.id} post={post} currUserName={currUserName} currId ={currId}/>;
                     }
                 })}
             </ul>

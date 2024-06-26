@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MusicPost from './MusicPost';
 import { likePost } from '../../services/posts/likePost';
@@ -7,13 +7,23 @@ import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import './postStyle.css';
 
-const Post = forwardRef(({ post, currUserName }, ref) => {
+const Post = forwardRef(({ post, currUserName, currId }, ref) => {
   const [likes, setLikes] = useState(post.likes);
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (post.likedByUserIds.includes(currId)) {
+      setLiked(true);
+    }
+  }, [post.likedByUserIds, currUserName]);
+
   const handleUserClick = () => {
-    navigate(`/user/${post.ownerId}`);
+    if (post.owner === currUserName) {
+      navigate('/profile');
+    } else {
+      navigate(`/user/${post.ownerId}`);
+    }
   };
 
   const handleLikeClick = async () => {
