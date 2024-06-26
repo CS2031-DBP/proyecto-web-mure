@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { isPlaylistOwner } from '../../services/playlists/isOwner';
 
 const Playlist = ({ playlist }) => {
     const [isOwner, setIsOwner] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkOwnership = async () => {
             try {
                 const response = await isPlaylistOwner(playlist.id);
-                console.log(response)
                 if (response.status === 200) {
                     setIsOwner(response.data);
                 } else {
@@ -21,6 +22,10 @@ const Playlist = ({ playlist }) => {
         };
         checkOwnership();
     }, [playlist.id]);
+
+    const handleEditClick = () => {
+        navigate(`/playlist/edit/${playlist.id}`);
+    };
 
     return (
         <div className="playlist">
@@ -34,7 +39,7 @@ const Playlist = ({ playlist }) => {
             </ul>
             {isOwner && (
                 <div>
-                    <button>Edit Playlist</button>
+                    <button onClick={handleEditClick}>Edit Playlist</button>
                     <button>Delete Playlist</button>
                 </div>
             )}
