@@ -20,7 +20,7 @@ const Edit = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Crear un objeto con solo los campos modificados
+
         const updateData = {};
         for (let key in data) {
             if (data[key]) {
@@ -31,14 +31,14 @@ const Edit = () => {
             const res = await editProfile(updateData);
             if (res.status === 204) {
                 if (updateData.email || updateData.password) {
-                    localStorage.removeItem('token'); // Limpia el token
-                    navigate('/auth/login'); // Redirige al login
+                    localStorage.removeItem('token');
+                    navigate('/auth/login'); 
                 } else {
-                    navigate('/profile'); // Redirige al perfil
+                    navigate('/profile'); 
                 }
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 

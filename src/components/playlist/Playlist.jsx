@@ -53,7 +53,7 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
     return (
         <div className="playlist">
             <h2>{playlist.name}</h2>
-            <p>Creado por: {playlist.userName}</p>
+            <p>Autor: {playlist.userName}</p>
             <h3>Canciones:</h3>
             {playlist.songsTitles.length === 0 ? (
                 <p>No tienes canciones aún</p>
@@ -71,8 +71,8 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
             )}
             {isOwner && !edit && (
                 <div>
-                    <button onClick={handleEditClick}>Edit Playlist</button>
-                    <button onClick={handleDeletePlaylist}>Delete Playlist</button>
+                    <button onClick={handleEditClick}>Añadir/Quitar Canciones</button>
+                    <button onClick={handleDeletePlaylist}>Borrar Playlist</button>
                 </div>
             )}
             {error && <p style={{ color: 'red' }}>{error}</p>}

@@ -30,12 +30,12 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
     try {
       if (liked) {
         const res = await dislikePost(post.id);
-        console.log(res);
+
         setLikes(likes - 1);
         setLiked(false);
       } else {
         const res = await likePost(post.id);
-        console.log(res);
+
         setLikes(likes + 1);
         setLiked(true);
       }
@@ -44,15 +44,20 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
     }
   };
 
+  //todo hay que ver si podemos recuperar el link y la imagen de la cancion, para pasarselo a MusicPost y que lo muestre
+  
+  //todo hay que ver si es que podemos mostrar de forma correcta el tema del audio y la imagen en el post
+
+  //todo, hay que hacer que sea fijo el tamaño del post
+
   return (
     <div key={post.id} className='post' ref={ref}>
-      <MusicPost albumTitle={post.albumTitle} songTitle={post.songTitle} />
+      <MusicPost post={post} />
       {post.owner === currUserName ? (
         <div>{post.owner}</div>
       ) : (
         <button onClick={handleUserClick}>@{post.owner}</button>
       )}
-      <p>{post.ownerId}</p>
       <p>{post.description}</p>
       <p>Likes: {likes}</p>
       <button onClick={handleLikeClick}>

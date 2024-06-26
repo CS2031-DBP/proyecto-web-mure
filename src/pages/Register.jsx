@@ -28,23 +28,23 @@ const Register = () => {
                 navigate('/dashboard');
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
     return (
         <div>
-            <button onClick={() => navigate('/auth/login')}>Login</button>
+            <button onClick={() => navigate('/auth/login')}>Logearse</button>
         <form onSubmit={handleSubmit}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Correo</label>
             <input type="email" id="email" name="email" placeholder="Email" onChange={handleChange} required />
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Contraseña</label>
             <input type="password" id="password" name="password" placeholder="Password" onChange={handleChange} required />
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Usuario</label>
             <input type="text" id="name" name="name" placeholder="Name" onChange={handleChange} required />
-            <label htmlFor="birthdate">Birthdate</label>
+            <label htmlFor="birthdate">Fecha de Cumpleaños</label>
             <input type="date" id="birthdate" name="birthdate" onChange={handleChange} required />
-            <button type="submit">Register</button>
+            <button type="submit">Registrarse</button>
         </form>
         </div>
     )

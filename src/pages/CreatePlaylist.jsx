@@ -15,7 +15,7 @@ const CreatePlaylist = () => {
         name: '',
         songsIds: [],
     });
-    const [songs, setSongs] = useState([]); // Array para almacenar los detalles de las canciones añadidas
+    const [songs, setSongs] = useState([]);
     const [songSearchTerm, setSongSearchTerm] = useState('');
     const [songSearchResults, setSongSearchResults] = useState([]);
     const [error, setError] = useState('');
@@ -108,8 +108,8 @@ const CreatePlaylist = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Playlist Name</label>
-                <input type="text" id="name" name="name" value={data.name} onChange={handleChange} />
+                <label htmlFor="name">Nombre de la Playlist: </label>
+                <input type="text" id="name" name="name" value={data.name} onChange={handleChange} required/>
 
                 <SearchInput
                     searchTerm={songSearchTerm}
@@ -130,14 +130,14 @@ const CreatePlaylist = () => {
                     ) : (
                         songs.map((song, index) => (
                             <div key={index}>
-                                <p>Title: {song.title}</p>
-                                <p>Artist: {song.artistsNames.join(', ')}</p>
+                                <p>Titulo: {song.title}</p>
+                                <p>Artista/s: {song.artistsNames.join(', ')}</p>
                             </div>
                         ))
                     )}
                 </div>
 
-                <button type="submit">Create Playlist</button>
+                <button type="submit">Crear Playlist</button>
             </form>
         </div>
     );

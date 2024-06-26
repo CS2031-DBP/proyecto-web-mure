@@ -81,7 +81,7 @@ const UserProfile = () => {
           setCurrUserId(res.data.id);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 

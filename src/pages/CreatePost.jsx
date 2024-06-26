@@ -93,7 +93,7 @@ const CreatePost = () => {
             setAlbumSearchResults([]);
             setAlbumSearchTerm('');
         }
-        console.log('Form data:', data);  
+
     };
 
     useEffect(() => {
@@ -133,6 +133,8 @@ const CreatePost = () => {
             console.error('Error creating post:', error);
         }
     };
+
+    //todo en este caso, al hacer el añadido de la cancion o el post, hay que hacer que se muestre en el formulario, ademas, controlar que solo se este enviando un id de cancion o album, con un mensaje
 
     return (
         <div>

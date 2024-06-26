@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import './App.css'
 import Login from './pages/Login'
@@ -15,7 +14,6 @@ import EditPlaylist from './pages/EditPlaylist'
 import Navbar from './components/navbar/navbar'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <Router>
