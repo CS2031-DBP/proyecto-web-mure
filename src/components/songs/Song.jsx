@@ -15,7 +15,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
         }
     };
 
-    console.log(song)
+
 
     return (
         <div ref={ref} className="song-container">

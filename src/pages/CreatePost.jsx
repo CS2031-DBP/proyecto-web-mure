@@ -23,6 +23,8 @@ const CreatePost = () => {
     const [albumSearchTerm, setAlbumSearchTerm] = useState('');
     const [songSearchResults, setSongSearchResults] = useState([]);
     const [albumSearchResults, setAlbumSearchResults] = useState([]);
+    const [selectedSong, setSelectedSong] = useState(null);
+    const [selectedAlbum, setSelectedAlbum] = useState(null);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
@@ -34,6 +36,7 @@ const CreatePost = () => {
             setAlbumSearchTerm('');
             setAlbumSearchResults([]);
             setData((prevData) => ({ ...prevData, albumId: '' }));
+            setSelectedAlbum(null);
         }
     };
 
@@ -43,6 +46,7 @@ const CreatePost = () => {
             setSongSearchTerm('');
             setSongSearchResults([]);
             setData((prevData) => ({ ...prevData, songId: '' }));
+            setSelectedSong(null);
         }
     };
 
@@ -85,15 +89,18 @@ const CreatePost = () => {
 
     const handleAdd = (id, type) => {
         if (type === 'song') {
+            const song = songSearchResults.find(song => song.id === id);
             setData((prevData) => ({ ...prevData, songId: id }));
+            setSelectedSong(song);
             setSongSearchResults([]);
             setSongSearchTerm('');
         } else {
+            const album = albumSearchResults.find(album => album.id === id);
             setData((prevData) => ({ ...prevData, albumId: id }));
+            setSelectedAlbum(album);
             setAlbumSearchResults([]);
             setAlbumSearchTerm('');
         }
-
     };
 
     useEffect(() => {
@@ -133,8 +140,6 @@ const CreatePost = () => {
             console.error('Error creating post:', error);
         }
     };
-
-    //todo en este caso, al hacer el añadido de la cancion o el post, hay que hacer que se muestre en el formulario, ademas, controlar que solo se este enviando un id de cancion o album, con un mensaje
 
     return (
         <div>
@@ -177,6 +182,23 @@ const CreatePost = () => {
                     handleAdd={handleAdd}
                     type="album"
                 />
+
+                {selectedSong && (
+                    <div>
+                        <h2>Canción seleccionada:</h2>
+                        <p>Título: {selectedSong.title}</p>
+                        <p>Artista/s: {selectedSong.artistsNames.join(', ')}</p>
+                    </div>
+                )}
+
+                {selectedAlbum && (
+                    <div>
+                        <h2>Álbum seleccionado:</h2>
+                        <p>Título: {selectedAlbum.title}</p>
+                        <p>Artista: {selectedAlbum.artistName}</p>
+                        <p>Canciones: {selectedAlbum.songsTitles.join(', ')}</p>
+                    </div>
+                )}
 
                 <button type="submit">Create Post</button>
             </form>
