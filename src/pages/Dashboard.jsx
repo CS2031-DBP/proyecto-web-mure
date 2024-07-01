@@ -20,6 +20,7 @@ const Dashboard = () => {
         setIsLoading(true);
         try {
             const res = await fetchPosts(page, size);
+            console.log(res.data.content)
             if (res.status === 200) {
                 setPosts((prevPosts) => [...prevPosts, ...res.data.content]);
                 setPage((prevPage) => prevPage + 1);
