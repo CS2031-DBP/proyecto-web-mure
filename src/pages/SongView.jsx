@@ -19,6 +19,7 @@ const SongView = () => {
         setIsLoading(true);
         try {
             const res = await fetchSongs(page, size);
+            console.log(res)
             if (res.status === 200) {
                 setSongs((prevSongs) => [...prevSongs, ...res.data.content]);
                 setPage((prevPage) => prevPage + 1);
