@@ -31,7 +31,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #333333, #1e1e1e, #000000); /* Degradado de gris oscuro a negro */
+  background: linear-gradient(to bottom, #8E3356,#C6466A , #1e1e1e, #000000); /* Degradado de gris oscuro a negro */
 }
 
 h1 {
@@ -50,9 +50,9 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
+
+
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
