@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { deleteSong } from '../../services/songs/deleteSong';
+import Headphones from '@mui/icons-material/Headphones';
 import './Song.css'; 
 
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
@@ -15,17 +16,21 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
         }
     };
 
-    console.log(song)
 
     return (
         <div ref={ref} className="song-container">
-            <h2 className="song-title">{song.title}</h2>
+            <h2 className="song-title">
+                {song.title}
+                <a href={song.link} target="_blank" rel="noopener noreferrer">
+                    <Headphones className="song-link-icon" />
+                </a>
+            </h2>
             <p className="song-artist">Artista: {song.artistsNames.join(', ')}</p>
             <p className="song-album">Album: {song.albumTitle || 'Unknown Album'}</p>
             <p className="song-duration">Duración: {song.duration}</p>
-            <p className="song-genre">Genero: {song.genre}</p>
+            <p className="song-genre">Género: {song.genre}</p>
             <p className="song-likes">Likes: {song.likes}</p>
-            <p className="song-timesPlayed">Numero de reproducciones: {song.timesPlayed}</p>
+            <p className="song-timesPlayed">Número de reproducciones: {song.timesPlayed}</p>
             <p className="song-releaseDate">Fecha de Lanzamiento: {song.releaseDate}</p>
             {song.coverImage && <img src={song.coverImage} alt={`${song.title} cover`} className="song-coverImage" />}
             {role === 'ROLE_ADMIN' && (
