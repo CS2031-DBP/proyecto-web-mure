@@ -30,12 +30,10 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
     try {
       if (liked) {
         const res = await dislikePost(post.id);
-
         setLikes(likes - 1);
         setLiked(false);
       } else {
         const res = await likePost(post.id);
-
         setLikes(likes + 1);
         setLiked(true);
       }

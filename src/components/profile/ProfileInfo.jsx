@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ProfileInfo = ({ data }) => {
-  console.log(data);
   return (
     <div>
       <h1>Perfil de {data.name}</h1>

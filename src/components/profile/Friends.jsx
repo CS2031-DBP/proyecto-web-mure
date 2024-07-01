@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Friends = ({ friends }) => {
-  console.log(friends)
   return (
     <div>
         <h1>Amigos:</h1>
