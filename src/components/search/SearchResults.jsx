@@ -5,35 +5,41 @@ const SearchResults = ({ results, handleAdd, type }) => {
 
     const renderResults = () => {
         return results.map((result, index) => (
-            <div key={index}>
+            <div key={index} className="bg-gray-700 text-white p-4 mb-4 rounded-lg">
                 {type === 'artist' ? (
                     <>
-                        <p>Artista: {result.name}</p>
+                        <p className="font-bold">Artista: {result.name}</p>
                         <p>Algunas canciones: {result.songTitles ? result.songTitles.slice(0, 4).join(', ') : 'No songs available'}</p>
                         <p>Verificado?: {result.verified ? 'Yes' : 'No'}</p>
                     </>
                 ) : (
                     <>
-                        <p>Título: {result.title}</p>
+                        <p className="font-bold">Título: {result.title}</p>
                         <p>Artista: {type === 'song' ? result.artistsNames.join(', ') : result.artistName}</p>
                         {type === 'song' ? (
-                            <p>Genero: {result.genre}</p>
+                            <p>Género: {result.genre}</p>
                         ) : (
                             <>
                                 <p>Fecha de Lanzamiento: {result.releaseDate}</p>
-                                <p>Cancion: {result.songsTitles.join(', ')}</p>
+                                <p>Canciones: {result.songsTitles.join(', ')}</p>
                             </>
                         )}
                     </>
                 )}
-                <button type="button" onClick={() => handleAdd(result.id, type)}>Añadir +</button>
+                <button 
+                    type="button" 
+                    onClick={() => handleAdd(result.id, type, result)} 
+                    className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
+                >
+                    Añadir +
+                </button>
             </div>
         ));
     };
 
     return (
-        <div>
-            <h2>Resultados de Busqueda</h2>
+        <div className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">Resultados de Búsqueda</h3>
             {renderResults()}
         </div>
     );

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { createPlaylist } from '../services/playlists/createPlayllist';
 import { fetchCurrentUser } from '../services/profile/getUserInfo';
 import { searchSong } from '../services/songs/searchSong';
 import SearchInput from '../components/search/SearchInput';
 import SearchResults from '../components/search/SearchResults';
 import { useNavigate } from 'react-router-dom';
-
-
+import Headphones from '@mui/icons-material/Headphones';
+import { createPlaylist } from '../services/playlists/createPlayllist';
 
 const CreatePlaylist = () => {
     const navigate = useNavigate();
@@ -15,7 +14,7 @@ const CreatePlaylist = () => {
         name: '',
         songsIds: [],
     });
-    const [songs, setSongs] = useState([]);
+    const [songsDetails, setSongsDetails] = useState([]);
     const [songSearchTerm, setSongSearchTerm] = useState('');
     const [songSearchResults, setSongSearchResults] = useState([]);
     const [error, setError] = useState('');
@@ -59,10 +58,18 @@ const CreatePlaylist = () => {
                 ...prevData,
                 songsIds: [...prevData.songsIds, id],
             }));
-            setSongs((prevSongs) => [...prevSongs, songDetails]);
+            setSongsDetails((prevDetails) => [...prevDetails, songDetails]);
             setSongSearchResults([]);
             setSongSearchTerm('');
         }
+    };
+
+    const handleRemoveSong = (id) => {
+        setData((prevData) => ({
+            ...prevData,
+            songsIds: prevData.songsIds.filter(songId => songId !== id),
+        }));
+        setSongsDetails((prevDetails) => prevDetails.filter(song => song.id !== id));
     };
 
     useEffect(() => {
@@ -102,43 +109,77 @@ const CreatePlaylist = () => {
     };
 
     return (
-        <div>
-            <h1>Create Playlist</h1>
-            <button onClick={() => {console.log(data)}}>Depurar</button>   
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Nombre de la Playlist: </label>
-                <input type="text" id="name" name="name" value={data.name} onChange={handleChange} required/>
-
-                <SearchInput
-                    searchTerm={songSearchTerm}
-                    handleSearchTermChange={handleSongSearchTermChange}
-                    handleSearch={handleSearch}
-                    type="song"
-                />
-                <SearchResults
-                    results={songSearchResults}
-                    handleAdd={(id, type) => handleAdd(id, type, songSearchResults.find(song => song.id === id))}
-                    type="song"
-                />
-
-                <div>
-                    <h2>Canciones añadidas a la playlist</h2>
-                    {songs.length === 0 ? (
-                        <p>No has añadido canciones aún.</p>
-                    ) : (
-                        songs.map((song, index) => (
-                            <div key={index}>
-                                <p>Titulo: {song.title}</p>
-                                <p>Artista/s: {song.artistsNames.join(', ')}</p>
+        <div className="items-center justify-center">
+            <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+                <h1 className="text-3xl font-bold mb-6">Create Playlist</h1>
+                {error && <p className="text-red-500 mb-4">{error}</p>}
+                {success && <p className="text-green-500 mb-4">{success}</p>}
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="col-span-1 md:col-span-2">
+                        <label htmlFor="name" className="block text-sm font-medium mb-1">Nombre de la Playlist:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+                        />
+                    </div>
+                    <div className="col-span-1 flex flex-col ">
+                        <SearchInput
+                            searchTerm={songSearchTerm}
+                            handleSearchTermChange={handleSongSearchTermChange}
+                            handleSearch={handleSearch}
+                            type="song"
+                        />
+                        <SearchResults
+                            results={songSearchResults}
+                            handleAdd={(id, type) => handleAdd(id, type, songSearchResults.find(song => song.id === id))}
+                            type="song"
+                        />
+                    </div>
+                    <div className="col-span-1 flex flex-col justify-between">
+                        {songsDetails.length > 0 ? (
+                            <div className="bg-gray-700 text-white p-4 rounded-lg flex flex-col justify-between h-full">
+                                {songsDetails.map((song) => (
+                                    <div key={song.id} className="flex mb-4">
+                                        <img src={song.coverImage} alt={`${song.title} cover`} className="w-24 h-24 object-cover rounded-lg" />
+                                        <div className="grid grid-cols-2 gap-4 ml-4">
+                                            <div>
+                                                <p className="font-bold">Título: {song.title}</p>
+                                                <p>Artista: {song.artistsNames.join(', ')}</p>
+                                            </div>
+                                            <div>
+                                                <p>Duración: {song.duration}</p>
+                                                <p>Género: {song.genre}</p>
+                                            </div>
+                                            <div className="col-span-2 flex justify-between items-center">
+                                                <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                                                    <Headphones />
+                                                </a>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => handleRemoveSong(song.id)} 
+                                                    className="ml-4 px-2 py-1 bg-red-600 text-white rounded-lg"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))
-                    )}
-                </div>
-
-                <button type="submit">Crear Playlist</button>
-            </form>
+                        ) : (
+                            <p>No has añadido canciones aún.</p>
+                        )}
+                    </div>
+                    <div className="col-span-1 md:col-span-2">
+                        <button type="submit" className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg">Crear Playlist</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

@@ -77,22 +77,29 @@ const EditPlaylist = () => {
   }
 
   return (
-    <div>
-      <h1>Editar PlayList</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <Playlist playlist={playlist} edit={true} onUpdate={fetchPlaylist} />
-      <SearchInput
-        searchTerm={songSearchTerm}
-        handleSearchTermChange={handleSongSearchTermChange}
-        handleSearch={handleSearch}
-        type="song"
-      />
-      <SearchResults
-        results={songSearchResults}
-        handleAdd={(id) => handleAdd(id)}
-        type="song"
-      />
-      <button onClick={() => navigate('/profile')}>Guardar Cambios</button>
+    <div className="items-center justify-center">
+      <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <h1 className="text-3xl font-bold mb-6">Editar Playlist</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <Playlist playlist={playlist} edit={true} onUpdate={fetchPlaylist} />
+        <SearchInput
+          searchTerm={songSearchTerm}
+          handleSearchTermChange={handleSongSearchTermChange}
+          handleSearch={handleSearch}
+          type="song"
+        />
+        <SearchResults
+          results={songSearchResults}
+          handleAdd={(id) => handleAdd(id)}
+          type="song"
+        />
+        <button
+          className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg"
+          onClick={() => navigate('/profile')}
+        >
+          Guardar Cambios
+        </button>
+      </div>
     </div>
   );
 };
