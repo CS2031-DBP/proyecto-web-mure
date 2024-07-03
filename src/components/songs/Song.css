@@ -57,3 +57,23 @@
     margin-left: 8px;
     font-size: 1.5rem; /* Puedes ajustar este valor para cambiar el tamaño del icono */
 }
+
+/* Song.css */
+
+.song-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 0.5rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.song-coverImage {
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+}

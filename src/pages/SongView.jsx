@@ -19,7 +19,6 @@ const SongView = () => {
         setIsLoading(true);
         try {
             const res = await fetchSongs(page, size);
-            console.log(res)
             if (res.status === 200) {
                 setSongs((prevSongs) => [...prevSongs, ...res.data.content]);
                 setPage((prevPage) => prevPage + 1);
@@ -66,10 +65,13 @@ const SongView = () => {
 
     return (
         <div>
-            <h1>Songs</h1>
-            <button onClick={() => navigate('/dashboard')}>Menu</button>
-            {role === 'ROLE_ADMIN' && <button onClick={handleAddSongClick}>Agregar Canción</button>}
-            <ul>
+            <h1 className="text-3xl font-bold text-center mb-6">Songs</h1>
+            <div className="flex justify-center mb-4">
+                {role === 'ROLE_ADMIN' && (
+                    <button className="bg-green-500 text-white px-4 py-2 rounded ml-2" onClick={handleAddSongClick}>Agregar Canción</button>
+                )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                 {songs.map((song, index) => {
                     if (songs.length === index + 1) {
                         return <Song ref={lastSongElementRef} key={song.id} song={song} role={role} onDelete={handleDeleteSong} />;
@@ -77,9 +79,9 @@ const SongView = () => {
                         return <Song key={song.id} song={song} role={role} onDelete={handleDeleteSong} />;
                     }
                 })}
-            </ul>
-            {isLoading && <p>Loading...</p>}
-            {!hasMore && <p>No more songs</p>}
+            </div>
+            {isLoading && <p className="text-center mt-4">Loading...</p>}
+            {!hasMore && <p className="text-center mt-4">No more songs</p>}
         </div>
     );
 };
