@@ -37,37 +37,52 @@ const Profile = () => {
     }, []);
 
     return (
-        <div>
-            <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-            <button onClick={() => navigate("/playlist/create")}>Crear Playlist</button>
-            <ProfileInfo key={userData.id} data={userData} />
-            {friends.length === 0 
-                ? <p>Aún no tienes amigos, prueba ir a la pestaña de comunidad para ver posts y hacer amigos</p>
-                : <Friends friends={friends} />
-            }
-            <div className='contenido' style={{ display: 'flex' }}>
-                <div className='posts' style={{ flex: 1, marginRight: '20px' }}>
-                    <h1>Mis Posts</h1>
-                    {myposts.length === 0 
-                        ? <p>No has hecho ningún post aún</p>
-                        : myposts.map((post) => (
-                            <Post key={post.id} post={post} currUserName={userData.name} currId={userData.id} />
-                        ))
-                    }
+        <>
+            <div className='p-8  px-96 bg-gradient-to-br from-blue-500 to-purple-500  rounded-lg'>
+                <div className="flex space-x-4 mb-4">
+                    <button onClick={() => navigate("/playlist/create")} className="bg-blue-500 text-white py-2 px-4 rounded-full">
+                        Crear Playlist
+                    </button>
                 </div>
-                <div className='playlists' style={{ flex: 1 }}>
-                    <h1>Mis PlayLists</h1>
-                    {playlists.length === 0 
-                        ? <p>No tienes playlists aún</p>
-                        : playlists.map((playlist) => (
-                            <Playlist key={playlist.id} playlist={playlist} edit={false} />
-                        ))
-                    }
-                </div>
+                {userData && <ProfileInfo key={userData.id} data={userData} />}
             </div>
-            <button onClick={() => {navigate("/edit")}}> Editar Perfil </button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
+
+            <div className="p-8">
+                {friends.length === 0 ? (
+                    <p className="text-center text-gray-400">Aún no tienes amigos, prueba ir a la pestaña de comunidad para ver posts y hacer amigos</p>
+                ) : (
+                    <Friends friends={friends} />
+                )}
+                <div className="flex flex-col md:flex-row mt-8">
+                    <div className="flex-1 md:mr-8 mb-8 md:mb-0">
+                        <h1 className="text-2xl font-bold mb-4">Mis Posts</h1>
+                        {myposts.length === 0 ? (
+                            <p className="text-gray-400">No has hecho ningún post aún</p>
+                        ) : (
+                            myposts.map((post) => (
+                                <Post key={post.id} post={post} currUserName={userData.name} currId={userData.id} />
+                            ))
+                        )}
+                    </div>
+                    <div className="flex-1">
+                        <h1 className="text-2xl font-bold mb-4">Mis PlayLists</h1>
+                        {playlists.length === 0 ? (
+                            <p className="text-gray-400">No tienes playlists aún</p>
+                        ) : (
+                            playlists.map((playlist) => (
+                                <Playlist key={playlist.id} playlist={playlist} edit={false} />
+                            ))
+                        )}
+                    </div>
+                </div>
+                <div className="mt-8 flex justify-center">
+                    <button onClick={() => navigate("/edit")} className="bg-blue-500 text-white py-2 px-4 rounded-full">
+                        Editar Perfil
+                    </button>
+                </div>
+                {error && <p className="text-center text-red-500 mt-4">{error}</p>}
+            </div>
+        </>
     );
 }
 

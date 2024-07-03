@@ -31,7 +31,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #8E3356,#C6466A , #1e1e1e, #000000); /* Degradado de gris oscuro a negro */
+  background: linear-gradient(to bottom, #3b3b3b, #2b2a2a , #1e1e1e, #131313, #0f0f0f); /* Degradado de gris oscuro a negro */
 }
 
 h1 {
