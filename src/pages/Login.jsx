@@ -2,18 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth/auth';
 import logo from '..//img/Logo_Fondo-removebg-preview.png';
+import { motion } from 'framer-motion';
 
 const Login = () => {
-    // Hook de navegación para redirigir a diferentes rutas
     const navigate = useNavigate();
-    
-    // Hook de estado para almacenar los datos del formulario de inicio de sesión
     const [data, setData] = useState({
         email: '',
         password: ''
     });
 
-    // Maneja los cambios en los campos del formulario y actualiza el estado
     const handleChange = (e) => {
         setData({
             ...data,
@@ -21,32 +18,36 @@ const Login = () => {
         });
     }
 
-    // Maneja el envío del formulario
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previene la recarga de la página al enviar el formulario
+        e.preventDefault();
         try {
-            const res = await login(data); // Llama a la función de inicio de sesión
+            const res = await login(data);
             if (res.status === 200) {
-                // Si el inicio de sesión es exitoso, guarda el token en el almacenamiento local
                 localStorage.setItem('token', res.data.token);
-                // Redirige al usuario al dashboard
                 navigate('/dashboard');
             }
         } catch (error) {
-            console.error(error); // Manejo de errores
+            console.error(error);
         }
     }
 
     return (
-        <div className="bg-black p-8 rounded-lg shadow-lg w-full">
-            {/* Logo de la aplicación */}
+        <motion.div
+            className="bg-black p-8 rounded-lg shadow-lg w-full"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <img src={logo} alt="Logo" className="mx-auto mb-4 w-20 h-20" />
             <div className="text-center mb-6 w-full max-w-md">
                 <h1 className="text-3xl font-semibold text-white">Log in to Mure</h1>
             </div>
-            {/* Formulario de inicio de sesión */}
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
+                <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                >
                     <label htmlFor="email" className="block text-sm font-medium text-white text-left">Email</label>
                     <input
                         type="email"
@@ -57,8 +58,12 @@ const Login = () => {
                         required
                         className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
                     />
-                </div>
-                <div>
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <label htmlFor="password" className="block text-sm font-medium text-white text-left">Password</label>
                     <input
                         type="password"
@@ -69,23 +74,32 @@ const Login = () => {
                         required
                         className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
                     />
-                </div>
-                <div>
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                >
                     <button
                         type="submit"
                         className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4"
                     >
                         Log In
                     </button>
-                </div>
+                </motion.div>
             </form>
-            <div className="mt-6 text-center text-sm text-white">
+            <motion.div
+                className="mt-6 text-center text-sm text-white"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+            >
                 <span>Don't have an account? </span>
                 <a onClick={() => navigate('/auth/register')} className="font-medium hover:text-color2 text-white underline">
                     Sign up for Mure
                 </a>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 }
 

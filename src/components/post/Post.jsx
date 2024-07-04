@@ -6,21 +6,19 @@ import { dislikePost } from "../../services/posts/dislikePost";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import moment from "moment";
+import { motion } from 'framer-motion';
 
-// Componente Post que recibe props: post, currUserName, currId y ref
 const Post = forwardRef(({ post, currUserName, currId }, ref) => {
-  const [likes, setLikes] = useState(post.likes); // Estado para manejar los likes del post
-  const [liked, setLiked] = useState(false); // Estado para manejar si el post está likeado por el usuario actual
-  const navigate = useNavigate(); // Hook de navegación para redirigir a otras páginas
+  const [likes, setLikes] = useState(post.likes);
+  const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
 
-  // useEffect para verificar si el usuario actual ha likeado el post
   useEffect(() => {
     if (post.likedByUserIds.includes(currId)) {
       setLiked(true);
     }
   }, [post.likedByUserIds, currUserName]);
 
-  // Función para manejar el click en el nombre del usuario que creó el post
   const handleUserClick = () => {
     if (post.owner === currUserName) {
       navigate("/profile");
@@ -29,29 +27,30 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
     }
   };
 
-  // Función para manejar el like y dislike del post
   const handleLikeClick = async () => {
     try {
       if (liked) {
-        await dislikePost(post.id); // Llama a la API para hacer dislike al post
+        await dislikePost(post.id);
         setLikes(likes - 1);
         setLiked(false);
       } else {
-        await likePost(post.id); // Llama a la API para hacer like al post
+        await likePost(post.id);
         setLikes(likes + 1);
         setLiked(true);
       }
     } catch (error) {
-      console.error("Error liking/disliking the post:", error); // Manejo de errores
+      console.error("Error liking/disliking the post:", error);
     }
   };
 
   return (
-    <div
+    <motion.div
       key={post.id}
       className="border p-5 rounded-md shadow-lg bg-white mb-4 flex flex-col w-full max-w-screen-md mx-auto"
       ref={ref}
-      style={{ height: "250px" }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <div className="flex mb-4">
         <div className="flex flex-col items-center mr-4">
@@ -81,17 +80,19 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
         </p>
         <div className="flex items-center">
           <p className="text-black mx-2">Likes: {likes}</p>
-          <button
+          <motion.button
             onClick={handleLikeClick}
             className={`flex items-center justify-center w-8 h-8 rounded-full ${
               liked ? "bg-red-500 text-white" : " text-black"
             }`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             {liked ? <Favorite /> : <FavoriteBorder />}
-          </button>
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 });
 

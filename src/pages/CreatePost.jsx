@@ -7,6 +7,7 @@ import { searchAlbum } from "../services/album/searchAlbum";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -202,7 +203,12 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="items-center justify-center ">
+    <motion.div
+      className="items-center justify-center"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6">Create Post</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -331,7 +337,7 @@ const CreatePost = () => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

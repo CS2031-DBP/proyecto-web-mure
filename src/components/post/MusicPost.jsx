@@ -1,18 +1,21 @@
 import React from "react";
 import Headphones from "@mui/icons-material/Headphones";
 import HeadsetOff from "@mui/icons-material/HeadsetOff";
+import { motion } from 'framer-motion';
 
-// Componente MusicPost que recibe props: post
 const MusicPost = ({ post }) => {
   const { song, album } = post;
 
   return (
     <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-sm w-full">
       {song?.coverUrl || album?.coverUrl ? (
-        <img
+        <motion.img
           src={song?.coverUrl || album?.coverUrl}
           alt="cover"
           className="w-24 h-auto rounded"
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.5 }}
         />
       ) : (
         <div className="w-24 h-auto rounded bg-gray-200 flex items-center justify-center">

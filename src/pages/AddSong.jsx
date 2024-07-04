@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import VerifiedIcon from "@mui/icons-material/Verified";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AddSong = () => {
   const navigate = useNavigate();
@@ -103,7 +104,12 @@ const AddSong = () => {
   };
 
   return (
-    <div className="items-center justify-center">
+    <motion.div
+      className="items-center justify-center"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6">Añadir Canción</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -116,7 +122,7 @@ const AddSong = () => {
             <label htmlFor="title" className="block text-sm font-medium mb-1">
               Titulo
             </label>
-            <input
+            <motion.input
               type="text"
               id="title"
               name="title"
@@ -124,6 +130,9 @@ const AddSong = () => {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
           <div className="col-span-1">
@@ -133,7 +142,7 @@ const AddSong = () => {
             >
               Fecha de Lanzamiento
             </label>
-            <input
+            <motion.input
               type="date"
               id="releaseDate"
               name="releaseDate"
@@ -141,13 +150,16 @@ const AddSong = () => {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             />
           </div>
           <div className="col-span-1">
             <label htmlFor="genre" className="block text-sm font-medium mb-1">
               Genero
             </label>
-            <input
+            <motion.input
               type="text"
               id="genre"
               name="genre"
@@ -155,6 +167,9 @@ const AddSong = () => {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
             />
           </div>
           <div className="col-span-1">
@@ -164,7 +179,7 @@ const AddSong = () => {
             >
               Duración
             </label>
-            <input
+            <motion.input
               type="text"
               id="duration"
               name="duration"
@@ -172,6 +187,9 @@ const AddSong = () => {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             />
           </div>
           <div className="col-span-1">
@@ -181,7 +199,7 @@ const AddSong = () => {
             >
               Cover Image
             </label>
-            <input
+            <motion.input
               type="text"
               id="coverImage"
               name="coverImage"
@@ -189,6 +207,9 @@ const AddSong = () => {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             />
           </div>
           <div className="col-span-1 md:col-span-2">
@@ -206,26 +227,32 @@ const AddSong = () => {
           </div>
           <div className="col-span-1 md:col-span-2">
             <h2 className="text-xl font-bold mb-4">Artistas Añadidos</h2>
-            {addedArtists.length === 0 ? (
-              <p>No has añadido artistas aún.</p>
-            ) : (
-              addedArtists.map((artist, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-700 text-white p-4 mb-4 rounded-lg flex items-center"
-                >
-                  <div className="flex-1">
-                    <p className="font-bold">
-                      {artist.name}{" "}
-                      {artist.verified && (
-                        <VerifiedIcon className="text-blue-500" />
-                      )}
-                    </p>
-                    <p>Cumpleaños: {artist.birthday}</p>
-                  </div>
-                </div>
-              ))
-            )}
+            <AnimatePresence>
+              {addedArtists.length === 0 ? (
+                <p>No has añadido artistas aún.</p>
+              ) : (
+                addedArtists.map((artist, index) => (
+                  <motion.div
+                    key={index}
+                    className="bg-gray-700 text-white p-4 mb-4 rounded-lg flex items-center"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="flex-1">
+                      <p className="font-bold">
+                        {artist.name}{" "}
+                        {artist.verified && (
+                          <VerifiedIcon className="text-blue-500" />
+                        )}
+                      </p>
+                      <p>Cumpleaños: {artist.birthday}</p>
+                    </div>
+                  </motion.div>
+                ))
+              )}
+            </AnimatePresence>
           </div>
           <div className="col-span-1 md:col-span-2">
             <button
@@ -237,7 +264,7 @@ const AddSong = () => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

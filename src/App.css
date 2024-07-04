@@ -21,7 +21,6 @@
 .app-container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #db7b7b, #28b02a, #3c849f, #7d2222, #b0349e);
   display: flex;
   flex-direction: column;
   align-items: center;

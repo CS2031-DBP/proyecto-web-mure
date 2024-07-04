@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from 'framer-motion';
 
 // Componente SearchResults que muestra los resultados de búsqueda
 const SearchResults = ({ results, handleAdd, type }) => {
@@ -7,7 +8,13 @@ const SearchResults = ({ results, handleAdd, type }) => {
   // Función para renderizar los resultados de búsqueda
   const renderResults = () => {
     return results.map((result, index) => (
-      <div key={index} className="bg-gray-700 text-white p-4 mb-4 rounded-lg">
+      <motion.div
+        key={index}
+        className="bg-gray-700 text-white p-4 mb-4 rounded-lg"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+      >
         {type === "artist" ? (
           <>
             <p className="font-bold">Artista: {result.name}</p>
@@ -45,15 +52,20 @@ const SearchResults = ({ results, handleAdd, type }) => {
         >
           Añadir +
         </button>
-      </div>
+      </motion.div>
     ));
   };
 
   return (
-    <div className="mb-4">
+    <motion.div
+      className="mb-4"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <h3 className="text-lg font-semibold mb-2">Resultados de Búsqueda</h3>
       {renderResults()}
-    </div>
+    </motion.div>
   );
 };
 

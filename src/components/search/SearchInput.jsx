@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from 'framer-motion';
 
 // Componente SearchInput para entrada de búsqueda
 const SearchInput = ({
@@ -8,7 +9,12 @@ const SearchInput = ({
   type,
 }) => {
   return (
-    <div className="mb-4">
+    <motion.div
+      className="mb-4"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <label className="block text-sm font-medium mb-1">
         Buscar{" "}
         {type === "song" ? "Canción" : type === "album" ? "Álbum" : "Artista"}
@@ -28,7 +34,7 @@ const SearchInput = ({
           Buscar
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

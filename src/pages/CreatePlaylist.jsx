@@ -6,6 +6,7 @@ import SearchResults from "../components/search/SearchResults";
 import { useNavigate } from "react-router-dom";
 import Headphones from "@mui/icons-material/Headphones";
 import { createPlaylist } from "../services/playlists/createPlayllist";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CreatePlaylist = () => {
   const navigate = useNavigate();
@@ -120,7 +121,12 @@ const CreatePlaylist = () => {
   };
 
   return (
-    <div className="items-center justify-center">
+    <motion.div
+      className="items-center justify-center"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6">Create Playlist</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -133,7 +139,7 @@ const CreatePlaylist = () => {
             <label htmlFor="name" className="block text-sm font-medium mb-1">
               Nombre de la Playlist:
             </label>
-            <input
+            <motion.input
               type="text"
               id="name"
               name="name"
@@ -141,6 +147,9 @@ const CreatePlaylist = () => {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
           <div className="col-span-1 flex flex-col">
@@ -165,42 +174,51 @@ const CreatePlaylist = () => {
           <div className="col-span-1 flex flex-col justify-between">
             {songsDetails.length > 0 ? (
               <div className="bg-gray-700 text-white p-4 rounded-lg flex flex-col justify-between h-full">
-                {songsDetails.map((song) => (
-                  <div key={song.id} className="flex mb-4">
-                    <img
-                      src={song.coverImage}
-                      alt={`${song.title} cover`}
-                      className="w-24 h-24 object-cover rounded-lg"
-                    />
-                    <div className="grid grid-cols-2 gap-4 ml-4">
-                      <div>
-                        <p className="font-bold">Título: {song.title}</p>
-                        <p>Artista: {song.artistsNames.join(", ")}</p>
+                <AnimatePresence>
+                  {songsDetails.map((song) => (
+                    <motion.div
+                      key={song.id}
+                      className="flex mb-4"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img
+                        src={song.coverImage}
+                        alt={`${song.title} cover`}
+                        className="w-24 h-24 object-cover rounded-lg"
+                      />
+                      <div className="grid grid-cols-2 gap-4 ml-4">
+                        <div>
+                          <p className="font-bold">Título: {song.title}</p>
+                          <p>Artista: {song.artistsNames.join(", ")}</p>
+                        </div>
+                        <div>
+                          <p>Duración: {song.duration}</p>
+                          <p>Género: {song.genre}</p>
+                        </div>
+                        <div className="col-span-2 flex justify-between items-center">
+                          <a
+                            href={song.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500"
+                          >
+                            <Headphones />
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSong(song.id)}
+                            className="ml-4 px-2 py-1 bg-red-600 text-white rounded-lg"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
                       </div>
-                      <div>
-                        <p>Duración: {song.duration}</p>
-                        <p>Género: {song.genre}</p>
-                      </div>
-                      <div className="col-span-2 flex justify-between items-center">
-                        <a
-                          href={song.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500"
-                        >
-                          <Headphones />
-                        </a>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveSong(song.id)}
-                          className="ml-4 px-2 py-1 bg-red-600 text-white rounded-lg"
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
             ) : (
               <p>No has añadido canciones aún.</p>
@@ -216,7 +234,7 @@ const CreatePlaylist = () => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

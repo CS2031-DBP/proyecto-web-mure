@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { editProfile } from "../services/profile/editProfile";
 import { useNavigate } from "react-router-dom";
+import { motion } from 'framer-motion';
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -48,53 +49,65 @@ const Edit = () => {
   };
 
   return (
-    <div>
-      {/* Título de la página de edición de perfil */}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <h1>Editar Perfil</h1>
-      {/* Botón para navegar de regreso al perfil del usuario */}
       <button onClick={() => navigate("/profile")}>Mi Perfil</button>
-      {/* Formulario para editar el perfil del usuario */}
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Nombre</label>
-        <input
+        <motion.input
           type="text"
           id="name"
           name="name"
           value={data.name}
           onChange={handleChange}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         />
 
         <label htmlFor="password">Contraseña</label>
-        <input
+        <motion.input
           type="password"
           id="password"
           name="password"
           value={data.password}
           onChange={handleChange}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         />
 
         <label htmlFor="email">Correo Electrónico</label>
-        <input
+        <motion.input
           type="email"
           id="email"
           name="email"
           value={data.email}
           onChange={handleChange}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         />
 
         <label htmlFor="profileImage">Imagen de Perfil</label>
-        <input
+        <motion.input
           type="text"
           id="profileImage"
           name="profileImage"
           value={data.profileImage}
           onChange={handleChange}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         />
 
-        {/* Botón para guardar los cambios del perfil */}
         <button type="submit">Guardar Cambios</button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

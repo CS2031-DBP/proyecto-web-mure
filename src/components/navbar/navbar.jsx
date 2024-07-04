@@ -2,26 +2,29 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from '../../img/Logo_Fondo-removebg-preview.png';
 import { FaHome, FaMusic, FaPlusSquare, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { motion } from "framer-motion";
 
-// Componente Navbar para la navegación principal de la aplicación
+// Variantes para las animaciones de entrada y salida
+const navbarVariants = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 const Navbar = () => {
-  const navigate = useNavigate(); // Hook de navegación para redirigir a otras páginas
-  const location = useLocation(); // Hook para obtener la ubicación actual
+  const navigate = useNavigate(); 
+  const location = useLocation(); 
 
-  // Función para manejar el cierre de sesión
   const handleLogout = () => {
-    navigate("/auth/login");
-    localStorage.removeItem("token"); // Elimina el token de autenticación del almacenamiento local
+    navigate("/auth/login"); 
+    localStorage.removeItem("token"); 
   };
 
-  // Función para obtener la clase del botón basado en la ubicación actual
   const getButtonClass = (path) => {
     return location.pathname === path
-      ? "bg-color2 shadow-inner" // Clase para el botón activo
-      : "hover:bg-color2"; // Clase para el botón inactivo
+      ? "bg-color2 shadow-inner"
+      : "hover:bg-color2";
   };
 
-  // Función para obtener el nombre de la página actual
   const getCurrentPage = () => {
     switch (location.pathname) {
       case "/dashboard":
@@ -37,16 +40,19 @@ const Navbar = () => {
     }
   };
 
-  // Verifica si el usuario está autenticado
   if (localStorage.getItem("token") === null) {
-    return <div></div>; // Si no está autenticado, no muestra la navbar
+    return <div></div>; 
   } else {
     return (
       <div className="w-full">
-        <nav className="fixed top-0 left-0 right-0 bg-gradient-to-t from-gradient1 via-gradient2 to-gradient5 text-white shadow-lg z-50 rounded-b-3xl">
+        <motion.nav
+          className="fixed top-0 left-0 right-0 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient5 text-white shadow-lg z-50 rounded-b-3xl"
+          variants={navbarVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="container mx-auto flex justify-between items-center px-4 py-2">
             <div className="flex items-center space-x-4">
-              {/* Botón para navegar al Dashboard */}
               <button
                 onClick={() => navigate("/dashboard")}
                 className={`focus:outline-none p-2 rounded ${getButtonClass("/dashboard")}`}
@@ -54,7 +60,6 @@ const Navbar = () => {
               >
                 <FaHome className="text-2xl" />
               </button>
-              {/* Botón para navegar a la lista de canciones */}
               <button
                 onClick={() => navigate("/songs")}
                 className={`focus:outline-none p-2 rounded ${getButtonClass("/songs")}`}
@@ -62,7 +67,6 @@ const Navbar = () => {
               >
                 <FaMusic className="text-2xl" />
               </button>
-              {/* Botón para crear un nuevo post */}
               <button
                 onClick={() => navigate("/post/create")}
                 className={`focus:outline-none p-2 rounded ${getButtonClass("/post/create")}`}
@@ -76,7 +80,6 @@ const Navbar = () => {
               <div className="text-lg font-bold">{`Mure - ${getCurrentPage()}`}</div>
             </div>
             <div className="flex items-center space-x-4">
-              {/* Botón para navegar al perfil del usuario */}
               <button
                 onClick={() => navigate("/profile")}
                 className={`focus:outline-none p-2 rounded ${getButtonClass("/profile")}`}
@@ -84,7 +87,6 @@ const Navbar = () => {
               >
                 <FaUser className="text-2xl" />
               </button>
-              {/* Botón para cerrar sesión */}
               <button
                 onClick={handleLogout}
                 className="focus:outline-none p-2 rounded hover:bg-color2"
@@ -94,8 +96,7 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-        </nav>
-        {/* Espacio para empujar el contenido hacia abajo y evitar que se cubra con la navbar */}
+        </motion.nav>
         <div className="h-16"></div>
       </div>
     );

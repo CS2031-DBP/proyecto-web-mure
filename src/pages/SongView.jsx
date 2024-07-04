@@ -3,6 +3,7 @@ import { fetchSongs } from '../services/songs/getAllSongs';
 import Song from '../components/songs/Song';
 import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const SongView = () => {
     const [songs, setSongs] = useState([]);
@@ -64,7 +65,12 @@ const SongView = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center relative">
+        <motion.div
+            className="flex flex-col items-center justify-center relative"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <h1 className="text-3xl font-bold text-center mb-6 text-black">Songs</h1>
             <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
@@ -90,7 +96,7 @@ const SongView = () => {
                     </svg>
                 </button>
             )}
-        </div>
+        </motion.div>
     );
 };
 
