@@ -1,45 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getPlaylistById } from '../services/playlists/getPlaylistById';
-import Playlist from '../components/playlist/Playlist';
-import SearchInput from '../components/search/SearchInput';
-import SearchResults from '../components/search/SearchResults';
-import { searchSong } from '../services/songs/searchSong';
-import { addSongToPlaylist } from '../services/playlists/addSongToPlaylist';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getPlaylistById } from "../services/playlists/getPlaylistById";
+import Playlist from "../components/playlist/Playlist";
+import SearchInput from "../components/search/SearchInput";
+import SearchResults from "../components/search/SearchResults";
+import { searchSong } from "../services/songs/searchSong";
+import { addSongToPlaylist } from "../services/playlists/addSongToPlaylist";
 
 const EditPlaylist = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const [playlist, setPlaylist] = useState(null);
-  const [songSearchTerm, setSongSearchTerm] = useState('');
-  const [songSearchResults, setSongSearchResults] = useState([]);
-  const [error, setError] = useState('');
-  const [fetchError, setFetchError] = useState('');
+  const { id } = useParams(); // Obtiene el ID de la playlist desde los parámetros de la URL
+  const [playlist, setPlaylist] = useState(null); // Estado para almacenar la información de la playlist
+  const [songSearchTerm, setSongSearchTerm] = useState(""); // Estado para el término de búsqueda de canciones
+  const [songSearchResults, setSongSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de canciones
+  const [error, setError] = useState(""); // Estado para manejar errores
+  const [fetchError, setFetchError] = useState(""); // Estado para manejar errores de fetch
 
+  // Función para obtener los datos de la playlist por ID
   const fetchPlaylist = async () => {
     try {
       const response = await getPlaylistById(id);
       if (response.status === 200) {
         setPlaylist(response.data);
-        setFetchError('');
+        setFetchError("");
       } else {
-        setFetchError('Failed to fetch playlist data.');
+        setFetchError("Failed to fetch playlist data.");
       }
     } catch (err) {
-      setFetchError('Failed to fetch playlist data.');
+      setFetchError("Failed to fetch playlist data.");
     }
   };
 
+  // useEffect para obtener los datos de la playlist cuando el componente se monta o cambia el ID
   useEffect(() => {
     fetchPlaylist();
   }, [id]);
 
+  // Maneja los cambios en el término de búsqueda de canciones
   const handleSongSearchTermChange = (e) => {
     setSongSearchTerm(e.target.value);
   };
 
+  // Maneja la búsqueda de canciones
   const handleSearch = async () => {
-    setError('');
+    setError("");
     try {
       const results = await searchSong(songSearchTerm);
       if (results.status === 200) {
@@ -47,31 +51,34 @@ const EditPlaylist = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError('No se han encontrado canciones con ese título :(');
+        setError("No se han encontrado canciones con ese título :(");
         setSongSearchResults([]);
       } else {
-        setError('Error al buscar canciones.');
+        setError("Error al buscar canciones.");
       }
     }
   };
 
+  // Maneja la adición de una canción a la playlist
   const handleAdd = async (songId) => {
     try {
       await addSongToPlaylist(playlist.id, songId);
-      fetchPlaylist();
+      fetchPlaylist(); // Actualiza la playlist después de añadir la canción
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        setError('La canción ya está en la playlist');
+        setError("La canción ya está en la playlist");
       } else {
-        setError('Error al añadir la canción a la playlist.');
+        setError("Error al añadir la canción a la playlist.");
       }
     }
   };
 
+  // Muestra un mensaje de error si ocurre un error al obtener la playlist
   if (fetchError) {
     return <p>{fetchError}</p>;
   }
 
+  // Muestra un mensaje de carga mientras se obtienen los datos de la playlist
   if (!playlist) {
     return <p>Loading...</p>;
   }
@@ -95,7 +102,7 @@ const EditPlaylist = () => {
         />
         <button
           className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg"
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate("/profile")}
         >
           Guardar Cambios
         </button>
