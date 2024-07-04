@@ -4,11 +4,13 @@ import HeadsetOff from "@mui/icons-material/HeadsetOff";
 
 // Componente MusicPost que recibe props: post
 const MusicPost = ({ post }) => {
+  const { song, album } = post;
+
   return (
     <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-sm w-full">
-      {post.songCoverUrl || post.albumCoverUrl ? (
+      {song?.coverUrl || album?.coverUrl ? (
         <img
-          src={post.songCoverUrl || post.albumCoverUrl}
+          src={song?.coverUrl || album?.coverUrl}
           alt="cover"
           className="w-24 h-auto rounded"
         />
@@ -17,17 +19,27 @@ const MusicPost = ({ post }) => {
           No Image
         </div>
       )}
-      <div className="flex flex-col justify-between text-black flex-1">
-        {post.songTitle ? (
-          <p className="font-semibold">Canción: {post.songTitle}</p>
-        ) : post.albumTitle ? (
-          <p className="font-semibold">Álbum: {post.albumTitle}</p>
+      <div className="flex-1 flex flex-col justify-between text-black">
+        {song ? (
+          <>
+            <p className="font-semibold">Canción: {song.title}</p>
+            <p>Artista: {song.artist[0].name}</p>
+            <p>Género: {song.genre}</p>
+            <p>Duración: {song.duration}</p>
+          </>
+        ) : album ? (
+          <>
+            <p className="font-semibold">Álbum: {album.title}</p>
+            <p>Artista: {album.artist}</p>
+            <p>Duración: {album.duration}</p>
+            <p>Canciones: {album.songs.join(", ")}</p>
+          </>
         ) : (
           <p className="font-semibold">Sin Título</p>
         )}
       </div>
-      {post.songUrl || post.albumUrl ? (
-        <a href={post.songUrl || post.albumUrl} target="_blank" rel="noopener noreferrer">
+      {song?.url || album?.url ? (
+        <a href={song?.url || album?.url} target="_blank" rel="noopener noreferrer">
           <Headphones className="text-lg text-black" />
         </a>
       ) : (

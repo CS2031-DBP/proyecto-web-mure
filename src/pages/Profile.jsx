@@ -71,7 +71,7 @@ const Profile = () => {
               <p className="text-gray-400">No has hecho ningún post aún</p>
             ) : (
               // Mapea y muestra los posts del usuario
-              myposts.map((post) => (
+              myposts.slice(0, 10).map((post) => (
                 <Post
                   key={post.id}
                   post={post}

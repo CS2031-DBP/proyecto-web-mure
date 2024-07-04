@@ -5,6 +5,7 @@ import { likePost } from "../../services/posts/likePost";
 import { dislikePost } from "../../services/posts/dislikePost";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import moment from "moment";
 
 // Componente Post que recibe props: post, currUserName, currId y ref
 const Post = forwardRef(({ post, currUserName, currId }, ref) => {
@@ -55,7 +56,7 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
       <div className="flex mb-4">
         <div className="flex flex-col items-center mr-4">
           <img
-            src={post.profile_image}
+            src={post.profileImage}
             alt="profile"
             className="w-16 h-16 rounded-full mb-2"
           />
@@ -66,15 +67,20 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
           >
             @{post.owner}
           </a>
+          <p className="text-sm text-gray-500">
+            {moment(post.createdAt).format("LLL")}
+          </p>
         </div>
         <div className="flex-1">
           <MusicPost post={post} />
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <p className="text-black mb-4 mt-2 flex-grow text-left">{post.description}</p>
+        <p className="text-black mb-4 mt-2 flex-grow text-left">
+          {post.description}
+        </p>
         <div className="flex items-center">
-          <p className="text-black mx-2">Likes: {likes}  </p>
+          <p className="text-black mx-2">Likes: {likes}</p>
           <button
             onClick={handleLikeClick}
             className={`flex items-center justify-center w-8 h-8 rounded-full ${
