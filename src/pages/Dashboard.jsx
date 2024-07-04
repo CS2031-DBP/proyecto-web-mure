@@ -78,7 +78,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col items-center justify-center ">
       {/* Contenedor principal con scrollbar oculto */}
-      <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
+      <div className="hide-scrollbar overflow-auto w-100px  h-[calc(100vh-150px)]">
         <ul>
           {/* Mapeo de los posts */}
           {posts.map((post, index) => {
@@ -106,10 +106,11 @@ const Dashboard = () => {
             }
           })}
         </ul>
+              {/* Mensajes de carga y fin de posts */}
+        {isLoading && <p className="text-center mt-4">Loading...</p>}
+        {!hasMore && <p className="text-center mt-4">No more posts</p>}
       </div>
-      {/* Mensajes de carga y fin de posts */}
-      {isLoading && <p className="text-center mt-4">Loading...</p>}
-      {!hasMore && <p className="text-center mt-4">No more posts</p>}
+
     </div>
   );
 };

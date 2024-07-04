@@ -10,9 +10,8 @@ const Navbar = () => {
 
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
-    navigate("/auth/login"); 
+    navigate("/auth/login");
     localStorage.removeItem("token"); // Elimina el token de autenticación del almacenamiento local
-// Redirige a la página de login
   };
 
   // Función para obtener la clase del botón basado en la ubicación actual
@@ -44,7 +43,7 @@ const Navbar = () => {
   } else {
     return (
       <div className="w-full">
-        <nav className="fixed top-0 left-0 right-0 bg-color1 text-white shadow-lg z-50 rounded-b-3xl">
+        <nav className="fixed top-0 left-0 right-0 bg-gradient-to-t from-gradient1 via-gradient2 to-gradient5 text-white shadow-lg z-50 rounded-b-3xl">
           <div className="container mx-auto flex justify-between items-center px-4 py-2">
             <div className="flex items-center space-x-4">
               {/* Botón para navegar al Dashboard */}
