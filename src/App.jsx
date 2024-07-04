@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <main>
+
         <Routes>
           <Route path="/" element={<Navigate to="/auth/login"/>} />
           {localStorage.getItem('token') ? (
@@ -44,7 +44,7 @@ function App() {
           <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
           <Route path="*" element={<div>Not Found</div>} />
         </Routes>
-      </main>
+
     </Router>
   )
 }
