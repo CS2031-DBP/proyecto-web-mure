@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Post from '../components/post/Post';
 import { fetchPosts } from '../services/posts/getAllPosts';
-import {fetchCurrentUser} from '../services/profile/getUserInfo';
+import { fetchCurrentUser } from '../services/profile/getUserInfo';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -12,7 +12,7 @@ const Dashboard = () => {
     const [currUserName, setCurrUserName] = useState('');
     const [currId, setCurrId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true); 
+    const [hasMore, setHasMore] = useState(true);
     const observer = useRef();
 
     const loadPosts = async () => {
@@ -24,7 +24,7 @@ const Dashboard = () => {
                 setPosts((prevPosts) => [...prevPosts, ...res.data.content]);
                 setPage((prevPage) => prevPage + 1);
                 if (res.data.content.length === 0) {
-                    setHasMore(false); 
+                    setHasMore(false);
                 }
             }
         } catch (error) {
@@ -42,7 +42,7 @@ const Dashboard = () => {
         } catch (error) {
 
         }
-    }
+    };
 
     useEffect(() => {
         fetchUserName();
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
     const lastPostElementRef = useCallback((node) => {
         if (isLoading) return;
-        if (observer.current) observer.current.disconnect();
+        if ( observer.current ) observer.current.disconnect();
         observer.current = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && hasMore) {
                 loadPosts();
@@ -67,26 +67,23 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Posts</h1>
-            <button onClick={() => console.log(currUserName)}>Depurar</button>
-            <button onClick={() => navigate('/profile')}>Mi Perfil</button>
-            <button onClick={() => navigate('/songs')}>Lista de Canciones</button>
-            <button onClick={() => navigate('/post/create')}>Crear Post</button>
+        <div className="flex flex-col items-center justify-center ">
 
-            <ul>
-                {posts.map((post, index) => {
-                    if (posts.length === index + 1) {
-                        return <Post ref={lastPostElementRef} key={post.id} post={post} currUserName={currUserName} currId ={currId}/>;
-                    } else {
-                        return <Post key={post.id} post={post} currUserName={currUserName} currId ={currId}/>;
-                    }
-                })}
-            </ul>
-            {isLoading && <p>Loading...</p>}
-            {!hasMore && <p>No more posts</p>}
+            <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
+                <ul>
+                    {posts.map((post, index) => {
+                        if (posts.length === index + 1) {
+                            return <Post ref={lastPostElementRef} key={post.id} post={post} currUserName={currUserName} currId={currId} />;
+                        } else {
+                            return <Post key={post.id} post={post} currUserName={currUserName} currId={currId} />;
+                        }
+                    })}
+                </ul>
+            </div>
+            {isLoading && <p className="text-center mt-4">Loading...</p>}
+            {!hasMore && <p className="text-center mt-4">No more posts</p>}
         </div>
     );
-}
+};
 
 export default Dashboard;

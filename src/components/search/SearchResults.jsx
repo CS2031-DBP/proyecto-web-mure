@@ -9,8 +9,8 @@ const SearchResults = ({ results, handleAdd, type }) => {
                 {type === 'artist' ? (
                     <>
                         <p className="font-bold">Artista: {result.name}</p>
-                        <p>Algunas canciones: {result.songTitles ? result.songTitles.slice(0, 4).join(', ') : 'No songs available'}</p>
-                        <p>Verificado?: {result.verified ? 'Yes' : 'No'}</p>
+                        <p>Algunas canciones: {result.songTitles ? result.songTitles.slice(0, 2).join(', ') : 'No songs available'}</p>
+                        <p>Verificado?: {result.verified ? 'Sí' : 'No'}</p>
                     </>
                 ) : (
                     <>

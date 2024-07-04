@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { createPost } from '../services/posts/createPost';
 import { fetchCurrentUser } from '../services/profile/getUserInfo';
+import { searchSongById } from '../services/songs/searchSongById';
 import { searchSong } from '../services/songs/searchSong';
 import { searchAlbum } from '../services/album/searchAlbum';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SearchInput from '../components/search/SearchInput';
 import SearchResults from '../components/search/SearchResults';
 
 const CreatePost = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const initialSongId = location.state?.songId || '';
+    
     const [data, setData] = useState({
         userId: '',
-        songId: '',
+        songId: initialSongId,
         albumId: '',
         description: '',
         imageUrl: '',
@@ -24,6 +28,63 @@ const CreatePost = () => {
     const [albumSearchTerm, setAlbumSearchTerm] = useState('');
     const [songSearchResults, setSongSearchResults] = useState([]);
     const [albumSearchResults, setAlbumSearchResults] = useState([]);
+
+    useEffect(() => {
+        const getId = async () => {
+            try {
+                const id = await fetchCurrentUser();
+                setData((prevData) => ({ ...prevData, userId: id.data.id }));
+            } catch (error) {
+                console.error('Error getting id:', error);
+            }
+        };
+
+        const fetchSongDetails = async (songId) => {
+            try {
+                const result = await searchSongById(songId);
+                if (result.status === 200) {
+                    setSelectedItem({ ...result.data, type: 'song' });
+                }
+            } catch (error) {
+                console.error('Error fetching song details:', error);
+            }
+        };
+
+        getId();
+        if (initialSongId) {
+            fetchSongDetails(initialSongId);
+        }
+    }, [initialSongId]);
+
+    useEffect(() => {
+        if (data.songId) {
+            fetchSongDetails(data.songId);
+        } else if (data.albumId) {
+            fetchAlbumDetails(data.albumId);
+        }
+    }, [data.songId, data.albumId]);
+
+    const fetchSongDetails = async (songId) => {
+        try {
+            const result = await searchSongById(songId);
+            if (result.status === 200) {
+                setSelectedItem({ ...result.data, type: 'song' });
+            }
+        } catch (error) {
+            console.error('Error fetching song details:', error);
+        }
+    };
+
+    const fetchAlbumDetails = async (albumId) => {
+        try {
+            const result = await searchAlbum(albumId);
+            if (result.status === 200) {
+                setSelectedItem({ ...result.data, type: 'album' });
+            }
+        } catch (error) {
+            console.error('Error fetching album details:', error);
+        }
+    };
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
@@ -70,7 +131,6 @@ const CreatePost = () => {
         try {
             if (type === 'album') {
                 const results = await searchAlbum(albumSearchTerm);
-                console.log(results);
                 if (results.status === 200) {
                     setAlbumSearchResults([results.data]);
                 }
@@ -102,18 +162,6 @@ const CreatePost = () => {
         setData((prevData) => ({ ...prevData, songId: '', albumId: '' }));
         setSelectedItem(null);
     };
-
-    useEffect(() => {
-        const getId = async () => {
-            try {
-                const id = await fetchCurrentUser();
-                setData((prevData) => ({ ...prevData, userId: id.data.id }));
-            } catch (error) {
-                console.error('Error getting id:', error);
-            }
-        };
-        getId();
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -237,4 +285,4 @@ const CreatePost = () => {
     );
 };
 
-export default CreatePost
+export default CreatePost;

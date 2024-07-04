@@ -3,7 +3,7 @@ import React from 'react';
 const SearchInput = ({ searchTerm, handleSearchTermChange, handleSearch, type }) => {
     return (
         <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Buscar {type === 'song' ? 'Canción' : 'Álbum'}</label>
+            <label className="block text-sm font-medium mb-1">Buscar {type === 'song' ? 'Canción' : type === 'album' ? 'Álbum' : 'Artista'}</label>
             <div className="flex">
                 <input
                     type="text"

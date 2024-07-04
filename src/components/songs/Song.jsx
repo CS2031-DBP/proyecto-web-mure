@@ -1,12 +1,14 @@
 import React, { forwardRef } from 'react';
 import { deleteSong } from '../../services/songs/deleteSong';
 import Headphones from '@mui/icons-material/Headphones';
+import { useNavigate } from 'react-router-dom';
 
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
+    const navigate = useNavigate();
+
     const handleDelete = async (id) => {
         try {
             const res = await deleteSong(id);
-
             if (res.status === 204) {
                 onDelete(id);
             }
@@ -15,24 +17,38 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
         }
     };
 
+    const handleCreatePost = () => {
+        navigate('/post/create', { state: { songId: song.id } });
+    };
+
     return (
         <div ref={ref} className="border rounded-2xl shadow-lg bg-white text-black w-80 flex flex-col justify-between" style={{ minHeight: '450px' }}>
-            <div>
-                <h2 className="text-xl font-bold mb-2 flex flex-col items-center justify-center text-center pt-5">
-                    {song.title}
-                    {song.link && (
-                        <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                            <Headphones className="inline-block" />
-                        </a>
-                    )}
-                </h2>
-                <p className="mb-1"><span className="font-semibold">Artista:</span> {song.artistsNames.join(', ')}</p>
-                {song.albumTitle && <p className="mb-1"><span className="font-semibold">Album:</span> {song.albumTitle}</p>}
-                <p className="mb-1"><span className="font-semibold">Duración:</span> {song.duration}</p>
-                <p className="mb-1"><span className="font-semibold">Género:</span> {song.genre}</p>
-                <p className="mb-1"><span className="font-semibold">Likes:</span> {song.likes}</p>
-                <p className="mb-1"><span className="font-semibold">Número de reproducciones:</span> {song.timesPlayed}</p>
-                <p className="mb-1"><span className="font-semibold">Fecha de Lanzamiento:</span> {song.releaseDate}</p>
+            <div className="relative">
+                <div className="flex justify-between items-center px-4 pt-4">
+                    <h2 className="text-xl font-bold flex items-center">
+                        {song.title}
+                        {song.link && (
+                            <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 ml-2">
+                                <Headphones className="inline-block" />
+                            </a>
+                        )}
+                    </h2>
+                    <button
+                        onClick={handleCreatePost}
+                        className="bg-green-500 text-white px-3 py-1 rounded-full"
+                    >
+                        Post
+                    </button>
+                </div>
+                <div className="px-5">
+                    <p className="mb-1"><span className="font-semibold">Artista:</span> {song.artistsNames.join(', ')}</p>
+                    {song.albumTitle && <p className="mb-1"><span className="font-semibold">Album:</span> {song.albumTitle}</p>}
+                    <p className="mb-1"><span className="font-semibold">Duración:</span> {song.duration}</p>
+                    <p className="mb-1"><span className="font-semibold">Género:</span> {song.genre}</p>
+                    <p className="mb-1"><span className="font-semibold">Likes:</span> {song.likes}</p>
+                    <p className="mb-1"><span className="font-semibold">Número de reproducciones:</span> {song.timesPlayed}</p>
+                    <p className="mb-1"><span className="font-semibold">Fecha de Lanzamiento:</span> {song.releaseDate}</p>
+                </div>
             </div>
             {song.coverImage ? (
                 <img src={song.coverImage} alt={`${song.title} cover`} className="w-full h-64 object-cover rounded-lg mb-2 px-5 pt-5" />
