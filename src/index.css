@@ -27,11 +27,12 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #3b3b3b, #2b2a2a , #1e1e1e, #131313, #0f0f0f); /* Degradado de gris oscuro a negro */
+  background: linear-gradient(to bottom, #fffdf0, #faf8e5 , #f4f2da, #eeedd0, #e8e8c5); /* Degradado de gris oscuro a negro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
 }
 
 h1 {
@@ -51,8 +52,6 @@ button {
   transition: border-color 0.25s;
 }
 
-
-
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -69,4 +68,23 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#scroll-container {
+  width: 90%;
+  max-width: 1200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }

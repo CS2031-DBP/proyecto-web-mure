@@ -18,6 +18,17 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #db7b7b, #28b02a, #3c849f, #7d2222, #b0349e);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
