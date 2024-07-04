@@ -10,8 +10,9 @@ const Navbar = () => {
 
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
+    navigate("/auth/login"); 
     localStorage.removeItem("token"); // Elimina el token de autenticación del almacenamiento local
-    navigate("/auth/login"); // Redirige a la página de login
+// Redirige a la página de login
   };
 
   // Función para obtener la clase del botón basado en la ubicación actual
