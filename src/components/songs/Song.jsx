@@ -56,11 +56,11 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
         <div className="px-5">
           <p className="mb-1">
             <span className="font-semibold">Artista:</span>{" "}
-            {song.artistsNames.join(", ")}
+            {song.artistsNames ? song.artistsNames.join(", ") : "Desconocido"}
           </p>
           {song.albumTitle && (
             <p className="mb-1">
-              <span className="font-semibold">Album:</span> {song.albumTitle}
+              <span className="font-semibold">Álbum:</span> {song.albumTitle}
             </p>
           )}
           <p className="mb-1">

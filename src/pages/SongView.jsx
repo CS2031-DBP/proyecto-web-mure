@@ -1,31 +1,53 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { fetchSongs } from '../services/songs/getAllSongs';
+import { searchSongsByTitle, searchSongsByGenre, searchSongsByArtistName } from '../services/songs/searchSongBy';
 import Song from '../components/songs/Song';
 import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import SearchInput from '../components/search/SearchInput';
 
 const SongView = () => {
     const [songs, setSongs] = useState([]);
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(10);
+    const [size] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [role, setRole] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchType, setSearchType] = useState('title');
     const observer = useRef();
     const navigate = useNavigate();
 
-    const loadSongs = async () => {
-        if (isLoading || !hasMore) return;
+    const loadSongs = async (isSearch = false, resetPage = false) => {
+        if (isLoading || (!hasMore && !resetPage)) return;
         setIsLoading(true);
         try {
-            const res = await fetchSongs(page, size);
-            if (res.status === 200) {
-                setSongs((prevSongs) => [...prevSongs, ...res.data.content]);
-                setPage((prevPage) => prevPage + 1);
-                if (res.data.content.length === 0) {
-                    setHasMore(false);
+            let res;
+            if (isSearch) {
+                switch (searchType) {
+                    case 'title':
+                        res = await searchSongsByTitle(searchTerm, resetPage ? 0 : page, size);
+                        break;
+                    case 'genre':
+                        res = await searchSongsByGenre(searchTerm, resetPage ? 0 : page, size);
+                        break;
+                    case 'artistName':
+                        res = await searchSongsByArtistName(searchTerm, resetPage ? 0 : page, size);
+                        break;
+                    default:
+                        res = await fetchSongs(resetPage ? 0 : page, size);
+                        break;
                 }
+            } else {
+                res = await fetchSongs(resetPage ? 0 : page, size);
+            }
+
+            if (res.status === 200) {
+                const newSongs = resetPage ? res.data.content : [...songs, ...res.data.content];
+                setSongs(newSongs);
+                setPage(resetPage ? 1 : page + 1);
+                setHasMore(res.data.content.length === size);
             }
         } catch (error) {
             console.error(error);
@@ -44,7 +66,7 @@ const SongView = () => {
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && hasMore) {
-                loadSongs();
+                loadSongs(searchTerm !== '', false);
             }
         });
         if (node) observer.current.observe(node);
@@ -64,6 +86,13 @@ const SongView = () => {
         navigate('/addsong');
     };
 
+    const handleSearch = async () => {
+        setPage(0);
+        setHasMore(true);
+        setSongs([]);
+        await loadSongs(true, true);
+    };
+
     return (
         <motion.div
             className="flex flex-col items-center justify-center relative"
@@ -71,7 +100,20 @@ const SongView = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <h1 className="text-3xl font-bold text-center mb-6 text-black">Songs</h1>
+            <div className="flex justify-center mb-4">
+                <SearchInput
+                    searchTerm={searchTerm}
+                    handleSearchTermChange={(e) => setSearchTerm(e.target.value)}
+                    handleSearch={handleSearch}
+                    searchType={searchType}
+                    setSearchType={setSearchType}
+                    options={[
+                        { value: 'title', label: 'Title' },
+                        { value: 'genre', label: 'Genre' },
+                        { value: 'artistName', label: 'Artist Name' },
+                    ]}
+                />
+            </div>
             <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                     {songs.map((song, index) => {
