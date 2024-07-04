@@ -72,12 +72,17 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <p className="text-black mb-4 flex-grow text-left">{post.description}</p>
+        <p className="text-black mb-4 mt-2 flex-grow text-left">{post.description}</p>
         <div className="flex items-center">
-          <button onClick={handleLikeClick} className="flex items-center mr-2">
+          <p className="text-black mx-2">Likes: {likes}  </p>
+          <button
+            onClick={handleLikeClick}
+            className={`flex items-center justify-center w-8 h-8 rounded-full ${
+              liked ? "bg-red-500 text-white" : " text-black"
+            }`}
+          >
             {liked ? <Favorite /> : <FavoriteBorder />}
           </button>
-          <p>{likes}</p>
         </div>
       </div>
     </div>
