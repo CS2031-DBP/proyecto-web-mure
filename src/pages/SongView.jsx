@@ -4,10 +4,10 @@ import { searchSongsByTitle, searchSongsByGenre, searchSongsByArtistName } from 
 import Song from '../components/songs/Song';
 import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SearchInput from '../components/search/SearchInput';
 
-const SongView = () => {
+const SongView = ({ showSearchBar }) => {
     const [songs, setSongs] = useState([]);
     const [page, setPage] = useState(0);
     const [size] = useState(10);
@@ -98,22 +98,33 @@ const SongView = () => {
             className="flex flex-col items-center justify-center relative"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="flex justify-center mb-4">
-                <SearchInput
-                    searchTerm={searchTerm}
-                    handleSearchTermChange={(e) => setSearchTerm(e.target.value)}
-                    handleSearch={handleSearch}
-                    searchType={searchType}
-                    setSearchType={setSearchType}
-                    options={[
-                        { value: 'title', label: 'Title' },
-                        { value: 'genre', label: 'Genre' },
-                        { value: 'artistName', label: 'Artist Name' },
-                    ]}
-                />
-            </div>
+            <AnimatePresence>
+                {showSearchBar && (
+                    <motion.div
+                        className="flex justify-center mb-4"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <SearchInput
+                            searchTerm={searchTerm}
+                            handleSearchTermChange={(e) => setSearchTerm(e.target.value)}
+                            handleSearch={handleSearch}
+                            searchType={searchType}
+                            setSearchType={setSearchType}
+                            options={[
+                                { value: 'title', label: 'Title' },
+                                { value: 'genre', label: 'Genre' },
+                                { value: 'artistName', label: 'Artist Name' },
+                            ]}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                     {songs.map((song, index) => {

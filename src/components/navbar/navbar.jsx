@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from '../../img/Logo_Fondo-removebg-preview.png';
-import { FaHome, FaMusic, FaPlusSquare, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaHome, FaMusic, FaPlusSquare, FaSignOutAlt, FaUser, FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 // Variantes para las animaciones de entrada y salida
@@ -10,13 +10,21 @@ const navbarVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const Navbar = () => {
-  const navigate = useNavigate(); 
-  const location = useLocation(); 
+const Navbar = ({ onToggleSearchBar }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [showSearchBar, setShowSearchBar] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname !== "/songs") {
+      setShowSearchBar(false);
+      onToggleSearchBar(false);
+    }
+  }, [location.pathname, onToggleSearchBar]);
 
   const handleLogout = () => {
-    navigate("/auth/login"); 
-    localStorage.removeItem("token"); 
+    navigate("/auth/login");
+    localStorage.removeItem("token");
   };
 
   const getButtonClass = (path) => {
@@ -40,8 +48,14 @@ const Navbar = () => {
     }
   };
 
+  const handleToggleSearchBar = () => {
+    const newShowSearchBar = !showSearchBar;
+    setShowSearchBar(newShowSearchBar);
+    onToggleSearchBar(newShowSearchBar);
+  };
+
   if (localStorage.getItem("token") === null) {
-    return <div></div>; 
+    return <div></div>;
   } else {
     return (
       <div className="w-full">
@@ -80,6 +94,15 @@ const Navbar = () => {
               <div className="text-lg font-bold">{`Mure - ${getCurrentPage()}`}</div>
             </div>
             <div className="flex items-center space-x-4">
+              {location.pathname === "/songs" && (
+                <button
+                  onClick={handleToggleSearchBar}
+                  className="focus:outline-none p-2 rounded hover:bg-color2"
+                  title="Search"
+                >
+                  <FaSearch className="text-2xl" />
+                </button>
+              )}
               <button
                 onClick={() => navigate("/profile")}
                 className={`focus:outline-none p-2 rounded ${getButtonClass("/profile")}`}
