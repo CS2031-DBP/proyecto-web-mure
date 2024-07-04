@@ -21,6 +21,7 @@ const Dashboard = () => {
     setIsLoading(true);
     try {
       const res = await fetchPosts(page, size); // Llamada a la API para obtener los posts
+      console.log(res)
       if (res.status === 200) {
         setPosts((prevPosts) => [...prevPosts, ...res.data.content]); // Agrega los nuevos posts al estado
         setPage((prevPage) => prevPage + 1); // Incrementa el número de página

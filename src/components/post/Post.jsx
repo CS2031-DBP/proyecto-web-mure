@@ -5,7 +5,6 @@ import { likePost } from "../../services/posts/likePost";
 import { dislikePost } from "../../services/posts/dislikePost";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import "./postStyle.css";
 
 // Componente Post que recibe props: post, currUserName, currId y ref
 const Post = forwardRef(({ post, currUserName, currId }, ref) => {
@@ -33,11 +32,11 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
   const handleLikeClick = async () => {
     try {
       if (liked) {
-        const res = await dislikePost(post.id); // Llama a la API para hacer dislike al post
+        await dislikePost(post.id); // Llama a la API para hacer dislike al post
         setLikes(likes - 1);
         setLiked(false);
       } else {
-        const res = await likePost(post.id); // Llama a la API para hacer like al post
+        await likePost(post.id); // Llama a la API para hacer like al post
         setLikes(likes + 1);
         setLiked(true);
       }
@@ -46,31 +45,41 @@ const Post = forwardRef(({ post, currUserName, currId }, ref) => {
     }
   };
 
-  //todo hay que ver si podemos recuperar el link y la imagen de la canción, para pasárselo a MusicPost y que lo muestre
-
-  //todo hay que ver si es que podemos mostrar de forma correcta el tema del audio y la imagen en el post
-
-  //todo, hay que hacer que sea fijo el tamaño del post
-
   return (
     <div
       key={post.id}
-      className="border p-5 rounded-md shadow-lg bg-white mb-4"
+      className="border p-5 rounded-md shadow-lg bg-white mb-4 flex flex-col w-full max-w-screen-md mx-auto"
       ref={ref}
+      style={{ height: "250px" }}
     >
-      <MusicPost post={post} />
-      {post.owner === currUserName ? (
-        <div>{post.owner}</div>
-      ) : (
-        <button onClick={handleUserClick} className="text-blue-500">
-          @{post.owner}
-        </button>
-      )}
-      <p>{post.description}</p>
-      <p>Likes: {likes}</p>
-      <button onClick={handleLikeClick} className="flex items-center">
-        {liked ? <Favorite /> : <FavoriteBorder />}
-      </button>
+      <div className="flex mb-4">
+        <div className="flex flex-col items-center mr-4">
+          <img
+            src={post.profile_image}
+            alt="profile"
+            className="w-16 h-16 rounded-full mb-2"
+          />
+          <a
+            href="#"
+            onClick={handleUserClick}
+            className="text-blue-500 text-lg text-center"
+          >
+            @{post.owner}
+          </a>
+        </div>
+        <div className="flex-1">
+          <MusicPost post={post} />
+        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="text-black mb-4 flex-grow text-left">{post.description}</p>
+        <div className="flex items-center">
+          <button onClick={handleLikeClick} className="flex items-center mr-2">
+            {liked ? <Favorite /> : <FavoriteBorder />}
+          </button>
+          <p>{likes}</p>
+        </div>
+      </div>
     </div>
   );
 });
