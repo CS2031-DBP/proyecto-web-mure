@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { isPlaylistOwner } from "../../services/playlists/isOwner";
 import { deleteSongFromPlaylist } from "../../services/playlists/deleteSongFromPlaylist";
 import { deletePlaylist } from "../../services/playlists/deletePlaylist";
-import { searchSong } from "../../services/songs/searchSong";
+import { searchSongsByTitle } from "../../services/songs/searchSongBy";
 import Headphones from "@mui/icons-material/Headphones";
 
 // Componente Playlist que recibe props: playlist, edit, onUpdate
@@ -36,8 +36,9 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
       try {
         const details = await Promise.all(
           playlist.songsTitles.map(async (title) => {
-            const res = await searchSong(title);
-            return res.data;
+            const res = await searchSongsByTitle(title, 0, 1);
+
+            return res.data.content.at(0);
           })
         );
         setSongsDetails(details);
