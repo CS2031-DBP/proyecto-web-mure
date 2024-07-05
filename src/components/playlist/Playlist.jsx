@@ -36,9 +36,9 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
       try {
         const details = await Promise.all(
           playlist.songsTitles.map(async (title) => {
-            const res = await searchSongsByTitle(title, 0, 1);
+            const res = await searchSongsByTitle(title);
 
-            return res.data.content.at(0);
+            return res.data;
           })
         );
         setSongsDetails(details);

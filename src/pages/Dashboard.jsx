@@ -7,54 +7,50 @@ import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]); // Estado para almacenar los posts
-  const [page, setPage] = useState(0); // Estado para manejar la paginación
-  const [size, setSize] = useState(7); // Estado para definir el tamaño de la página
-  const [currUserName, setCurrUserName] = useState(""); // Estado para el nombre del usuario actual
-  const [currId, setCurrId] = useState(""); // Estado para el ID del usuario actual
-  const [isLoading, setIsLoading] = useState(false); // Estado para manejar el estado de carga
-  const [hasMore, setHasMore] = useState(true); // Estado para indicar si hay más posts por cargar
-  const observer = useRef(); // Referencia para el observador de intersección
+  const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(7);
+  const [currUserName, setCurrUserName] = useState("");
+  const [currId, setCurrId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
-  // Función para cargar los posts desde el servidor
   const loadPosts = async () => {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
     try {
-      const res = await fetchPosts(page, size); // Llamada a la API para obtener los posts
+      const res = await fetchPosts(page, size);
       if (res.status === 200) {
-        setPosts((prevPosts) => [...prevPosts, ...res.data.content]); // Agrega los nuevos posts al estado
-        setPage((prevPage) => prevPage + 1); // Incrementa el número de página
+        setPosts((prevPosts) => [...prevPosts, ...res.data.content]);
+        setPage((prevPage) => prevPage + 1);
         if (res.data.content.length === 0) {
-          setHasMore(false); // Si no hay más posts, actualiza el estado
+          setHasMore(false);
         }
       }
     } catch (error) {
-      console.error(error); // Manejo de errores
+      console.error(error);
     }
     setIsLoading(false);
   };
 
-  // Función para obtener el nombre del usuario actual
   const fetchUserName = async () => {
     try {
-      const res = await fetchCurrentUser(); // Llamada a la API para obtener la información del usuario
+      const res = await fetchCurrentUser();
       if (res.status === 200) {
-        setCurrUserName(res.data.name); // Actualiza el nombre del usuario en el estado
-        setCurrId(res.data.id); // Actualiza el ID del usuario en el estado
+        setCurrUserName(res.data.name);
+        setCurrId(res.data.id);
       }
     } catch (error) {
-      console.error(error); // Manejo de errores
+      console.error(error);
     }
   };
 
-  // Efecto para cargar los datos iniciales
   useEffect(() => {
     fetchUserName();
     loadPosts();
   }, []);
 
-  // Callback para manejar la observación del último elemento
   const lastPostElementRef = useCallback(
     (node) => {
       if (isLoading) return;
@@ -69,12 +65,15 @@ const Dashboard = () => {
     [isLoading, hasMore]
   );
 
-  // Efecto para limpiar el observador cuando el componente se desmonta
   useEffect(() => {
     return () => {
       if (observer.current) observer.current.disconnect();
     };
   }, []);
+
+  const handleDeletePost = (id) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+  };
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -92,6 +91,7 @@ const Dashboard = () => {
                   post={post}
                   currUserName={currUserName}
                   currId={currId}
+                  onDelete={handleDeletePost}
                 />
               );
             } else {
@@ -102,6 +102,7 @@ const Dashboard = () => {
                   post={post}
                   currUserName={currUserName}
                   currId={currId}
+                  onDelete={handleDeletePost}
                 />
               );
             }

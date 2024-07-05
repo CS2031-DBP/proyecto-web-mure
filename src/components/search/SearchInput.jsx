@@ -47,7 +47,7 @@ const SearchInput = ({
       />
       <button
         type="button"
-        onClick={handleSearch}
+        onClick={() => handleSearch(type)}
         className="px-4 py-2 bg-blue-600 text-white rounded-r-lg"
       >
         Buscar

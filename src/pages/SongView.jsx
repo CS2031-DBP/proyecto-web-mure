@@ -16,6 +16,7 @@ const SongView = ({ showSearchBar }) => {
     const [role, setRole] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchType, setSearchType] = useState('title');
+    const [noResults, setNoResults] = useState(false);
     const observer = useRef();
     const navigate = useNavigate();
 
@@ -27,8 +28,14 @@ const SongView = ({ showSearchBar }) => {
             if (isSearch) {
                 switch (searchType) {
                     case 'title':
-                        res = await searchSongsByTitle(searchTerm, resetPage ? 0 : page, size);
-                        break;
+                        res = await searchSongsByTitle(searchTerm);
+                        if (res.status === 200) {
+                            setSongs([res.data]);
+                            setHasMore(false); 
+                            setNoResults(res.data.length === 0);
+                        }
+                        setIsLoading(false);
+                        return;
                     case 'genre':
                         res = await searchSongsByGenre(searchTerm, resetPage ? 0 : page, size);
                         break;
@@ -48,9 +55,16 @@ const SongView = ({ showSearchBar }) => {
                 setSongs(newSongs);
                 setPage(resetPage ? 1 : page + 1);
                 setHasMore(res.data.content.length === size);
+                setNoResults(newSongs.length === 0);
             }
         } catch (error) {
-            console.error(error);
+            if (error.response && error.response.status === 404) {
+                setSongs([]);
+                setHasMore(false);
+                setNoResults(true);
+            } else {
+                console.error(error);
+            }
         }
         setIsLoading(false);
     };
@@ -98,46 +112,59 @@ const SongView = ({ showSearchBar }) => {
             className="flex flex-col items-center justify-center relative"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
+            exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.5 }}
         >
-            <AnimatePresence>
-                {showSearchBar && (
-                    <motion.div
-                        className="flex justify-center mb-4"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <SearchInput
-                            searchTerm={searchTerm}
-                            handleSearchTermChange={(e) => setSearchTerm(e.target.value)}
-                            handleSearch={handleSearch}
-                            searchType={searchType}
-                            setSearchType={setSearchType}
-                            options={[
-                                { value: 'title', label: 'Title' },
-                                { value: 'genre', label: 'Genre' },
-                                { value: 'artistName', label: 'Artist Name' },
-                            ]}
-                        />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {showSearchBar && (
+                <motion.div
+                    className="flex justify-center mb-4"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <SearchInput
+                        searchTerm={searchTerm}
+                        handleSearchTermChange={(e) => setSearchTerm(e.target.value)}
+                        handleSearch={handleSearch}
+                        searchType={searchType}
+                        setSearchType={setSearchType}
+                        options={[
+                            { value: 'title', label: 'Title' },
+                            { value: 'genre', label: 'Genre' },
+                            { value: 'artistName', label: 'Artist Name' },
+                        ]}
+                    />
+                </motion.div>
+            )}
             <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-                    {songs.map((song, index) => {
-                        if (songs.length === index + 1) {
-                            return <Song ref={lastSongElementRef} key={song.id} song={song} role={role} onDelete={handleDeleteSong} />;
-                        } else {
-                            return <Song key={song.id} song={song} role={role} onDelete={handleDeleteSong} />;
-                        }
-                    })}
-                </div>
+                {noResults && !isLoading && (
+                    <p className="text-center mt-4 text-spotify-black ">No se encontraron canciones con esas características</p>
+                )}
+                <AnimatePresence>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+                        {songs.map((song, index) => (
+                            <motion.div
+                                key={song.id}
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 50 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Song
+                                    ref={songs.length === index + 1 ? lastSongElementRef : null}
+                                    key={song.id}
+                                    song={song}
+                                    role={role}
+                                    onDelete={handleDeleteSong}
+                                />
+                            </motion.div>
+                        ))}
+                    </div>
+                </AnimatePresence>
             </div>
             {isLoading && <p className="text-center mt-4">Loading...</p>}
-            {!hasMore && <p className="text-center mt-4">No more songs</p>}
+            {!hasMore && !isLoading && songs.length > 0 && <p className="text-center mt-4 text-spotify-black">No hay más canciones</p>}
             {role === 'ROLE_ADMIN' && (
                 <button
                     onClick={handleAddSongClick}

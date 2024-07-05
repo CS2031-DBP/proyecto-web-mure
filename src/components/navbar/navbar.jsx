@@ -34,7 +34,16 @@ const Navbar = ({ onToggleSearchBar }) => {
   };
 
   const getCurrentPage = () => {
-    switch (location.pathname) {
+    const { pathname } = location;
+  
+    if (pathname.match(/^\/playlist\/edit\/\d+$/)) {
+      return "Edit Playlist";
+    }
+    else if(pathname.match(/^\/user\/\d+$/)){
+      return "User Profile";
+    }
+  
+    switch (pathname) {
       case "/dashboard":
         return "Dashboard";
       case "/songs":
@@ -43,10 +52,15 @@ const Navbar = ({ onToggleSearchBar }) => {
         return "Create Post";
       case "/profile":
         return "Profile";
+      case "/addsong":
+        return "Add Song";
+      case "/playlist/create":
+        return "Create Playlist";
       default:
         return "App";
     }
   };
+  
 
   const handleToggleSearchBar = () => {
     const newShowSearchBar = !showSearchBar;
