@@ -117,7 +117,7 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
                     <button
                       type="button"
                       onClick={() => handleDeleteClick(song.title)}
-                      className="px-2 py-1 bg-red-600 text-white rounded-lg"
+                      className="px-2 py-1 bg-red-600 text-white rounded-lg transition duration-300"
                     >
                       Eliminar
                     </button>
@@ -131,13 +131,13 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
       {isOwner && !edit && (
         <div className="mt-4">
           <button
-            className="px-4 py-2 bg-yellow-500 text-white rounded-lg mr-2"
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg mr-2 transition duration-300"
             onClick={handleEditClick}
           >
             Añadir/Quitar Canciones
           </button>
           <button
-            className="px-4 py-2 bg-red-600 text-white rounded-lg"
+            className="px-4 py-2 bg-red-600 text-white rounded-lg transition duration-300"
             onClick={handleDeletePlaylist}
           >
             Borrar Playlist

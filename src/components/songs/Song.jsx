@@ -48,7 +48,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
           </h2>
           <button
             onClick={handleCreatePost}
-            className="bg-green-500 text-white px-3 py-1 rounded-full"
+            className="bg-green-500 text-white px-3 py-1 rounded-full transition duration-300"
           >
             Post
           </button>
@@ -95,11 +95,11 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
       )}
       {role === "ROLE_ADMIN" && (
         <div className="flex justify-between mt-2 space-x-2 pb-5 px-5">
-          <button className="bg-yellow-500 text-white px-4 py-2 rounded-full">
+          <button className="bg-yellow-500 text-white px-4 py-2 rounded-full transition duration-300">
             Cambiar Imagen
           </button>
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded-full"
+            className="bg-red-500 text-white px-4 py-2 rounded-full transition duration-300"
             onClick={() => handleDelete(song.id)}
           >
             Eliminar Canción

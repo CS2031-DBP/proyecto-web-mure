@@ -73,7 +73,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
   return (
     <motion.div
       key={post.id}
-      className="border p-5 rounded-md shadow-lg bg-white mb-4 flex flex-col w-full max-w-screen-md mx-auto relative"
+      className="border p-5 rounded-md shadow-lg bg-white mb-4 flex flex-col w-screen max-w-screen-md mx-auto relative"
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
         <button
           type="button"
           onClick={handleDeleteClick}
-          className="absolute top-2 right-2 p-1"
+          className="absolute top-2 right-2 p-1 transition duration-300"
           title="Delete Post"
           style={{ top: '1rem', right: '1rem' }}
         >
@@ -93,11 +93,13 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
       )}
       <div className="flex mb-4">
         <div className="flex flex-col items-center mr-4">
-          <img
-            src={post.profileImage}
-            alt="profile"
-            className="w-16 h-16 rounded-full mb-2"
-          />
+          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-black mb-2">
+            <img
+              src={post.profileImage}
+              alt="profile"
+              className="object-cover w-full h-full"
+            />
+          </div>
           <a
             href="#"
             onClick={handleUserClick}

@@ -55,7 +55,7 @@ const Edit = () => {
       transition={{ duration: 0.5 }}
     >
       <h1>Editar Perfil</h1>
-      <button onClick={() => navigate("/profile")}>Mi Perfil</button>
+      <button onClick={() => navigate("/profile")} className="transition duration-300">Mi Perfil</button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Nombre</label>
         <motion.input

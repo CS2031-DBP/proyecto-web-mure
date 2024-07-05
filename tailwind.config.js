@@ -13,7 +13,7 @@ export default {
         'color2':'#C6466A',
         'color3':'#7A8841',
         'color4':'#3D502E',
-        'gradient1': '#c7486c', 
+        'gradient1': '#d3486c', 
         'gradient2': '#b94267', 
         'gradient3': '#aa3d62', 
         'gradient4': '#9c385c', 

@@ -4,7 +4,7 @@ import { login } from '../services/auth/auth';
 import logo from '..//img/Logo_Fondo-removebg-preview.png';
 import { motion } from 'framer-motion';
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
     const [data, setData] = useState({
         email: '',
@@ -24,7 +24,9 @@ const Login = () => {
             const res = await login(data);
             if (res.status === 200) {
                 localStorage.setItem('token', res.data.token);
+                setIsAuthenticated(true);
                 navigate('/dashboard');
+                console.log('Logged in successfully');
             }
         } catch (error) {
             console.error(error);
@@ -82,7 +84,7 @@ const Login = () => {
                 >
                     <button
                         type="submit"
-                        className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4"
+                        className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
                     >
                         Log In
                     </button>
@@ -95,7 +97,7 @@ const Login = () => {
                 transition={{ duration: 0.5, delay: 0.4 }}
             >
                 <span>Don't have an account? </span>
-                <a onClick={() => navigate('/auth/register')} className="font-medium hover:text-color2 text-white underline">
+                <a onClick={() => navigate('/auth/register')} className="font-medium hover:text-color2 text-white underline transition duration-300">
                     Sign up for Mure
                 </a>
             </motion.div>

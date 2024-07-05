@@ -210,7 +210,7 @@ const CreatePlaylist = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveSong(song.id)}
-                            className="ml-4 px-2 py-1 bg-red-600 text-white rounded-lg"
+                            className="ml-4 px-2 py-1 bg-red-600 text-white rounded-lg transition duration-300"
                           >
                             Eliminar
                           </button>
@@ -227,7 +227,7 @@ const CreatePlaylist = () => {
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg"
+              className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg transition duration-300"
             >
               Crear Playlist
             </button>

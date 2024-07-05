@@ -12,42 +12,58 @@ import UserProfile from './pages/UserProfile';
 import CreatePlaylist from './pages/CreatePlaylist';
 import EditPlaylist from './pages/EditPlaylist';
 import Navbar from './components/navbar/Navbar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from './components/footer/Footer';
+import NotFound from './pages/NotFound';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
   const handleToggleSearchBar = (show) => {
     setShowSearchBar(show);
   };
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem('token'));
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  console.log(isAuthenticated);
+
   return (
     <Router>
-      <Navbar onToggleSearchBar={handleToggleSearchBar} />
+      {isAuthenticated && <Navbar onToggleSearchBar={handleToggleSearchBar} setIsAuthenticated={setIsAuthenticated} />}
       <Routes>
-        <Route path="/" element={<Navigate to="/auth/login" />} />
-        {localStorage.getItem('token') ? (
+        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/auth/login" />} />
+        <Route path="/auth/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/auth/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register setIsAuthenticated={setIsAuthenticated} />} />
+        {isAuthenticated ? (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/songs" element={<SongView showSearchBar={showSearchBar} />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/edit" element={<Edit />} />
+            <Route path="/post/create" element={<CreatePost />} />
+            <Route path='/addsong' element={<AddSong />} />
+            <Route path='/playlist/create' element={<CreatePlaylist />} />
+            <Route path="/user/:id" element={<UserProfile />} />
+            <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
           </>
         ) : (
-          <>
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-          </>
+          <Route path="*" element={<Navigate to="/auth/login" />} />
         )}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/post/create" element={<CreatePost />} />
-        <Route path='/addsong' element={<AddSong />} />
-        <Route path='/playlist/create' element={<CreatePlaylist />} />
-        <Route path="/user/:id" element={<UserProfile />} />
-        <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
-        <Route path="*" element={<div>Not Found</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
+      {isAuthenticated ? <Footer /> : null}
+
     </Router>
   );
 }

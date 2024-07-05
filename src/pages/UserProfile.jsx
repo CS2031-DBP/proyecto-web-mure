@@ -8,9 +8,9 @@ import { isFriends } from "../services/friends/isFriends";
 import { addFriend } from "../services/friends/addFriend";
 import { deleteFriend } from "../services/friends/deleteFriend";
 import Post from "../components/post/Post";
-import ProfileInfo from "../components/profile/ProfileInfo";
 import Playlist from "../components/playlist/Playlist";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { FaUserFriends, FaUserPlus, FaUserMinus } from "react-icons/fa";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -79,7 +79,7 @@ const UserProfile = () => {
     };
 
     fetchUser();
-    fetchPosts();
+    loadPosts();
     fetchPlaylists();
     checkFriendship();
     fetchCurrentUserId();
@@ -154,6 +154,15 @@ const UserProfile = () => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
+  const animationVariants = {
+    hidden: { opacity: 0, x: 35 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: { delay: i * 0.125 },
+    }),
+  };
+
   if (error) {
     return <p>{error}</p>;
   }
@@ -163,74 +172,108 @@ const UserProfile = () => {
   }
 
   return (
-    <div>
-      <button onClick={() => navigate(-1)}>Go back</button>
-      <ProfileInfo data={user} />
-      <div>
-        {friends ? (
-          <>
-            <div>Tu y {user.name} ya son amigos!</div>
-            <button onClick={handleDeleteFriend}>Eliminar amigo</button>
-          </>
-        ) : (
-          <button onClick={handleAdd}>Añadir amigo</button>
-        )}
-      </div>
-      <div className="contenido" style={{ display: "flex" }}>
-        <div className="posts" style={{ flex: 1, marginRight: "20px" }}>
-          <h2>Posts</h2>
-          {posts.length === 0 ? (
-            <p>This user has not made any posts yet.</p>
-          ) : (
-            posts.map((post, index) => {
-              if (posts.length === index + 1) {
-                return (
-                  <Post
-                    ref={lastPostElementRef}
-                    key={post.id}
-                    post={post}
-                    currUserName={user.name}
-                    currId={currUserId}
-                    onDelete={handleDeletePost}
-                  />
-                );
-              } else {
-                return (
-                  <Post
-                    key={post.id}
-                    post={post}
-                    currUserName={user.name}
-                    currId={currUserId}
-                    onDelete={handleDeletePost}
-                  />
-                );
-              }
-            })
-          )}
-          {!hasMore && (
+    <>
+      <motion.div
+        className="rounded-lg"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex items-center mb-4">
+          {user && (
             <motion.div
-              className="text-center text-gray-500 py-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              className="flex items-center bg-gradient1 p-4 rounded-lg shadow-md w-full"
+              custom={0}
+              initial="hidden"
+              animate="visible"
+              variants={animationVariants}
             >
-              No hay más posts
+              <div className="w-1/3 flex justify-center items-center">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black">
+                  <img
+                    src={user.profileImage || "default-profile.png"}
+                    alt="Profile"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+              <div className="w-2/3 text-white text-left">
+                <h1 className="text-2xl font-bold">@{user.name}</h1>
+                <p>Cumpleaños: 🎉 {user.birthDate}</p>
+                <div className="mt-4">
+                  {friends ? (
+                    <>
+                      <div className="text-green-500 mb-2">Ya son amigos!</div>
+                      <button
+                        onClick={handleDeleteFriend}
+                        className="bg-red-500 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-red-700"
+                      >
+                        <FaUserMinus className="mr-2" />
+                        Eliminar amigo
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleAdd}
+                      className="bg-green-500 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-green-700"
+                    >
+                      <FaUserPlus className="mr-2" />
+                      Añadir amigo
+                    </button>
+                  )}
+                </div>
+              </div>
             </motion.div>
           )}
         </div>
-        <div className="playlists" style={{ flex: 1 }}>
-          <h2>Playlists</h2>
-          {playlists.length === 0 ? (
-            <p>This user has not created any playlists yet.</p>
-          ) : (
-            playlists.map((playlist) => (
-              <Playlist key={playlist.id} playlist={playlist} edit={true} />
-            ))
-          )}
+      </motion.div>
+
+      <div className="">
+        <div className="flex flex-col md:flex-row mt-8">
+          <div className="flex-1 md:mr-8 mb-8 md:mb-0">
+            <h1 className="text-2xl font-bold mb-4 text-spotify-black">Posts</h1>
+            {posts.length === 0 ? (
+              <p className="text-gray-400">Este usuario no ha hecho ningún post aún.</p>
+            ) : (
+              posts.map((post, index) => (
+                <motion.div
+                  key={post.id}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Post
+                    ref={posts.length === index + 1 ? lastPostElementRef : null}
+                    post={post}
+                    currUserName={user.name}
+                    currId={currUserId}
+                    onDelete={handleDeletePost}
+                  />
+                </motion.div>
+              ))
+            )}
+          </div>
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold mb-4 text-spotify-black">Playlists</h1>
+            {playlists.length === 0 ? (
+              <p className="text-gray-400">Este usuario no ha creado ninguna playlist aún.</p>
+            ) : (
+              playlists.map((playlist) => (
+                <motion.div
+                  key={playlist.id}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Playlist key={playlist.id} playlist={playlist} edit={true} />
+                </motion.div>
+              ))
+            )}
+          </div>
         </div>
+        {error && <p className="text-center text-red-500 mt-4">{error}</p>}
       </div>
-    </div>
+    </>
   );
 };
 

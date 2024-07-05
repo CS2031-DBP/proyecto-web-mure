@@ -50,3 +50,10 @@
 .read-the-docs {
   color: #888;
 }
+
+/* App.css */
+.bg-gradient-to-r {
+  background: radial-gradient(circle, var(--gradient5) 0%, var(--gradient1) 70%, var(--gradient5) 100%);
+}
+
+

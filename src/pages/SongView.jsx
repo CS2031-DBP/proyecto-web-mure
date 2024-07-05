@@ -15,7 +15,7 @@ const SongView = ({ showSearchBar }) => {
     const [hasMore, setHasMore] = useState(true);
     const [role, setRole] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchType, setSearchType] = useState('title');
+    const [searchType, setSearchType] = useState('titulo');
     const [noResults, setNoResults] = useState(false);
     const observer = useRef();
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ const SongView = ({ showSearchBar }) => {
             let res;
             if (isSearch) {
                 switch (searchType) {
-                    case 'title':
+                    case 'titulo':
                         res = await searchSongsByTitle(searchTerm);
                         if (res.status === 200) {
                             setSongs([res.data]);
@@ -36,10 +36,10 @@ const SongView = ({ showSearchBar }) => {
                         }
                         setIsLoading(false);
                         return;
-                    case 'genre':
+                    case 'genero':
                         res = await searchSongsByGenre(searchTerm, resetPage ? 0 : page, size);
                         break;
-                    case 'artistName':
+                    case 'artista':
                         res = await searchSongsByArtistName(searchTerm, resetPage ? 0 : page, size);
                         break;
                     default:
@@ -130,9 +130,9 @@ const SongView = ({ showSearchBar }) => {
                         searchType={searchType}
                         setSearchType={setSearchType}
                         options={[
-                            { value: 'title', label: 'Title' },
-                            { value: 'genre', label: 'Genre' },
-                            { value: 'artistName', label: 'Artist Name' },
+                            { value: 'titulo', label: 'Titulo' },
+                            { value: 'genero', label: 'Genero' },
+                            { value: 'artista', label: 'Artista' },
                         ]}
                     />
                 </motion.div>
@@ -168,7 +168,7 @@ const SongView = ({ showSearchBar }) => {
             {role === 'ROLE_ADMIN' && (
                 <button
                     onClick={handleAddSongClick}
-                    className="fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition"
+                    className="fixed bottom-16 right-5 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300"
                     title="Agregar Canción"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

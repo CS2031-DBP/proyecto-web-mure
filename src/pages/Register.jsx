@@ -4,7 +4,7 @@ import { register } from "../services/auth/auth";
 import logo from "../img/Logo_Fondo-removebg-preview.png";
 import { motion } from 'framer-motion';
 
-const Register = () => {
+const Register = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
@@ -26,6 +26,7 @@ const Register = () => {
       const res = await register(data);
       if (res.status === 200) {
         localStorage.setItem("token", res.data.token);
+        setIsAuthenticated(true);
         navigate("/dashboard");
       }
     } catch (error) {
@@ -138,7 +139,7 @@ const Register = () => {
           >
             <button
               type="submit"
-              className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4"
+              className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
             >
               Registrarse
             </button>
@@ -153,7 +154,7 @@ const Register = () => {
           <span>Already have an account? </span>
           <a
             onClick={() => navigate("/auth/login")}
-            className="font-medium hover:text-color2 text-white underline"
+            className="font-medium hover:text-color2 text-white underline transition duration-300"
           >
             Log in
           </a>

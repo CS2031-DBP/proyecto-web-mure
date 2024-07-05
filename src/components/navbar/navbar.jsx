@@ -10,7 +10,7 @@ const navbarVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const Navbar = ({ onToggleSearchBar }) => {
+const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -23,8 +23,9 @@ const Navbar = ({ onToggleSearchBar }) => {
   }, [location.pathname, onToggleSearchBar]);
 
   const handleLogout = () => {
-    navigate("/auth/login");
     localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate("/auth/login");
   };
 
   const getButtonClass = (path) => {
@@ -34,15 +35,14 @@ const Navbar = ({ onToggleSearchBar }) => {
   };
 
   const getCurrentPage = () => {
-    const { pathname } = location; 
-  
+    const { pathname } = location;
+
     if (pathname.match(/^\/playlist\/edit\/\d+$/)) {
       return "Edit Playlist";
-    }
-    else if(pathname.match(/^\/user\/\d+$/)){
+    } else if (pathname.match(/^\/user\/\d+$/)) {
       return "User Profile";
     }
-  
+
     switch (pathname) {
       case "/dashboard":
         return "Dashboard";
@@ -60,12 +60,11 @@ const Navbar = ({ onToggleSearchBar }) => {
         return "App";
     }
   };
-  
 
   const handleToggleSearchBar = () => {
     const newShowSearchBar = !showSearchBar;
-    setShowSearchBar(newShowSearchBar);
-    onToggleSearchBar(newShowSearchBar);
+    setShowSearchBar(newShowShowSearchBar);
+    onToggleSearchBar(newShowShowSearchBar);
   };
 
   if (localStorage.getItem("token") === null) {
@@ -74,7 +73,7 @@ const Navbar = ({ onToggleSearchBar }) => {
     return (
       <div className="w-full">
         <motion.nav
-          className="fixed top-0 left-0 right-0 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient5 text-white shadow-lg z-50 rounded-b-3xl"
+          className="fixed top-0 left-0 right-0 bg-gradient-to-r from-gradient5 via-gradient1 to-gradient5 text-white shadow-lg z-50 rounded-b-3xl"
           variants={navbarVariants}
           initial="hidden"
           animate="visible"
@@ -83,21 +82,21 @@ const Navbar = ({ onToggleSearchBar }) => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/dashboard")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/dashboard")}`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass("/dashboard")} transition duration-300`}
                 title="Dashboard"
               >
                 <FaHome className="text-2xl" />
               </button>
               <button
                 onClick={() => navigate("/songs")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/songs")}`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass("/songs")} transition duration-300`}
                 title="Songs"
               >
                 <FaMusic className="text-2xl" />
               </button>
               <button
                 onClick={() => navigate("/post/create")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/post/create")}`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass("/post/create")} transition duration-300`}
                 title="Create Post"
               >
                 <FaPlusSquare className="text-2xl" />
@@ -111,7 +110,7 @@ const Navbar = ({ onToggleSearchBar }) => {
               {location.pathname === "/songs" && (
                 <button
                   onClick={handleToggleSearchBar}
-                  className="focus:outline-none p-2 rounded hover:bg-color2"
+                  className="focus:outline-none p-2 rounded hover:bg-color2 transition duration-300"
                   title="Search"
                 >
                   <FaSearch className="text-2xl" />
@@ -119,14 +118,14 @@ const Navbar = ({ onToggleSearchBar }) => {
               )}
               <button
                 onClick={() => navigate("/profile")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/profile")}`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass("/profile")} transition duration-300`}
                 title="Profile"
               >
                 <FaUser className="text-2xl" />
               </button>
               <button
                 onClick={handleLogout}
-                className="focus:outline-none p-2 rounded hover:bg-color2"
+                className="focus:outline-none p-2 rounded hover:bg-color2 transition duration-300"
                 title="Logout"
               >
                 <FaSignOutAlt className="text-2xl" />
