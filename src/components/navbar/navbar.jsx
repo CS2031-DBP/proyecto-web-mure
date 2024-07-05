@@ -34,7 +34,7 @@ const Navbar = ({ onToggleSearchBar }) => {
   };
 
   const getCurrentPage = () => {
-    const { pathname } = location;
+    const { pathname } = location; 
   
     if (pathname.match(/^\/playlist\/edit\/\d+$/)) {
       return "Edit Playlist";

@@ -11,8 +11,9 @@ import AddSong from './pages/AddSong';
 import UserProfile from './pages/UserProfile';
 import CreatePlaylist from './pages/CreatePlaylist';
 import EditPlaylist from './pages/EditPlaylist';
-import Navbar from './components/navbar/navbar';
+import Navbar from './components/navbar/Navbar';
 import { useState } from 'react';
+import Footer from './components/footer/Footer';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -46,6 +47,7 @@ function App() {
         <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

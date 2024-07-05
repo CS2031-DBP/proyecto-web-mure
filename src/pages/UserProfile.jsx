@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { getUserById } from "../services/profile/getUserById";
@@ -10,18 +10,23 @@ import { deleteFriend } from "../services/friends/deleteFriend";
 import Post from "../components/post/Post";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import Playlist from "../components/playlist/Playlist";
+import { motion } from 'framer-motion';
 
 const UserProfile = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Obtiene el ID del usuario desde los parámetros de la URL
-  const [user, setUser] = useState(null); // Estado para almacenar la información del usuario
-  const [posts, setPosts] = useState([]); // Estado para almacenar los posts del usuario
-  const [playlists, setPlaylists] = useState([]); // Estado para almacenar las playlists del usuario
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const [friends, setFriends] = useState(false); // Estado para indicar si son amigos
-  const [currUserId, setCurrUserId] = useState(""); // Estado para almacenar el ID del usuario actual
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [error, setError] = useState("");
+  const [friends, setFriends] = useState(false);
+  const [currUserId, setCurrUserId] = useState("");
+  const [page, setPage] = useState(0);
+  const [size] = useState(7);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
-  // useEffect para cargar la información del usuario, posts, playlists y verificar amistad al montar el componente o cambiar el ID
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -33,19 +38,6 @@ const UserProfile = () => {
         }
       } catch (err) {
         setError("Failed to fetch user data.");
-      }
-    };
-
-    const fetchPosts = async () => {
-      try {
-        const response = await getPostsByUser(id);
-        if (response.status === 200) {
-          setPosts(response.data);
-        } else {
-          setError("Failed to fetch posts.");
-        }
-      } catch (err) {
-        setError("Failed to fetch posts.");
       }
     };
 
@@ -93,17 +85,49 @@ const UserProfile = () => {
     fetchCurrentUserId();
   }, [id]);
 
-  // Muestra un mensaje de error si ocurre un error al obtener los datos
-  if (error) {
-    return <p>{error}</p>;
-  }
+  const loadPosts = async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    try {
+      const response = await getPostsByUser(id, page, size);
+      if (response.status === 200) {
+        setPosts((prevPosts) => [...prevPosts, ...response.data]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMore(response.data.length > 0);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      setHasMore(false);
+      setError("Failed to fetch posts.");
+    }
+    setIsLoading(false);
+  };
 
-  // Muestra un mensaje de carga mientras se obtienen los datos del usuario
-  if (!user) {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    loadPosts();
+  }, [id]);
 
-  // Maneja la adición de un amigo
+  const lastPostElementRef = useCallback(
+    (node) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadPosts();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
+
   const handleAdd = async () => {
     try {
       const response = await addFriend(id);
@@ -115,7 +139,6 @@ const UserProfile = () => {
     }
   };
 
-  // Maneja la eliminación de un amigo
   const handleDeleteFriend = async () => {
     try {
       const response = await deleteFriend(id);
@@ -126,6 +149,18 @@ const UserProfile = () => {
       console.error(error);
     }
   };
+
+  const handleDeletePost = (postId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+  };
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -147,16 +182,41 @@ const UserProfile = () => {
           {posts.length === 0 ? (
             <p>This user has not made any posts yet.</p>
           ) : (
-            posts
-              .slice(0, 2)
-              .map((post) => (
-                <Post
-                  key={post.id}
-                  post={post}
-                  currUserName={user.name}
-                  currId={currUserId}
-                />
-              ))
+            posts.map((post, index) => {
+              if (posts.length === index + 1) {
+                return (
+                  <Post
+                    ref={lastPostElementRef}
+                    key={post.id}
+                    post={post}
+                    currUserName={user.name}
+                    currId={currUserId}
+                    onDelete={handleDeletePost}
+                  />
+                );
+              } else {
+                return (
+                  <Post
+                    key={post.id}
+                    post={post}
+                    currUserName={user.name}
+                    currId={currUserId}
+                    onDelete={handleDeletePost}
+                  />
+                );
+              }
+            })
+          )}
+          {!hasMore && (
+            <motion.div
+              className="text-center text-gray-500 py-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              No hay más posts
+            </motion.div>
           )}
         </div>
         <div className="playlists" style={{ flex: 1 }}>

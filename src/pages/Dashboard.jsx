@@ -9,7 +9,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(7);
+  const [size] = useState(7);
   const [currUserName, setCurrUserName] = useState("");
   const [currId, setCurrId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,9 +24,7 @@ const Dashboard = () => {
       if (res.status === 200) {
         setPosts((prevPosts) => [...prevPosts, ...res.data.content]);
         setPage((prevPage) => prevPage + 1);
-        if (res.data.content.length === 0) {
-          setHasMore(false);
-        }
+        setHasMore(res.data.content.length > 0);
       }
     } catch (error) {
       console.error(error);
@@ -77,13 +75,10 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* Contenedor principal con scrollbar oculto */}
       <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
         <ul>
-          {/* Mapeo de los posts */}
           {posts.map((post, index) => {
-            if (posts.length === index + 1) {
-              // Si es el último post, se asigna la referencia para la carga infinita
+            if (posts.length === index + 1 && hasMore) {
               return (
                 <Post
                   ref={lastPostElementRef}
@@ -95,7 +90,6 @@ const Dashboard = () => {
                 />
               );
             } else {
-              // Para los demás posts
               return (
                 <Post
                   key={post.id}
@@ -107,11 +101,20 @@ const Dashboard = () => {
               );
             }
           })}
+          {!hasMore && (
+            <motion.div
+              className="text-center text-gray-500 py-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              No hay más posts
+            </motion.div>
+          )}
         </ul>
       </div>
-      {/* Mensajes de carga y fin de posts */}
       {isLoading && <p className="text-center mt-4">Loading...</p>}
-      {!hasMore && <p className="text-center mt-4">No more posts</p>}
     </div>
   );
 };

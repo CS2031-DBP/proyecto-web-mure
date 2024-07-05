@@ -42,10 +42,8 @@ const Profile = () => {
 
   return (
     <>
-      {/* Contenedor principal del perfil con gradiente de fondo */}
       <div className="p-8  px-96 bg-gradient-to-br from-blue-500 to-purple-500  rounded-lg">
         <div className="flex space-x-4 mb-4">
-          {/* Botón para crear una nueva playlist */}
           <button
             onClick={() => navigate("/playlist/create")}
             className="bg-blue-500 text-white py-2 px-4 rounded-full"
@@ -53,11 +51,9 @@ const Profile = () => {
             Crear Playlist
           </button>
         </div>
-        {/* Muestra la información del usuario */}
         {userData && <ProfileInfo key={userData.id} data={userData} />}
       </div>
 
-      {/* Contenedor secundario para amigos, posts y playlists */}
       <div className="p-8">
         {friends.length === 0 ? (
           <p className="text-center text-gray-400">
@@ -73,7 +69,7 @@ const Profile = () => {
             {myposts.length === 0 ? (
               <p className="text-gray-400">No has hecho ningún post aún</p>
             ) : (
-              myposts.slice(0, 10).map((post) => (
+              myposts.map((post) => (
                 <Post
                   key={post.id}
                   post={post}
