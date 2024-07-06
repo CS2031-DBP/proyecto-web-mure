@@ -32,6 +32,7 @@ const Login = ({ setIsAuthenticated }) => {
                 localStorage.setItem('token', res.data.token);
                 setIsAuthenticated(true);
                 navigate('/dashboard');
+
             }
         } catch (error) {
             if (error.response) {

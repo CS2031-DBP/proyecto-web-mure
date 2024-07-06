@@ -23,7 +23,7 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const userdata = await fetchCurrentUser();
-        console.log(userdata);
+
         const friendsResponse = await fetchUserFriends();
         const myposts = await fetchUserPosts();
         const userPlaylists = await fetchMyPlaylists();

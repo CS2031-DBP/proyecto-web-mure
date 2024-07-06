@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createSong } from "../services/songs/createSong";
 import { searchArtist } from "../services/artist/getArtistByName";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaSpotify } from "react-icons/fa";
 
 const AddSong = () => {
   const navigate = useNavigate();
@@ -16,24 +17,32 @@ const AddSong = () => {
     genre: "",
     duration: "",
     coverImage: "",
+    link: "",
   });
-  const [artistSearchTerm, setArtistSearchTerm] = useState(""); // Estado para el término de búsqueda de artistas
-  const [artistSearchResults, setArtistSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de artistas
-  const [addedArtists, setAddedArtists] = useState([]); // Estado para almacenar los artistas añadidos
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const [success, setSuccess] = useState(""); // Estado para manejar el mensaje de éxito
+  const [artistSearchTerm, setArtistSearchTerm] = useState("");
+  const [artistSearchResults, setArtistSearchResults] = useState([]);
+  const [addedArtists, setAddedArtists] = useState([]);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  // Maneja los cambios en los campos del formulario y actualiza el estado
+  useEffect(() => {
+    const songData = localStorage.getItem('selectedSong');
+    if (songData) {
+      const parsedData = JSON.parse(songData);
+      setData(parsedData);
+      setAddedArtists(parsedData.addedArtists || []);
+      localStorage.removeItem('selectedSong');
+    }
+  }, []);
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  // Maneja los cambios en el término de búsqueda de artistas
   const handleArtistSearchTermChange = (e) => {
     setArtistSearchTerm(e.target.value);
   };
 
-  // Maneja la búsqueda de artistas
   const handleSearch = async (type) => {
     setError("");
     setSuccess("");
@@ -55,7 +64,6 @@ const AddSong = () => {
     }
   };
 
-  // Maneja la adición de un artista a la canción
   const handleAdd = (id, type, artistDetails) => {
     if (type === "artist") {
       if (data.artistsIds.includes(id)) {
@@ -73,25 +81,23 @@ const AddSong = () => {
     }
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    const payload = [
-      {
-        title: data.title,
-        artistsIds: data.artistsIds,
-        releaseDate: data.releaseDate,
-        genre: data.genre,
-        duration: data.duration,
-        coverImage: data.coverImage,
-      },
-    ];
+    const payload = {
+      title: data.title,
+      artistsIds: data.artistsIds,
+      releaseDate: data.releaseDate,
+      genre: data.genre,
+      duration: data.duration,
+      coverImage: data.coverImage,
+      link: data.link,
+    };
 
     try {
-      const res = await createSong(payload);
+      const res = await createSong([payload]);
       if (res.status === 201) {
         setSuccess("Canción creada con éxito.");
         navigate("/songs");
@@ -99,6 +105,7 @@ const AddSong = () => {
         setError("Error al crear la canción.");
       }
     } catch (error) {
+      console.error(error);
       setError("Error al crear la canción.");
     }
   };
@@ -110,8 +117,8 @@ const AddSong = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6">Añadir Canción</h1>
+      <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <button onClick={() => console.log(data)} className="bg-red-500 text-white p-2 rounded-lg mb-4">Log Data</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
@@ -120,7 +127,7 @@ const AddSong = () => {
         >
           <div className="col-span-1 md:col-span-2">
             <label htmlFor="title" className="block text-sm font-medium mb-1">
-              Titulo
+              Título
             </label>
             <motion.input
               type="text"
@@ -129,7 +136,7 @@ const AddSong = () => {
               value={data.title}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -149,7 +156,7 @@ const AddSong = () => {
               value={data.releaseDate}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -157,7 +164,7 @@ const AddSong = () => {
           </div>
           <div className="col-span-1">
             <label htmlFor="genre" className="block text-sm font-medium mb-1">
-              Genero
+              Género
             </label>
             <motion.input
               type="text"
@@ -166,7 +173,7 @@ const AddSong = () => {
               value={data.genre}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -186,7 +193,7 @@ const AddSong = () => {
               value={data.duration}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -197,7 +204,7 @@ const AddSong = () => {
               htmlFor="coverImage"
               className="block text-sm font-medium mb-1"
             >
-              Cover Image
+              Imagen de Portada
             </label>
             <motion.input
               type="text"
@@ -206,10 +213,30 @@ const AddSong = () => {
               value={data.coverImage}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
+            />
+          </div>
+          <div className="col-span-1">
+            <label
+              htmlFor="link"
+              className="block text-sm font-medium mb-1"
+            >
+              Enlace a Spotify
+            </label>
+            <motion.input
+              type="text"
+              id="link"
+              name="link"
+              value={data.link}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
             />
           </div>
           <div className="col-span-1 md:col-span-2">
@@ -234,7 +261,7 @@ const AddSong = () => {
                 addedArtists.map((artist, index) => (
                   <motion.div
                     key={index}
-                    className="bg-gray-700 text-white p-4 mb-4 rounded-lg flex items-center"
+                    className="bg-crema5 text-black p-4 mb-4 rounded-lg flex items-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
@@ -257,12 +284,21 @@ const AddSong = () => {
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg transition duration-300"
+              className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
             >
               Agregar Canción
             </button>
           </div>
         </form>
+        <div className="fixed bottom-10 right-10">
+          <button
+            onClick={() => navigate('/song/create/spotify')}
+            className="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+            title="Buscar en Spotify"
+          >
+            <FaSpotify className="text-2xl" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );

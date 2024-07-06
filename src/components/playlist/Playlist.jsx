@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { isPlaylistOwner } from "../../services/playlists/isOwner";
 import { deleteSongFromPlaylist } from "../../services/playlists/deleteSongFromPlaylist";
 import { deletePlaylist } from "../../services/playlists/deletePlaylist";
-import { searchSongsByTitle } from "../../services/songs/searchSongBy";
+import { searchSongById } from "../../services/songs/searchSongById";
 import { motion } from "framer-motion";
 import { FaHeadphones, FaTrashAlt, FaPlus } from "react-icons/fa";
 
@@ -33,8 +33,8 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
     const fetchSongsDetails = async () => {
       try {
         const details = await Promise.all(
-          playlist.songsTitles.map(async (title) => {
-            const res = await searchSongsByTitle(title);
+          playlist.songsIds.map(async (id) => {
+            const res = await searchSongById(id);
             return res.data;
           })
         );
@@ -44,10 +44,10 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
       }
     };
 
-    if (playlist.songsTitles && playlist.songsTitles.length > 0) {
+    if (playlist.songsIds && playlist.songsIds.length > 0) {
       fetchSongsDetails();
     }
-  }, [playlist.songsTitles]);
+  }, [playlist.songsIds]);
 
   const handleEditClick = () => {
     navigate(`/playlist/edit/${playlist.id}`);
