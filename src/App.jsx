@@ -13,7 +13,7 @@ import CreatePlaylist from './pages/CreatePlaylist';
 import EditPlaylist from './pages/EditPlaylist';
 import CreateSpotify from './pages/CrearSpotify';
 import CreateArtist from './pages/CreateArtist';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/navbar/navbar';
 import { useState, useEffect } from 'react';
 import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
