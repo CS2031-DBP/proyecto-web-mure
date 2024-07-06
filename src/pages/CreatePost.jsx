@@ -209,7 +209,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+      <div className="bg-prueba text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6">Create Post</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
@@ -225,7 +225,7 @@ const CreatePost = () => {
               name="description"
               value={data.description}
               onChange={handleChange}
-              className="w-full h-32 px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full h-32 px-3 py-2 border rounded-lg bg-crema5 text-white"
             />
             <div className="mt-4">
               <label className="block text-sm font-medium mb-1">
@@ -325,12 +325,12 @@ const CreatePost = () => {
                   type="album"
                 />
               </div>
-            )}
+            )} 
           </div>
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg transition duration-300"
+              className="w-full py-2 mt-4 bg-ver text-white rounded-lg transition duration-300"
             >
               Create Post
             </button>

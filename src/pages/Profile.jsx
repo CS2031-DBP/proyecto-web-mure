@@ -113,7 +113,12 @@ const Profile = () => {
 
       <div className="">
         <div className="flex flex-col md:flex-row mt-8">
-          <div className="flex-1 md:mr-8 mb-8 md:mb-0">
+          <motion.div
+            className="flex-1 md:mr-8 mb-8 md:mb-0"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 className="text-2xl font-bold mb-4 text-spotify-black">Mis Posts</h1>
             {myposts.length === 0 ? (
               <p className="text-gray-400">No has hecho ningún post aún</p>
@@ -134,8 +139,13 @@ const Profile = () => {
                 </motion.div>
               ))
             )}
-          </div>
-          <div className="flex-1">
+          </motion.div>
+          <motion.div
+            className="flex-1"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 className="text-2xl font-bold mb-4 text-spotify-black">Mis PlayLists</h1>
             {playlists.length === 0 ? (
               <p className="text-gray-400">No tienes playlists aún</p>
@@ -151,7 +161,7 @@ const Profile = () => {
                 </motion.div>
               ))
             )}
-          </div>
+          </motion.div>
         </div>
         {error && <p className="text-center text-red-500 mt-4">{error}</p>}
       </div>

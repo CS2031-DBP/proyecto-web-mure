@@ -11,7 +11,7 @@ const Footer = () => {
     >
       <div className="container mx-auto text-center">
         <p className="text-sm">
-          © 2024 Mure - Share Your Music Taste. Todos los derechos reservados.
+          © 2024 Mure - Share Your Music Taste
         </p>
       </div>
     </motion.footer>

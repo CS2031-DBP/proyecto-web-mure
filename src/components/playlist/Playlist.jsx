@@ -4,16 +4,15 @@ import { isPlaylistOwner } from "../../services/playlists/isOwner";
 import { deleteSongFromPlaylist } from "../../services/playlists/deleteSongFromPlaylist";
 import { deletePlaylist } from "../../services/playlists/deletePlaylist";
 import { searchSongsByTitle } from "../../services/songs/searchSongBy";
-import Headphones from "@mui/icons-material/Headphones";
+import { motion } from "framer-motion";
+import { FaHeadphones, FaTrashAlt, FaPlus } from "react-icons/fa";
 
-// Componente Playlist que recibe props: playlist, edit, onUpdate
 const Playlist = ({ playlist, edit, onUpdate }) => {
-  const [isOwner, setIsOwner] = useState(false); // Estado para manejar si el usuario actual es el dueño de la playlist
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const [songsDetails, setSongsDetails] = useState([]); // Estado para manejar los detalles de las canciones
-  const navigate = useNavigate(); // Hook de navegación para redirigir a otras páginas
+  const [isOwner, setIsOwner] = useState(false);
+  const [error, setError] = useState("");
+  const [songsDetails, setSongsDetails] = useState([]);
+  const navigate = useNavigate();
 
-  // useEffect para verificar si el usuario actual es el dueño de la playlist
   useEffect(() => {
     const checkOwnership = async () => {
       try {
@@ -30,14 +29,12 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
     checkOwnership();
   }, [playlist.id]);
 
-  // useEffect para obtener los detalles de las canciones de la playlist
   useEffect(() => {
     const fetchSongsDetails = async () => {
       try {
         const details = await Promise.all(
           playlist.songsTitles.map(async (title) => {
             const res = await searchSongsByTitle(title);
-
             return res.data;
           })
         );
@@ -52,35 +49,44 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
     }
   }, [playlist.songsTitles]);
 
-  // Función para manejar el click en el botón de editar
   const handleEditClick = () => {
     navigate(`/playlist/edit/${playlist.id}`);
   };
 
-  // Función para manejar la eliminación de una canción de la playlist
   const handleDeleteClick = async (title) => {
     try {
-      const res1 = await searchSong(title);
+      const res1 = await searchSongsByTitle(title);
       const songId = res1.data.id;
       await deleteSongFromPlaylist(playlist.id, songId);
-      onUpdate(); // Actualiza la playlist
+      onUpdate();
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Función para manejar la eliminación de la playlist
   const handleDeletePlaylist = async () => {
     try {
       await deletePlaylist(playlist.id);
-      onUpdate(); // Actualiza la lista de playlists
+      onUpdate();
     } catch (err) {
       console.error(err);
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, y: 50, transition: { duration: 0.5 } }
+  };
+
   return (
-    <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl m-5">
+    <motion.div
+      className="bg-gradient-to-r from-custom-purple-1 via-custom-purple-2 to-custom-purple-3 text-white p-6 rounded-lg shadow-md w-full max-w-screen-md mx-auto mb-4"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <h2 className="text-2xl font-bold mb-4">{playlist.name}</h2>
       <p className="mb-4">Autor: {playlist.userName}</p>
       <h3 className="text-xl font-semibold mb-2">Canciones:</h3>
@@ -89,63 +95,61 @@ const Playlist = ({ playlist, edit, onUpdate }) => {
       ) : (
         <div>
           {songsDetails.map((song) => (
-            <div key={song.id} className="flex mb-4 items-center">
-              <img
-                src={song.coverImage}
-                alt={`${song.title} cover`}
-                className="w-24 h-24 object-cover rounded-lg"
-              />
-              <div className="grid grid-cols-2 gap-4 ml-4 flex-grow">
-                <div>
-                  <p className="font-bold">Título: {song.title}</p>
-                  <p>Artista: {song.artistsNames.join(", ")}</p>
+            <div key={song.id} className="mb-4 p-4 rounded-md bg-white text-black shadow-md">
+              <div className="flex items-center">
+                <img
+                  src={song.coverImage}
+                  alt={`${song.title} cover`}
+                  className="w-16 h-16 object-cover rounded-md"
+                />
+                <div className="ml-4 flex-grow">
+                  <p className="font-bold">{song.title}</p>
+                  <p>{song.artistsNames.join(", ")}</p>
+                  <p>{song.duration}</p>
+                  <p>{song.genre}</p>
                 </div>
-                <div>
-                  <p>Duración: {song.duration}</p>
-                  <p>Género: {song.genre}</p>
-                </div>
-                <div className="col-span-2 flex justify-between items-center">
-                  <a
-                    href={song.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500"
+                <a
+                  href={song.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 ml-4"
+                >
+                  <FaHeadphones />
+                </a>
+                {isOwner && edit && (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteClick(song.title)}
+                    className="ml-4 px-2 py-1 bg-red-500 text-white rounded-md transition duration-300 hover:bg-red-600"
                   >
-                    <Headphones />
-                  </a>
-                  {isOwner && edit && (
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteClick(song.title)}
-                      className="px-2 py-1 bg-red-600 text-white rounded-lg transition duration-300"
-                    >
-                      Eliminar
-                    </button>
-                  )}
-                </div>
+                    Eliminar
+                  </button>
+                )}
               </div>
             </div>
           ))}
         </div>
       )}
       {isOwner && !edit && (
-        <div className="mt-4">
+        <div className="mt-4 flex justify-between">
           <button
-            className="px-4 py-2 bg-yellow-500 text-white rounded-lg mr-2 transition duration-300"
+            className="px-4 py-2 bg-yellow-500 text-white rounded-md transition duration-300 hover:bg-yellow-600 flex items-center"
             onClick={handleEditClick}
           >
+            <FaPlus className="mr-2" />
             Añadir/Quitar Canciones
           </button>
           <button
-            className="px-4 py-2 bg-red-600 text-white rounded-lg transition duration-300"
+            className="px-4 py-2 bg-red-500 text-white rounded-md transition duration-300 hover:bg-red-600 flex items-center"
             onClick={handleDeletePlaylist}
           >
+            <FaTrashAlt className="mr-2" />
             Borrar Playlist
           </button>
         </div>
       )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+    </motion.div>
   );
 };
 

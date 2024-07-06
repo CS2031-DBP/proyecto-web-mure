@@ -63,8 +63,8 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
 
   const handleToggleSearchBar = () => {
     const newShowSearchBar = !showSearchBar;
-    setShowSearchBar(newShowShowSearchBar);
-    onToggleSearchBar(newShowShowSearchBar);
+    setShowSearchBar(newShowSearchBar);
+    onToggleSearchBar(newShowSearchBar);
   };
 
   if (localStorage.getItem("token") === null) {
