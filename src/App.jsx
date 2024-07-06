@@ -15,6 +15,7 @@ import Navbar from './components/navbar/Navbar';
 import { useState, useEffect } from 'react';
 import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
+import FriendList from './pages/FriendList';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -56,6 +57,7 @@ function App() {
             <Route path='/playlist/create' element={<CreatePlaylist />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
+            <Route path="/friends" element={<FriendList/>} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/auth/login" />} />
