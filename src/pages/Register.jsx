@@ -12,12 +12,16 @@ const Register = ({ setIsAuthenticated }) => {
     name: "",
     birthdate: "",
   });
+  const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const handleChange = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
+    setError('');
+    setEmailError('');
   };
 
   const handleSubmit = async (e) => {
@@ -30,7 +34,15 @@ const Register = ({ setIsAuthenticated }) => {
         navigate("/dashboard");
       }
     } catch (error) {
-      console.error(error);
+      if (error.response) {
+        if (error.response.status === 409) {
+          setEmailError('El correo ya está registrado.');
+        } else {
+          setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
+        }
+      } else {
+        setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
+      }
     }
   };
 
@@ -69,6 +81,7 @@ const Register = ({ setIsAuthenticated }) => {
               required
               className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
             />
+            {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -143,6 +156,7 @@ const Register = ({ setIsAuthenticated }) => {
             >
               Registrarse
             </button>
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </motion.div>
         </form>
         <motion.div

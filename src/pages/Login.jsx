@@ -10,12 +10,18 @@ const Login = ({ setIsAuthenticated }) => {
         email: '',
         password: ''
     });
+    const [error, setError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const handleChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value
         });
+        setError('');
+        setEmailError('');
+        setPasswordError('');
     }
 
     const handleSubmit = async (e) => {
@@ -29,7 +35,17 @@ const Login = ({ setIsAuthenticated }) => {
 
             }
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                if (error.response.status === 404) {
+                    setEmailError('Email no encontrado.');
+                } else if (error.response.status === 400) {
+                    setPasswordError('Contraseña incorrecta.');
+                } else {
+                    setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
+                }
+            } else {
+                setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
+            }
         }
     }
 
@@ -60,6 +76,7 @@ const Login = ({ setIsAuthenticated }) => {
                         required
                         className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
                     />
+                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -76,6 +93,7 @@ const Login = ({ setIsAuthenticated }) => {
                         required
                         className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
                     />
+                    {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -88,6 +106,7 @@ const Login = ({ setIsAuthenticated }) => {
                     >
                         Log In
                     </button>
+                    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                 </motion.div>
             </form>
             <motion.div
