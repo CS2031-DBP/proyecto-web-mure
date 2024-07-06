@@ -10,7 +10,7 @@ const SearchResults = ({ results, handleAdd, type }) => {
     return results.map((result, index) => (
       <motion.div
         key={index}
-        className="bg-gray-700 text-white p-4 mb-4 rounded-lg"
+        className="bg-crema5 text-black p-4 mb-4 rounded-lg"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}

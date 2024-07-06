@@ -17,7 +17,7 @@ const SearchInput = ({
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value)}
-          className="px-3 py-2 border rounded-l-lg bg-gray-700 text-white"
+          className="px-3 py-2 border rounded-l-lg bg-crema5 text-gray-800"
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -43,12 +43,12 @@ const SearchInput = ({
         value={searchTerm}
         onChange={handleSearchTermChange}
         placeholder={`Buscar por ${searchType || (type === "song" ? "Canción" : type === "album" ? "Álbum" : "Artista")}`}
-        className={`w-full px-3 py-2 border ${options ? '' : 'rounded-l-lg'} bg-gray-700 text-white`}
+        className={`w-full px-3 py-2 border ${options ? '' : 'rounded-l-lg'} bg-crema5 text-gray-800`}
       />
       <button
         type="button"
         onClick={() => handleSearch(type)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-r-lg"
+        className="px-4 py-2 bg-gradient1 text-white rounded-r-lg"
       >
         Buscar
       </button>

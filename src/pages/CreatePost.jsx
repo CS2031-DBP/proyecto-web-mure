@@ -7,7 +7,9 @@ import { searchAlbum } from "../services/album/searchAlbum";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import ImageIcon from '@mui/icons-material/Image';
+import Cancel from "@mui/icons-material/Cancel";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ const CreatePost = () => {
   const [albumSearchTerm, setAlbumSearchTerm] = useState(""); // Estado para el término de búsqueda de álbumes
   const [songSearchResults, setSongSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de canciones
   const [albumSearchResults, setAlbumSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de álbumes
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(""); // Estado para la URL de la vista previa de la imagen
 
   // Efecto para obtener el ID del usuario actual al montar el componente
   useEffect(() => {
@@ -94,7 +97,13 @@ const CreatePost = () => {
 
   // Maneja los cambios en los campos del formulario y actualiza el estado
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+    if (files && files[0]) {
+      setData({ ...data, imageUrl: files[0] });
+      setImagePreviewUrl(URL.createObjectURL(files[0]));
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   // Maneja los cambios en el término de búsqueda de canciones y resetea la búsqueda de álbumes
@@ -175,6 +184,12 @@ const CreatePost = () => {
     setSelectedItem(null);
   };
 
+  // Maneja la limpieza de la imagen seleccionada
+  const handleClearImage = () => {
+    setData((prevData) => ({ ...prevData, imageUrl: "" }));
+    setImagePreviewUrl("");
+  };
+
   // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -209,8 +224,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-prueba text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6">Create Post</h1>
+      <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
@@ -218,31 +232,54 @@ const CreatePost = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           <div className="col-span-1">
-            <label className="block text-sm font-medium mb-1">
-              En que estas pensando?
-            </label>
             <textarea
               name="description"
               value={data.description}
               onChange={handleChange}
-              className="w-full h-32 px-3 py-2 border rounded-lg bg-crema5 text-white"
+              placeholder="En que estas pensando..."
+              className="w-full h-32 px-3 py-2 border rounded-lg bg-crema5 text-black"
             />
-            <div className="mt-4">
-              <label className="block text-sm font-medium mb-1">
-                Ingresar Imagen
-              </label>
-              <input
-                type="file"
-                name="image"
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
-              />
+            <div className="mt-4 bg-crema5 border rounded-lg px-3 py-2">
+              <div className="grid grid-cols-2 items-center">
+                <label className="block text-sm font-medium mb-1 text-black text-left">
+                  Ingresar Imagen
+                </label>
+                {imagePreviewUrl && (
+                  <button
+                    type="button"
+                    onClick={handleClearImage}
+                    className="text-red-500 justify-self-end"
+                  >
+                    <Cancel />
+                  </button>
+                )}
+              </div>
+              <div className="relative flex items-center border rounded-lg w-full h-40">
+                {imagePreviewUrl ? (
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                ) : (
+                  <label className="flex items-center justify-center w-full h-full cursor-pointer">
+                    <ImageIcon className="text-gray-500 w-16 h-16" />
+                    <input
+                      type="file"
+                      name="image"
+                      accept=".png,.jpg"
+                      onChange={handleChange}
+                      className="absolute border inset-0 w-full h-full opacity-0 cursor-pointer "
+                    />
+                  </label>
+                )}
+              </div>
             </div>
           </div>
           <div className="col-span-1 flex flex-col justify-between">
             {selectedItem ? (
-              <div className="flex-grow bg-gray-700 text-white p-4 rounded-lg flex flex-col justify-between h-full">
-                <div className="flex-grow">
+              <div className="flex-grow bg-crema5 text-white p-4 rounded-lg flex flex-col justify-between h-full">
+                <div className="flex-grow text-black">
                   {selectedItem.type === "song" && (
                     <>
                       <img
@@ -325,12 +362,12 @@ const CreatePost = () => {
                   type="album"
                 />
               </div>
-            )} 
+            )}
           </div>
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-ver text-white rounded-lg transition duration-300"
+              className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
             >
               Create Post
             </button>

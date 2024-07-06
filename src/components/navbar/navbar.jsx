@@ -56,6 +56,8 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
         return "Add Song";
       case "/playlist/create":
         return "Create Playlist";
+      case "/edit":
+        return "Edit Profile";
       default:
         return "App";
     }

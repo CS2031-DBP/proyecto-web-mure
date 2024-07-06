@@ -22,50 +22,48 @@ const CreateSpotify = () => {
 
   const handleSelect = async (track) => {
     const artists = track.artists.map(artist => artist.name);
-       const artistIds = [];
-      const missingArtists = [];
+    const artistIds = [];
+    const missingArtists = [];
 
-      for (const artistName of artists) {
-        const response = await checkArtistInDatabase(artistName);
-        if (response && response.data) {
-          artistIds.push(response.data.id);
-        } else {
-          missingArtists.push(artistName);
-        }
+    for (const artistName of artists) {
+      const response = await checkArtistInDatabase(artistName);
+      if (response && response.data) {
+        artistIds.push(response.data.id);
+      } else {
+        missingArtists.push(artistName);
       }
+    }
 
-      if (missingArtists.length > 0) {
-        const newArtists = [];
-        for (const artistName of missingArtists) {
-
-          const artistDetails = await getArtistDetailsFromSpotify(artistName);
-
-          newArtists.push({
-            name: artistDetails.name,
-            description: '', 
-            birthDate: artistDetails.birthDate,
-            verified: artistDetails.verified
-          });
-        }
-        await createArtists(newArtists);
-
-        for (const artist of newArtists) {
-          const response = await checkArtistInDatabase(artist.name);
-          artistIds.push(response.data.id);
-        }
+    if (missingArtists.length > 0) {
+      const newArtists = [];
+      for (const artistName of missingArtists) {
+        const artistDetails = await getArtistDetailsFromSpotify(artistName);
+        newArtists.push({
+          name: artistDetails.name,
+          description: '', 
+          birthDate: artistDetails.birthDate,
+          verified: artistDetails.verified
+        });
       }
+      await createArtists(newArtists);
 
-      const songData = {
-        title: track.name,
-        artistsIds: artistIds,
-        releaseDate: track.album.release_date,
-        genre: '', 
-        duration: `${Math.floor(track.duration_ms / 60000)}:${Math.floor((track.duration_ms % 60000) / 1000).toFixed(0).padStart(2, '0')}`,
-        coverImage: track.album.images[0].url,
-      };
-      localStorage.setItem('selectedSong', JSON.stringify(songData));
-      navigate('/addsong');
-     
+      for (const artist of newArtists) {
+        const response = await checkArtistInDatabase(artist.name);
+        artistIds.push(response.data.id);
+      }
+    }
+
+    const songData = {
+      title: track.name,
+      artistsIds: artistIds,
+      releaseDate: track.album.release_date,
+      genre: '', 
+      duration: `${Math.floor(track.duration_ms / 60000)}:${Math.floor((track.duration_ms % 60000) / 1000).toFixed(0).padStart(2, '0')}`,
+      coverImage: track.album.images[0].url,
+      link: track.external_urls.spotify,  // Adding the link here
+    };
+    localStorage.setItem('selectedSong', JSON.stringify(songData));
+    navigate('/addsong');
   };
 
   return (

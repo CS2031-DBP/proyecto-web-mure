@@ -127,8 +127,8 @@ const CreatePlaylist = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6">Create Playlist</h1>
+      <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <h1 className="text-3xl font-bold mb-6">Crear Playlist</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
@@ -146,7 +146,7 @@ const CreatePlaylist = () => {
               value={data.name}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white"
+              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -173,7 +173,7 @@ const CreatePlaylist = () => {
           </div>
           <div className="col-span-1 flex flex-col justify-between">
             {songsDetails.length > 0 ? (
-              <div className="bg-gray-700 text-white p-4 rounded-lg flex flex-col justify-between h-full">
+              <div className="bg-crema5 text-black p-4 rounded-lg flex flex-col justify-between h-full">
                 <AnimatePresence>
                   {songsDetails.map((song) => (
                     <motion.div
@@ -227,7 +227,7 @@ const CreatePlaylist = () => {
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg transition duration-300"
+              className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
             >
               Crear Playlist
             </button>
