@@ -18,7 +18,7 @@ const FriendList = () => {
       setCurrentUser(currentUserResponse.data);
 
       const friendsDataResponse = await fetchUserFriends(friendIds);
-      console.log(friendsDataResponse);
+
       const friendsData = friendsDataResponse.data.map(friend => ({
         ...friend,
         profileImage: friend.profileImage || "default-profile.png"

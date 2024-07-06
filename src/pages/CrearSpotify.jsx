@@ -37,9 +37,9 @@ const CreateSpotify = () => {
       if (missingArtists.length > 0) {
         const newArtists = [];
         for (const artistName of missingArtists) {
-          console.log(artistName);
+
           const artistDetails = await getArtistDetailsFromSpotify(artistName);
-          console.log(artistDetails);
+
           newArtists.push({
             name: artistDetails.name,
             description: '', 
