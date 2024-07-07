@@ -226,38 +226,40 @@ const CreatePost = () => {
       transition={{ duration: 0.5 }}
     >
 
-      <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+      <div className=" bg-spotify-gray text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
+
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="gap-6"
         >
-          <div className="col-span-1">
+
+          <div className="col-span-1 py-6">
             <textarea
               name="description"
               value={data.description}
               onChange={handleChange}
               placeholder="En que estas pensando..."
-              className="w-full h-32 px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full h-32 px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
             />
-            <div className="mt-4 bg-crema5 border rounded-lg px-3 py-2">
-              <div className="grid grid-cols-2 items-center">
-                <label className="block text-sm font-medium mb-1 text-black text-left">
+            <div className="mt-4 bg-transparent border rounded-lg px-3 py-2">
+              <div className="grid grid-cols-2 items-center border-transparent bg-transparent">
+                <label className="block text-sm font-medium mb-1 border-transparent text-left">
                   Ingresar Imagen
                 </label>
                 {imagePreviewUrl && (
                   <button
                     type="button"
                     onClick={handleClearImage}
-                    className="text-red-500 justify-self-end"
+                    className="text-red-500 justify-self-end border-transparent"
                   >
                     <Cancel />
                   </button>
                 )}
               </div>
-              <div className="relative flex items-center border rounded-lg w-full h-40">
+              <div className="relative flex items-center border rounded-lg w-full h-40 border-transparent">
                 {imagePreviewUrl ? (
                   <img
                     src={imagePreviewUrl}
@@ -279,10 +281,12 @@ const CreatePost = () => {
               </div>
             </div>
           </div>
+
           <div className="col-span-1 flex flex-col justify-between">
             {selectedItem ? (
               <div className="flex-grow bg-crema5 text-white p-4 rounded-lg flex flex-col justify-between h-full">
                 <div className="flex-grow text-black">
+                 
                   {selectedItem.type === "song" && (
                     <>
                       <img
@@ -307,6 +311,7 @@ const CreatePost = () => {
                       </a>
                     </>
                   )}
+
                   {selectedItem.type === "album" && (
                     <>
                       <p className="font-bold text-lg">
@@ -335,7 +340,7 @@ const CreatePost = () => {
                 <button
                   type="button"
                   onClick={handleClearSelection}
-                  className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg self-center transition duration-300"
+                  className="mt-4 px-4 py-2 bg-red-600 text-white rounde-3d-lg self-center transition duration00"
                 >
                   Cambiar de Contenido
                 </button>
@@ -367,11 +372,12 @@ const CreatePost = () => {
               </div>
             )}
           </div>
-          <div className="col-span-1 md:col-span-2">
+
+          <div className="col-span-1 md:col-span-2 py-2">
             <button
               type="submit"
 
-              className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
+              className="w-full py-2 mt-4 bg-ver  text-white rounded-lg  bg-color3 hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
 
             >
               Create Post
