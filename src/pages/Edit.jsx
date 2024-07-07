@@ -77,7 +77,7 @@
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="bg-spotify-gray p-8 rounded-lg shadow-lg w-80 max-w-4xl">
+        <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black p-7 rounded-lg shadow-lg w-80 max-w-4xl">
           {error && <p className="text-red-500 mb-4">{error}</p>}
           {success && <p className="text-green-500 mb-4">{success}</p>}
           <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
