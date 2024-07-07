@@ -137,15 +137,41 @@
                 transition={{ duration: 0.5, delay: 0.2 }}
               />
             </div>
+
+            
+
             <div className="col-span-1">
-              <a
-                href="#"
-                onClick={() => navigate("/change-password")}
-                className="text-sm text-white hover:text-color2 underline"
-              >
-                ¿Has olvidado tu contraseña?
-              </a>
+              <label className="block text-sm font-light mb-1 text-left labelLine" >Contraseña antigua </label>
+              <motion.input
+                type="password"
+                id=" "
+                name="  "
+                placeholder="Old Password"
+                value={data.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              />
             </div>
+
+              <div className="col-span-1">
+              <label className="block text-sm font-light mb-1 text-left labelLine">Contraseña nueva </label>
+              <motion.input
+                type="password"
+                id=" "
+                name=" "
+                placeholder="New Password"
+                value={data.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              />
+            </div>
+
             <div className="col-span-1 ">
               <button 
                 type="submit" 
