@@ -192,7 +192,7 @@ const UserProfile = () => {
           )}
         </div>
       </motion.div>
-
+ 
       <div className="flex flex-col md:flex-row mt-8">
         <div className="flex-1 md:mr-8 mb-8 md:mb-0">
           <h1 className="text-2xl font-bold mb-4 text-spotify-black">Posts</h1>
@@ -207,7 +207,7 @@ const UserProfile = () => {
                 transition={{ duration: 0.5 }}
               >
                 <Post
-                  post={post}
+                  post={post} 
                   currUserName={user.name}
                   currId={currUserId}
                   onDelete={handleDeletePost}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { searchSong } from "../services/songs/searchSong";
+import { searchSongsByTitle } from "../services/songs/searchSongBy";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import { useNavigate } from "react-router-dom";
@@ -15,31 +15,30 @@ const CreatePlaylist = () => {
     name: "",
     songsIds: [],
   });
-  const [songsDetails, setSongsDetails] = useState([]); // Estado para almacenar los detalles de las canciones añadidas
-  const [songSearchTerm, setSongSearchTerm] = useState(""); // Estado para el término de búsqueda de canciones
-  const [songSearchResults, setSongSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de canciones
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const [success, setSuccess] = useState(""); // Estado para manejar el mensaje de éxito
+  const [songsDetails, setSongsDetails] = useState([]);
+  const [songSearchTerm, setSongSearchTerm] = useState("");
+  const [songSearchResults, setSongSearchResults] = useState([]);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
 
-  // Maneja los cambios en los campos del formulario y actualiza el estado
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  // Maneja los cambios en el término de búsqueda de canciones
   const handleSongSearchTermChange = (e) => {
     setSongSearchTerm(e.target.value);
   };
 
-  // Maneja la búsqueda de canciones
   const handleSearch = async () => {
     setError("");
     setSuccess("");
 
     try {
-      const results = await searchSong(songSearchTerm);
+      const results = await searchSongsByTitle(songSearchTerm, page, size);
       if (results.status === 200) {
-        setSongSearchResults([results.data]);
+        setSongSearchResults(results.data.content);
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -51,7 +50,6 @@ const CreatePlaylist = () => {
     }
   };
 
-  // Maneja la adición de una canción a la playlist
   const handleAdd = (id, type, songDetails) => {
     if (type === "song") {
       if (data.songsIds.includes(id)) {
@@ -69,7 +67,6 @@ const CreatePlaylist = () => {
     }
   };
 
-  // Maneja la eliminación de una canción de la playlist
   const handleRemoveSong = (id) => {
     setData((prevData) => ({
       ...prevData,
@@ -80,7 +77,6 @@ const CreatePlaylist = () => {
     );
   };
 
-  // Efecto para obtener el ID del usuario actual al montar el componente
   useEffect(() => {
     const getId = async () => {
       try {
@@ -93,22 +89,20 @@ const CreatePlaylist = () => {
     getId();
   }, []);
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    const payload = [
-      {
-        userId: data.userId,
-        name: data.name,
-        songsIds: data.songsIds,
-      },
-    ];
+    const payload = {
+      userId: data.userId,
+      name: data.name,
+      songsIds: data.songsIds,
+    };
 
     try {
-      const res = await createPlaylist(payload);
+      const res = await createPlaylist([payload]);
+      
       if (res.status === 201) {
         setSuccess("Playlist creada con éxito.");
         navigate("/profile");
@@ -116,6 +110,7 @@ const CreatePlaylist = () => {
         setError("Error al crear la playlist.");
       }
     } catch (error) {
+      console.error(error)
       setError("Error al crear la playlist.");
     }
   };
@@ -128,7 +123,7 @@ const CreatePlaylist = () => {
       transition={{ duration: 0.5 }}
     >
       <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6">Crear Playlist</h1>
+        <button onClick={() => console.log(data)}>Debug</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
