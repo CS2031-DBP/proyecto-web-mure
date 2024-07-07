@@ -10,7 +10,7 @@ import SearchResults from "../components/search/SearchResults";
 import { motion } from 'framer-motion';
 import ImageIcon from '@mui/icons-material/Image';
 import Cancel from "@mui/icons-material/Cancel";
-import PlaylistAddCircle from  "@mui/icons-material/PlaylistAddCircle"
+
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -39,9 +39,15 @@ const CreatePost = () => {
   useEffect(() => {
     const getId = async () => {
       try {
-        const id = await fetchCurrentUser();
-        setData((prevData) => ({ ...prevData, userId: id.data.id }));
+        const response = await fetchCurrentUser();
+        console.log(response)
+        if (response  && response.id) {
+          setData((prevData) => ({ ...prevData, userId: response.id }));
+        } else {
+          throw new Error("No se pudo obtener el ID del usuario.");
+        }
       } catch (error) {
+        setError("Error obteniendo la información del usuario.");
         console.error("Error getting id:", error);
       }
     };

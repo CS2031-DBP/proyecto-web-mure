@@ -80,9 +80,14 @@ const CreatePlaylist = () => {
   useEffect(() => {
     const getId = async () => {
       try {
-        const id = await fetchCurrentUser();
-        setData((prevData) => ({ ...prevData, userId: id.data.id }));
+        const response = await fetchCurrentUser();
+        if (response && response.data && response.data.id) {
+          setData((prevData) => ({ ...prevData, userId: response.data.id }));
+        } else {
+          throw new Error("No se pudo obtener el ID del usuario.");
+        }
       } catch (error) {
+        setError("Error obteniendo la información del usuario.");
         console.error("Error getting id:", error);
       }
     };
@@ -94,6 +99,11 @@ const CreatePlaylist = () => {
     setError("");
     setSuccess("");
 
+    if (!data.userId) {
+      setError("No se pudo obtener el ID del usuario. Intenta de nuevo.");
+      return;
+    }
+
     const payload = {
       userId: data.userId,
       name: data.name,
@@ -102,7 +112,6 @@ const CreatePlaylist = () => {
 
     try {
       const res = await createPlaylist([payload]);
-      
       if (res.status === 201) {
         setSuccess("Playlist creada con éxito.");
         navigate("/profile");
@@ -110,7 +119,7 @@ const CreatePlaylist = () => {
         setError("Error al crear la playlist.");
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
       setError("Error al crear la playlist.");
     }
   };
@@ -122,7 +131,7 @@ const CreatePlaylist = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+      <div className="bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <button onClick={() => console.log(data)}>Debug</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
