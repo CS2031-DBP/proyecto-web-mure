@@ -1,4 +1,4 @@
-#Mure 🎵
+# Mure 🎵
 
 Mure es una aplicación  creada por estudiantes de la Universidad de Ingeniería y Tecnología como parte del proyecto para el curso de Desarrollo Basado en Plataformas. La plataforma permite a los usuarios explorar, compartir y gestionar música y playlists, así como interactuar socialmente mediante publicaciones y listas de amigos. Desarrollada utilizando Spring Boot como framework principal, Mure integra diversas funcionalidades aprendidas durante el curso para ofrecer una experiencia completa y dinámica a sus usuarios.
 
