@@ -118,7 +118,7 @@ const AddSong = () => {
       transition={{ duration: 0.5 }}
     >
 
-      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white p-7 rounded-lg shadow-lg w-full max-w-4xl">
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-4   rounded-lg shadow-lg w-full max-w-4xl">
 
         <button onClick={() => console.log(data)} className="bg-transparent text-white p-2 rounded-lg mb-4 font-mono text-3xl ">Log Data</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -295,10 +295,10 @@ const AddSong = () => {
             </button>
           </div>
         </form>
-        <div className="fixed bottom-10 right-10">
+        <div className="fixed bottom-10 right-10 rounded-full h-16">
           <button
             onClick={() => navigate('/song/create/spotify')}
-            className=" p-4  shadow-lg  text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
+            className=" p-4  shadow-lg  text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "
             title="Buscar en Spotify"
           >
             <FaSpotify className="text-2xl" />
