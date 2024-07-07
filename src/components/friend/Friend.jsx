@@ -15,7 +15,7 @@ const Friend = ({ friend, handleFriendPress, handleDeleteFriend, index }) => {
   return (
     <motion.div
       key={friend.id}
-      className="bg-white text-black p-6 rounded-lg shadow-md flex items-center justify-between mb-4 relative"
+      className="bg-white text-black p-6 rounded-lg shadow-md  items-center justify-between mb-4 relative "
       custom={index}
       initial="hidden"
       animate="visible"

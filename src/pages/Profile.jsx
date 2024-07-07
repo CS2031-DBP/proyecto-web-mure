@@ -4,17 +4,17 @@ import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { fetchUserFriends } from "../services/profile/getUserFriends";
 import { fetchUserPosts } from "../services/profile/getMyPosts";
 import { fetchMyPlaylists } from "../services/playlists/getMyPlaylists";
-import ProfileInfo from "../components/profile/ProfileInfo";
-import Friends from "../components/profile/Friends";
 import Post from "../components/post/Post";
 import Playlist from "../components/playlist/Playlist";
 import { motion } from "framer-motion";
 import { FaPlus, FaUserFriends, FaEdit } from "react-icons/fa";
+import {PlaylistAddCheck} from "@mui/icons-material";
+
 
 const Profile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
-  const [friends, setFriends] = useState([]);
+
   const [myposts, setMyPosts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState("");
@@ -23,12 +23,9 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const userdata = await fetchCurrentUser();
-
-        const friendsResponse = await fetchUserFriends();
         const myposts = await fetchUserPosts();
         const userPlaylists = await fetchMyPlaylists();
         setUserData(userdata.data);
-        setFriends(friendsResponse.data);
         setMyPosts(myposts.data);
         setPlaylists(userPlaylists.data);
       } catch (error) {
@@ -38,6 +35,19 @@ const Profile = () => {
     };
     fetchData();
   }, []);
+
+  const fetchPlaylists = async () => {
+    try {
+      const response = await fetchMyPlaylists();
+      if (response.status === 200) {
+        setPlaylists(response.data);
+      } else {
+        setError("Error fetching playlists");
+      }
+    } catch (err) {
+      setError("Error fetching playlists");
+    }
+  };
 
   const handleDeletePost = (postId) => {
     setMyPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
@@ -157,7 +167,7 @@ const Profile = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <Playlist key={playlist.id} playlist={playlist} edit={false} />
+                 <Playlist key={playlist.id} playlist={playlist} onUpdate={fetchPlaylists} edit={false} />
                 </motion.div>
               ))
             )}
@@ -170,7 +180,7 @@ const Profile = () => {
         className="fixed bottom-16 right-5 bg-color1 text-white p-4 rounded-full shadow-lg hover:bg-color2 transition duration-300"
         title="Crear Playlist"
       >
-        <FaPlus className="text-2xl" />
+        <PlaylistAddCheck className="text-2xl" />
       </button>
     </>
   );

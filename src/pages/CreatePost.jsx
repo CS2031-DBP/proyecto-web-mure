@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
+import { searchSongsByTitle } from '../services/songs/searchSongBy';
 import { searchSongById } from "../services/songs/searchSongById";
-import { searchSong } from "../services/songs/searchSong";
 import { searchAlbum } from "../services/album/searchAlbum";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
@@ -14,9 +14,8 @@ import Cancel from "@mui/icons-material/Cancel";
 const CreatePost = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const initialSongId = location.state?.songId || ""; // Obtiene el ID de la canción inicial de la ubicación
+  const initialSongId = location.state?.songId || "";
 
-  // Estado inicial para los datos del post
   const [data, setData] = useState({
     userId: "",
     songId: initialSongId,
@@ -25,16 +24,17 @@ const CreatePost = () => {
     imageUrl: "",
     audioUrl: "",
   });
-  const [selectedItem, setSelectedItem] = useState(null); // Estado para el elemento seleccionado (canción o álbum)
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const [success, setSuccess] = useState(""); // Estado para manejar el mensaje de éxito
-  const [songSearchTerm, setSongSearchTerm] = useState(""); // Estado para el término de búsqueda de canciones
-  const [albumSearchTerm, setAlbumSearchTerm] = useState(""); // Estado para el término de búsqueda de álbumes
-  const [songSearchResults, setSongSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de canciones
-  const [albumSearchResults, setAlbumSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de álbumes
-  const [imagePreviewUrl, setImagePreviewUrl] = useState(""); // Estado para la URL de la vista previa de la imagen
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [songSearchTerm, setSongSearchTerm] = useState("");
+  const [albumSearchTerm, setAlbumSearchTerm] = useState("");
+  const [songSearchResults, setSongSearchResults] = useState([]);
+  const [albumSearchResults, setAlbumSearchResults] = useState([]);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
 
-  // Efecto para obtener el ID del usuario actual al montar el componente
   useEffect(() => {
     const getId = async () => {
       try {
@@ -62,7 +62,6 @@ const CreatePost = () => {
     }
   }, [initialSongId]);
 
-  // Efecto para obtener los detalles de la canción o álbum seleccionado
   useEffect(() => {
     if (data.songId) {
       fetchSongDetails(data.songId);
@@ -71,7 +70,6 @@ const CreatePost = () => {
     }
   }, [data.songId, data.albumId]);
 
-  // Función para obtener los detalles de la canción por ID
   const fetchSongDetails = async (songId) => {
     try {
       const result = await searchSongById(songId);
@@ -83,7 +81,6 @@ const CreatePost = () => {
     }
   };
 
-  // Función para obtener los detalles del álbum por ID
   const fetchAlbumDetails = async (albumId) => {
     try {
       const result = await searchAlbum(albumId);
@@ -95,7 +92,6 @@ const CreatePost = () => {
     }
   };
 
-  // Maneja los cambios en los campos del formulario y actualiza el estado
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (files && files[0]) {
@@ -106,7 +102,6 @@ const CreatePost = () => {
     }
   };
 
-  // Maneja los cambios en el término de búsqueda de canciones y resetea la búsqueda de álbumes
   const handleSongSearchTermChange = (e) => {
     setSongSearchTerm(e.target.value);
     if (e.target.value) {
@@ -116,7 +111,6 @@ const CreatePost = () => {
     }
   };
 
-  // Maneja los cambios en el término de búsqueda de álbumes y resetea la búsqueda de canciones
   const handleAlbumSearchTermChange = (e) => {
     setAlbumSearchTerm(e.target.value);
     if (e.target.value) {
@@ -126,16 +120,15 @@ const CreatePost = () => {
     }
   };
 
-  // Maneja la búsqueda de canciones o álbumes
   const handleSearch = async (type) => {
     setError("");
     setSuccess("");
 
     try {
       if (type === "song") {
-        const results = await searchSong(songSearchTerm);
+        const results = await searchSongsByTitle(songSearchTerm, page, size);
         if (results.status === 200) {
-          setSongSearchResults([results.data]);
+          setSongSearchResults(results.data.content);
         }
       }
     } catch (error) {
@@ -151,7 +144,7 @@ const CreatePost = () => {
       if (type === "album") {
         const results = await searchAlbum(albumSearchTerm);
         if (results.status === 200) {
-          setAlbumSearchResults([results.data]);
+          setAlbumSearchResults(results.data);
         }
       }
     } catch (error) {
@@ -164,7 +157,6 @@ const CreatePost = () => {
     }
   };
 
-  // Maneja la adición de una canción o álbum al post
   const handleAdd = (id, type, item) => {
     if (type === "song") {
       setData((prevData) => ({ ...prevData, songId: id }));
@@ -178,19 +170,16 @@ const CreatePost = () => {
     setAlbumSearchTerm("");
   };
 
-  // Maneja la limpieza de la selección de canción o álbum
   const handleClearSelection = () => {
     setData((prevData) => ({ ...prevData, songId: "", albumId: "" }));
     setSelectedItem(null);
   };
 
-  // Maneja la limpieza de la imagen seleccionada
   const handleClearImage = () => {
     setData((prevData) => ({ ...prevData, imageUrl: "" }));
     setImagePreviewUrl("");
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -224,9 +213,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-
       <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
@@ -369,11 +356,9 @@ const CreatePost = () => {
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-
               className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
-
             >
-              Create Post
+              Crear Post
             </button>
           </div>
         </form>

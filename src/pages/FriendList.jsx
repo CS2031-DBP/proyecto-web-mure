@@ -53,7 +53,7 @@ const FriendList = () => {
   return (
     <div className="container mx-auto py-8">
       {errors && <p className="text-red-500">{errors}</p>}
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-6 w-96">
         {friends.length > 0 ? (
           friends.map((friend, index) => (
             <Friend

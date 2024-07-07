@@ -19,7 +19,7 @@ const Edit = () => {
     const getCurrentUser = async () => {
       try {
         const user = await fetchCurrentUser();
-        console.log(user);
+
         setData({
           name: user.data.name,
           email: user.data.email,
