@@ -118,7 +118,7 @@ const AddSong = () => {
       transition={{ duration: 0.5 }}
     >
 
-      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-4   rounded-lg shadow-lg w-full max-w-4xl">
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-5   rounded-lg shadow-lg w-full max-w-4xl">
 
         <button onClick={() => console.log(data)} className="bg-transparent text-white p-2 rounded-lg mb-4 font-mono text-3xl ">Log Data</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -139,7 +139,7 @@ const AddSong = () => {
               value={data.title}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent  text-whborder-whiteite focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -295,7 +295,7 @@ const AddSong = () => {
             </button>
           </div>
         </form>
-        <div className="fixed bottom-10 right-10 rounded-full h-16 ">
+        <div className="fixed bottom-10 right-5 rounded-full h-20 ">
           <button
             onClick={() => navigate('/song/create/spotify')}
             className=" p-4  shadow-lg  text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "
