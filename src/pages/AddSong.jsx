@@ -295,7 +295,7 @@ const AddSong = () => {
             </button>
           </div>
         </form>
-        <div className="fixed bottom-10 right-10 rounded-full h-16">
+        <div className="fixed bottom-10 right-10 rounded-full h-16 ">
           <button
             onClick={() => navigate('/song/create/spotify')}
             className=" p-4  shadow-lg  text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "

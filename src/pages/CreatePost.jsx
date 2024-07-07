@@ -377,7 +377,7 @@ const CreatePost = () => {
             <button
               type="submit"
 
-              className="w-full py-2 mt-4 bg-ver  text-white rounded-lg  bg-color3 hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
+              className="w-full py-2 mt-4 bg-ver  text-white rounded-lg  bg-color4 hover:bg-color3 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
 
             >
               Create Post
