@@ -4,51 +4,48 @@ import { getPlaylistById } from "../services/playlists/getPlaylistById";
 import Playlist from "../components/playlist/Playlist";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
-import { searchSong } from "../services/songs/searchSong";
+import { searchSongsByTitle } from "../services/songs/searchSongBy";
 import { addSongToPlaylist } from "../services/playlists/addSongToPlaylist";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const EditPlaylist = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Obtiene el ID de la playlist desde los parámetros de la URL
-  const [playlist, setPlaylist] = useState(null); // Estado para almacenar la información de la playlist
-  const [songSearchTerm, setSongSearchTerm] = useState(""); // Estado para el término de búsqueda de canciones
-  const [songSearchResults, setSongSearchResults] = useState([]); // Estado para almacenar los resultados de búsqueda de canciones
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const [fetchError, setFetchError] = useState(""); // Estado para manejar errores de fetch
+  const { id } = useParams();
+  const [playlist, setPlaylist] = useState(null);
+  const [songSearchTerm, setSongSearchTerm] = useState("");
+  const [songSearchResults, setSongSearchResults] = useState([]);
+  const [error, setError] = useState("");
+  const [fetchError, setFetchError] = useState("");
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
 
-  // Función para obtener los datos de la playlist por ID
   const fetchPlaylist = async () => {
     try {
       const response = await getPlaylistById(id);
       if (response.status === 200) {
         setPlaylist(response.data);
         setFetchError("");
-      } else {
-        setFetchError("Failed to fetch playlist data.");
-      }
+      } 
     } catch (err) {
+      console.error(err);
       setFetchError("Failed to fetch playlist data.");
     }
   };
 
-  // useEffect para obtener los datos de la playlist cuando el componente se monta o cambia el ID
   useEffect(() => {
     fetchPlaylist();
   }, [id]);
 
-  // Maneja los cambios en el término de búsqueda de canciones
   const handleSongSearchTermChange = (e) => {
     setSongSearchTerm(e.target.value);
   };
 
-  // Maneja la búsqueda de canciones
   const handleSearch = async () => {
     setError("");
     try {
-      const results = await searchSong(songSearchTerm);
+      const results = await searchSongsByTitle(songSearchTerm, page, size);
       if (results.status === 200) {
-        setSongSearchResults([results.data]);
+        setSongSearchResults(results.data.content);
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -60,11 +57,10 @@ const EditPlaylist = () => {
     }
   };
 
-  // Maneja la adición de una canción a la playlist
   const handleAdd = async (songId) => {
     try {
       await addSongToPlaylist(playlist.id, songId);
-      fetchPlaylist(); // Actualiza la playlist después de añadir la canción
+      fetchPlaylist();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setError("La canción ya está en la playlist");
@@ -74,12 +70,10 @@ const EditPlaylist = () => {
     }
   };
 
-  // Muestra un mensaje de error si ocurre un error al obtener la playlist
   if (fetchError) {
     return <p>{fetchError}</p>;
   }
 
-  // Muestra un mensaje de carga mientras se obtienen los datos de la playlist
   if (!playlist) {
     return <p>Loading...</p>;
   }
@@ -91,7 +85,7 @@ const EditPlaylist = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+      <div className="bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6">Editar Playlist</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <Playlist playlist={playlist} edit={true} onUpdate={fetchPlaylist} />

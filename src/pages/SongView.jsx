@@ -29,7 +29,7 @@ const SongView = ({ showSearchBar }) => {
                 switch (searchType) {
                     case 'titulo':
                         res = await searchSongsByTitle(searchTerm, resetPage ? 0 : page, size);
-                        console.log(res.data.content);
+  
                         if (res.status === 200) {
                             setSongs(res.data.content);
                             setHasMore(false); 

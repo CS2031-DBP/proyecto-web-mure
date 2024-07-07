@@ -15,6 +15,7 @@
     const [error, setError] = useState(""); // Añadido para manejar errores
     const [success, setSuccess] = useState(""); // Añadido para manejar mensajes de éxito
 
+
     useEffect(() => {
       const getCurrentUser = async () => {
         try {
@@ -39,6 +40,7 @@
       if (files && files[0]) {
         setData({ ...data, profileImage: files[0] });
       } else {
+
         setData({
           ...data,
           [name]: value,

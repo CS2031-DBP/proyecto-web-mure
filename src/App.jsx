@@ -12,13 +12,12 @@ import UserProfile from './pages/UserProfile';
 import CreatePlaylist from './pages/CreatePlaylist';
 import EditPlaylist from './pages/EditPlaylist';
 import CreateSpotify from './pages/CrearSpotify';
-import CreateArtist from './pages/CreateArtist';
 import Navbar from './components/navbar/navbar';
 import { useState, useEffect } from 'react';
 import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
 import FriendList from './pages/FriendList';
-import CreateArtistPage from './pages/CreateArtist';
+import AddArtistInfo from './pages/AddArtistInfo';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -61,7 +60,7 @@ function App() {
             <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
             <Route path="/friends" element={<FriendList/>} />
             <Route path="/song/create/spotify" element={<CreateSpotify />} />
-            <Route path="/artist/create" element={<CreateArtist />} />
+            <Route path="/add-artist-info" element={<AddArtistInfo />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/auth/login" />} />
