@@ -4,6 +4,7 @@ import { fetchUserFriends } from "../services/profile/getUserFriends";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { deleteFriend } from "../services/friends/deleteFriend";
 import Friend from "../components/friend/Friend";
+import pic from "../img/Alone.jpg"
 
 const FriendList = () => {
   const navigate = useNavigate();
@@ -65,7 +66,21 @@ const FriendList = () => {
             />
           ))
         ) : (
-          <p className="text-center col-span-1">No friends found</p>
+          <>
+          
+          <div className="text-center p-10 bg-spotify-gray rounded-lg shadow-lg">
+            <h1 className="text-4xl font-bold mb-4">No se encontraron amigos :(</h1>
+              
+              <img src={pic} alt ="pic" className="mx-auto mb-8 h-96"/>
+
+            <button 
+              onClick={() => navigate('/Profile')}
+              className="bg-color4 text-white py-2 px-4 rounded-full hover:bg-color3 transition duration-300"
+            >
+              Regresar al Perfil
+            </button>
+          </div>
+          </>
         )}
       </div>
     </div>
