@@ -43,12 +43,12 @@ const SearchInput = ({
         value={searchTerm}
         onChange={handleSearchTermChange}
         placeholder={`Buscar por ${searchType || (type === "song" ? "Canción" : type === "album" ? "Álbum" : "Artista")}`}
-        className={`w-full px-3 py-2 border ${options ? '' : 'rounded-l-lg'} bg-crema5 text-gray-800`}
+        className={`w-full px-3 py-2 border ${options ? '' : 'rounded-l-lg'} bg-transparent  border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white`}
       />
       <button
         type="button"
         onClick={() => handleSearch(type)}
-        className="px-4 py-2 bg-gradient1 text-white rounded-r-lg"
+        className="px-4 py-2  rounded-r-lg  text-white transition duration-300 bg-color4 hover:bg-color3"
       >
         Buscar
       </button>

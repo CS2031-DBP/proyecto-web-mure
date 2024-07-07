@@ -117,14 +117,17 @@ const AddSong = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className=" bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <button onClick={() => console.log(data)} className="bg-red-500 text-white p-2 rounded-lg mb-4">Log Data</button>
+
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-5   rounded-lg shadow-lg w-full max-w-4xl">
+
+        <button onClick={() => console.log(data)} className="bg-transparent text-white p-2 rounded-lg mb-4 font-mono text-3xl ">Log Data</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
+          
           <div className="col-span-1 md:col-span-2">
             <label htmlFor="title" className="block text-sm font-medium mb-1">
               Título
@@ -136,12 +139,14 @@ const AddSong = () => {
               value={data.title}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent  text-whborder-whiteite focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
+
+
           <div className="col-span-1">
             <label
               htmlFor="releaseDate"
@@ -156,7 +161,7 @@ const AddSong = () => {
               value={data.releaseDate}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -173,7 +178,7 @@ const AddSong = () => {
               value={data.genre}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -193,7 +198,7 @@ const AddSong = () => {
               value={data.duration}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -213,7 +218,7 @@ const AddSong = () => {
               value={data.coverImage}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -233,7 +238,7 @@ const AddSong = () => {
               value={data.link}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
@@ -284,16 +289,16 @@ const AddSong = () => {
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
+              className="w-full py-2 mt-4 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
             >
               Agregar Canción
             </button>
           </div>
         </form>
-        <div className="fixed bottom-10 right-10">
+        <div className="fixed bottom-10 right-5 rounded-full h-20 ">
           <button
             onClick={() => navigate('/song/create/spotify')}
-            className="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+            className=" p-4  shadow-lg  text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "
             title="Buscar en Spotify"
           >
             <FaSpotify className="text-2xl" />

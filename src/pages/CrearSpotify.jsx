@@ -3,6 +3,7 @@ import { getToken, searchTracks, getArtistDetailsFromSpotify } from '../services
 import { checkArtistInDatabase, createArtists } from '../services/artist/artist';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import spotifyPIC from '../img/Waves.jpg'
 
 const CreateSpotify = () => {
   const [title, setTitle] = useState('');
@@ -56,53 +57,66 @@ const CreateSpotify = () => {
 
   return (
     <motion.div
-      className="items-center justify-center p-8"
+      className="items-center justify-center p-8 flex "
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6">Buscar Canción en Spotify</h1>
+
+    <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white rounded-lg shadow-lg p-4 aspect-w-1 aspect-h-1" >
+        <h1 className="text-3xl font-mono  mb-6 text-white">Buscar en Spotify</h1>
+
+        <div className='p-4 flex justify-center items-center'>
+        <img src={spotifyPIC} alt='spotifyPIC' className='w-auto h-80 text-center'/>
+        </div>
         <div className="mb-6">
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black mb-4"
-            placeholder="Título de la canción"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+            placeholder="Nombre de la canción"
           />
           <button
             onClick={handleSearch}
-            className="w-full py-2 mt-4 bg-green-600 text-white rounded-lg transition duration-300"
+            className="w-full py-2 mt-4 text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "
           >
             Buscar
           </button>
-        </div>
+
+          <button  className="w-full py-2 mt-4 text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 " onClick={()=>{navigate("/AddSong")}}>
+              Regresar
+            </button>
+        </div>  
+
         {error && <p className="text-red-500 mb-4">{error}</p>}
+        
         <div>
           {tracks.map((track) => (
-            <motion.div 
-              key={track.id} 
-              className="bg-crema5 text-black p-4 mb-4 rounded-lg flex items-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div key={track.id}  className="bg-spotify-gray p-4 mb-4 rounded-sm flex items-center border border-transparent hover:border-white transition duration-100">
+
               <img src={track.album.images[0].url} alt={`${track.name} cover`} className="w-16 h-16 object-cover rounded-lg" />
               <div className="ml-4 flex-1">
                 <p className="font-bold">{track.name}</p>
                 <p>{track.artists.map(artist => artist.name).join(', ')}</p>
                 <button
                   onClick={() => handleSelect(track)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg transition duration-300 mt-2"
+
+                  className="rounded-full  bg-color1 hover:bg-color2 text-white px-4 py-2 transition duration-300 mt-2"
+
                 >
                   Seleccionar
                 </button>
               </div>
+
+            </div>
+
             </motion.div>
+
           ))}
         </div>
       </div>
+
     </motion.div>
   );
 };
