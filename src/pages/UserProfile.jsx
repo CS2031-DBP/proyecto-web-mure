@@ -21,6 +21,9 @@ const UserProfile = () => {
   const [error, setError] = useState("");
   const [friends, setFriends] = useState(false);
   const [currUserId, setCurrUserId] = useState("");
+  const [pagePosts, setPagePosts] = useState(0);
+  const [pagePlaylists, setPagePlaylists] = useState(0);
+  const size = 10; // Número de elementos por página
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,12 +41,11 @@ const UserProfile = () => {
 
     const fetchPlaylists = async () => {
       try {
-        const response = await getUserPlaylists(id);
+        const response = await getUserPlaylists(id, pagePlaylists, size);
+        
         if (response.status === 200) {
-          setPlaylists(response.data.slice(0, 4));
-        } else {
-          setError("Failed to fetch playlists.");
-        }
+          setPlaylists(response.data.content.slice(0, 4));
+        } 
       } catch (err) {
         setError("Failed to fetch playlists.");
       }
@@ -78,17 +80,16 @@ const UserProfile = () => {
     fetchPlaylists();
     checkFriendship();
     fetchCurrentUserId();
-  }, [id]);
+  }, [id, pagePosts, pagePlaylists]);
 
   const loadPosts = async () => {
     try {
-      const response = await getPostsByUser(id, 0, 5);
-      if (response.status === 200) {
-        setPosts(response.data);
-      } else {
-        setError("Failed to fetch posts.");
-      }
+      const response = await getPostsByUser(id, pagePosts, size);
+
+        setPosts(response.content);
+      
     } catch (err) {
+      console.error(err);
       setError("Failed to fetch posts.");
     }
   };
@@ -118,6 +119,12 @@ const UserProfile = () => {
   const handleDeletePost = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
+
+  const handleNextPagePosts = () => setPagePosts(prevPage => prevPage + 1);
+  const handlePreviousPagePosts = () => setPagePosts(prevPage => prevPage > 0 ? prevPage - 1 : 0);
+
+  const handleNextPagePlaylists = () => setPagePlaylists(prevPage => prevPage + 1);
+  const handlePreviousPagePlaylists = () => setPagePlaylists(prevPage => prevPage > 0 ? prevPage - 1 : 0);
 
   const animationVariants = {
     hidden: { opacity: 0, x: 35 },
@@ -192,7 +199,7 @@ const UserProfile = () => {
           )}
         </div>
       </motion.div>
- 
+
       <div className="flex flex-col md:flex-row mt-8">
         <div className="flex-1 md:mr-8 mb-8 md:mb-0">
           <h1 className="text-2xl font-bold mb-4 text-spotify-black">Posts</h1>
@@ -207,7 +214,7 @@ const UserProfile = () => {
                 transition={{ duration: 0.5 }}
               >
                 <Post
-                  post={post} 
+                  post={post}
                   currUserName={user.name}
                   currId={currUserId}
                   onDelete={handleDeletePost}
@@ -215,6 +222,14 @@ const UserProfile = () => {
               </motion.div>
             ))
           )}
+          <div className="flex justify-between mt-4">
+            <button onClick={handlePreviousPagePosts} disabled={pagePosts === 0}>
+              Previous
+            </button>
+            <button onClick={handleNextPagePosts}>
+              Next
+            </button>
+          </div>
         </div>
         <div className="flex-1">
           <h1 className="text-2xl font-bold mb-4 text-spotify-black">Playlists</h1>
@@ -232,6 +247,14 @@ const UserProfile = () => {
               </motion.div>
             ))
           )}
+          <div className="flex justify-between mt-4">
+            <button onClick={handlePreviousPagePlaylists} disabled={pagePlaylists === 0}>
+              Previous
+            </button>
+            <button onClick={handleNextPagePlaylists}>
+              Next
+            </button>
+          </div>
         </div>
       </div>
       {error && <p className="text-center text-red-500 mt-4">{error}</p>}

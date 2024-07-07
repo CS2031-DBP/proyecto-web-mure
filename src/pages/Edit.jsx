@@ -20,11 +20,11 @@
       const getCurrentUser = async () => {
         try {
           const user = await fetchCurrentUser();
-          console.log(user);
+          console.log(user)
           setData({
-            name: user.data.name,
-            email: user.data.email,
-            profileImage: user.data.profileImage,
+            name: user.name,
+            email: user.email,
+            profileImage: user.profileImage,
           });
         } catch (error) {
           console.error("Error fetching user data:", error);

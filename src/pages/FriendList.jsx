@@ -19,6 +19,7 @@ const FriendList = () => {
       setCurrentUser(currentUserResponse.data);
 
       const friendsDataResponse = await fetchUserFriends(friendIds);
+      console.log(friendsDataResponse.data)
 
       const friendsData = friendsDataResponse.data.map(friend => ({
         ...friend,

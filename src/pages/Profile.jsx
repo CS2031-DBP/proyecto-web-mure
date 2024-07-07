@@ -1,49 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { fetchUserFriends } from "../services/profile/getUserFriends";
-import { fetchUserPosts } from "../services/profile/getMyPosts";
+import { getPostsByUser } from "../services/posts/getPostByUserId";
 import { fetchMyPlaylists } from "../services/playlists/getMyPlaylists";
 import Post from "../components/post/Post";
 import Playlist from "../components/playlist/Playlist";
 import { motion } from "framer-motion";
-import { FaPlus, FaUserFriends, FaEdit } from "react-icons/fa";
-import {PlaylistAddCheck} from "@mui/icons-material";
-
+import { FaUserFriends, FaEdit } from "react-icons/fa";
+import { PlaylistAddCheck } from "@mui/icons-material";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
-
   const [myposts, setMyPosts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState("");
+  const [pagePosts, setPagePosts] = useState(0);
+  const [pagePlaylists, setPagePlaylists] = useState(0);
+  const size = 10; // Número de elementos por página
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userdata = await fetchCurrentUser();
-        const myposts = await fetchUserPosts();
-        const userPlaylists = await fetchMyPlaylists();
-        setUserData(userdata.data);
-        setMyPosts(myposts.data);
-        setPlaylists(userPlaylists.data);
+        const myposts = await getPostsByUser(userdata.id, pagePosts, size);
+        const userPlaylists = await fetchMyPlaylists(pagePlaylists, size);
+        setUserData(userdata);
+        setMyPosts(myposts.content);
+        setPlaylists(userPlaylists.content);
       } catch (error) {
         setError("Error al obtener los datos del usuario.");
         console.error(error);
       }
     };
     fetchData();
-  }, []);
+  }, [pagePosts, pagePlaylists]);
 
   const fetchPlaylists = async () => {
     try {
-      const response = await fetchMyPlaylists();
-      if (response.status === 200) {
-        setPlaylists(response.data);
-      } else {
-        setError("Error fetching playlists");
-      }
+      const userPlaylists = await fetchMyPlaylists(pagePlaylists, size);
+      setPlaylists(userPlaylists.content);
     } catch (err) {
       setError("Error fetching playlists");
     }
@@ -52,6 +48,12 @@ const Profile = () => {
   const handleDeletePost = (postId) => {
     setMyPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
+
+  const handleNextPagePosts = () => setPagePosts(prevPage => prevPage + 1);
+  const handlePreviousPagePosts = () => setPagePosts(prevPage => prevPage > 0 ? prevPage - 1 : 0);
+
+  const handleNextPagePlaylists = () => setPagePlaylists(prevPage => prevPage + 1);
+  const handlePreviousPagePlaylists = () => setPagePlaylists(prevPage => prevPage > 0 ? prevPage - 1 : 0);
 
   const animationVariants = {
     hidden: { opacity: 0, x: 35 },
@@ -149,6 +151,14 @@ const Profile = () => {
                 </motion.div>
               ))
             )}
+            <div className="flex justify-between mt-4">
+              <button onClick={handlePreviousPagePosts} disabled={pagePosts === 0}>
+                Previous
+              </button>
+              <button onClick={handleNextPagePosts}>
+                Next
+              </button>
+            </div>
           </motion.div>
           <motion.div
             className="flex-1"
@@ -167,10 +177,18 @@ const Profile = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                 <Playlist key={playlist.id} playlist={playlist} onUpdate={fetchPlaylists} edit={false} />
+                  <Playlist key={playlist.id} playlist={playlist} onUpdate={fetchPlaylists} edit={false} />
                 </motion.div>
               ))
             )}
+            <div className="flex justify-between mt-4">
+              <button onClick={handlePreviousPagePlaylists} disabled={pagePlaylists === 0}>
+                Previous
+              </button>
+              <button onClick={handleNextPagePlaylists}>
+                Next
+              </button>
+            </div>
           </motion.div>
         </div>
         {error && <p className="text-center text-red-500 mt-4">{error}</p>}
