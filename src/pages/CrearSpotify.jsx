@@ -69,13 +69,13 @@ const CreateSpotify = () => {
 
   return (
     <motion.div
-      className="items-center justify-center p-8"
+      className="items-center justify-center p-8 flex "
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
 
-    <div className='bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-4  rounded-lg shadow-lg w-full max-w-4xl'>
+    <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white rounded-lg shadow-lg p-4 aspect-w-1 aspect-h-1" >
         <h1 className="text-3xl font-mono  mb-6 text-white">Buscar en Spotify</h1>
 
         <div className='p-4 flex justify-center items-center'>
@@ -105,14 +105,14 @@ const CreateSpotify = () => {
         
         <div>
           {tracks.map((track) => (
-            <div key={track.id} className="bg-gray-700 text-white p-4 mb-4 rounded-lg flex items-center">
+            <div key={track.id}  className="bg-spotify-gray p-4 mb-4 rounded-sm flex items-center border border-transparent hover:border-white transition duration-100">
               <img src={track.album.images[0].url} alt={`${track.name} cover`} className="w-16 h-16 object-cover rounded-lg" />
               <div className="ml-4 flex-1">
                 <p className="font-bold">{track.name}</p>
                 <p>{track.artists.map(artist => artist.name).join(', ')}</p>
                 <button
                   onClick={() => handleSelect(track)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg transition duration-300 mt-2"
+                  className="rounded-full  bg-color1 hover:bg-color2 text-white px-4 py-2 transition duration-300 mt-2"
                 >
                   Seleccionar
                 </button>

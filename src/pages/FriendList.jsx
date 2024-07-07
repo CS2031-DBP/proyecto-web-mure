@@ -68,8 +68,8 @@ const FriendList = () => {
         ) : (
           <>
           
-          <div className="text-center p-10 bg-spotify-gray rounded-lg shadow-lg">
-            <h1 className="text-4xl font-bold mb-4">No se encontraron amigos :(</h1>
+          <div className="text-center p-10 bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black rounded-lg shadow-lg">
+            <h1 className="text-3xl font-mono mb-4">No se encontraron amigos :(</h1>
               
               <img src={pic} alt ="pic" className="mx-auto mb-8 h-96"/>
 
