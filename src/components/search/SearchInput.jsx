@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from 'framer-motion';
 
-// Componente SearchInput para entrada de búsqueda
+// SearchInput component for search input
 const SearchInput = ({
   searchTerm,
   handleSearchTermChange,
@@ -42,15 +42,15 @@ const SearchInput = ({
         type="text"
         value={searchTerm}
         onChange={handleSearchTermChange}
-        placeholder={`Buscar por ${searchType || (type === "song" ? "Canción" : type === "album" ? "Álbum" : "Artista")}`}
-        className={`w-full px-3 py-2 border ${options ? '' : 'rounded-l-lg'} bg-transparent  border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white`}
+        placeholder={`Search by ${searchType || (type === "song" ? "Song" : type === "album" ? "Album" : "Artist")}`}
+        className={`w-full px-3 py-2 border ${options ? '' : 'rounded-l-lg'} bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white`}
       />
       <button
         type="button"
         onClick={() => handleSearch(type)}
-        className="px-4 py-2  rounded-r-lg  text-white transition duration-300 bg-color4 hover:bg-color3"
+        className="px-4 py-2 rounded-r-lg text-white transition duration-300 bg-color4 hover:bg-color3"
       >
-        Buscar
+        Search
       </button>
     </motion.div>
   );

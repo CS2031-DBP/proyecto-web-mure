@@ -11,7 +11,6 @@ import { motion } from 'framer-motion';
 import ImageIcon from '@mui/icons-material/Image';
 import Cancel from "@mui/icons-material/Cancel";
 
-
 const CreatePost = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,8 +21,7 @@ const CreatePost = () => {
     songId: initialSongId,
     albumId: "",
     description: "",
-    imageUrl: "",
-    audioUrl: "",
+    image: null,
   });
   const [selectedItem, setSelectedItem] = useState(null);
   const [error, setError] = useState("");
@@ -40,14 +38,13 @@ const CreatePost = () => {
     const getId = async () => {
       try {
         const response = await fetchCurrentUser();
-        console.log(response)
-        if (response  && response.id) {
+        if (response && response.id) {
           setData((prevData) => ({ ...prevData, userId: response.id }));
         } else {
-          throw new Error("No se pudo obtener el ID del usuario.");
+          throw new Error("Could not fetch user ID.");
         }
       } catch (error) {
-        setError("Error obteniendo la información del usuario.");
+        setError("Error fetching user info.");
         console.error("Error getting id:", error);
       }
     };
@@ -102,7 +99,7 @@ const CreatePost = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (files && files[0]) {
-      setData({ ...data, imageUrl: files[0] });
+      setData({ ...data, image: files[0] });
       setImagePreviewUrl(URL.createObjectURL(files[0]));
     } else {
       setData({ ...data, [name]: value });
@@ -140,26 +137,26 @@ const CreatePost = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError("No se han encontrado canciones con ese título :(");
+        setError("No songs found with that title :(");
         setSongSearchResults([]);
       } else {
-        setError("Error al buscar canciones.");
+        setError("Error searching for songs.");
       }
     }
 
     try {
       if (type === "album") {
-        const results = await searchAlbum(albumSearchTerm);
+        const results = await searchAlbum(albumSearchTerm, page, size);
         if (results.status === 200) {
-          setAlbumSearchResults(results.data);
+          setAlbumSearchResults(results.data.content);
         }
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError("No se han encontrado álbumes con ese título :(");
+        setError("No albums found with that title :(");
         setAlbumSearchResults([]);
       } else {
-        setError("Error al buscar álbumes.");
+        setError("Error searching for albums.");
       }
     }
   };
@@ -183,7 +180,7 @@ const CreatePost = () => {
   };
 
   const handleClearImage = () => {
-    setData((prevData) => ({ ...prevData, imageUrl: "" }));
+    setData((prevData) => ({ ...prevData, image: null }));
     setImagePreviewUrl("");
   };
 
@@ -192,23 +189,27 @@ const CreatePost = () => {
     setError("");
     setSuccess("");
 
-    const updateData = {};
-    for (let key in data) {
-      if (data[key]) {
-        updateData[key] = data[key];
-      }
+     console.log(data);
+
+    const formData = new FormData();
+    formData.append("userId", data.userId);
+    formData.append("songId", data.songId);
+    formData.append("albumId", data.albumId);
+    formData.append("description", data.description);
+    if (data.image) {
+      formData.append("image", data.image);
     }
 
-    const dataUp = [updateData];
+   
 
     try {
-      const res = await createPost(dataUp);
+      const res = await createPost(formData);
       if (res.status === 201) {
-        setSuccess("Post creado con éxito.");
+        setSuccess("Post created successfully.");
         navigate("/dashboard");
       }
     } catch (error) {
-      setError("Error al crear el post.");
+      setError("Error creating the post.");
       console.error("Error creating post:", error);
     }
   };
@@ -220,31 +221,24 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-
-
-      <div className=" bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-
-
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
-
-        <form
-          onSubmit={handleSubmit}
-          className="gap-6"
-        >
-
+ 
+        <button onClick={() => console.log(data)} className="bg-red-500 text-white px-4 py-2 rounded-lg mb-4">Debug</button>
+        <form onSubmit={handleSubmit} className="gap-6">
           <div className="col-span-1 py-6">
             <textarea
               name="description"
               value={data.description}
               onChange={handleChange}
-              placeholder="En que estas pensando..."
+              placeholder="What are you thinking about..."
               className="w-full h-32 px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
             />
             <div className="mt-4 bg-transparent border rounded-lg px-3 py-2">
               <div className="grid grid-cols-2 items-center border-transparent bg-transparent">
                 <label className="block text-sm font-medium mb-1 border-transparent text-left">
-                  Ingresar Imagen
+                  Add Image
                 </label>
                 {imagePreviewUrl && (
                   <button
@@ -283,7 +277,6 @@ const CreatePost = () => {
             {selectedItem ? (
               <div className="flex-grow bg-crema5 text-white p-4 rounded-lg flex flex-col justify-between h-full">
                 <div className="flex-grow text-black">
-                 
                   {selectedItem.type === "song" && (
                     <>
                       <img
@@ -292,19 +285,19 @@ const CreatePost = () => {
                         className="w-full h-64 object-cover rounded-lg mb-4"
                       />
                       <p className="font-bold text-lg">
-                        Título: {selectedItem.title}
+                        {selectedItem.title}
                       </p>
-                      <p>Artista: {selectedItem.artistsNames.join(", ")}</p>
-                      <p>Álbum: {selectedItem.albumTitle}</p>
-                      <p>Duración: {selectedItem.duration}</p>
-                      <p>Género: {selectedItem.genre}</p>
+                      <p>Artist: {selectedItem.artistsNames.join(", ")}</p>
+                      <p>Album: {selectedItem.albumTitle}</p>
+                      <p>Duration: {selectedItem.duration}</p>
+                      <p>Genre: {selectedItem.genre}</p>
                       <a
                         href={selectedItem.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-500"
                       >
-                        Escuchar en Spotify
+                        Listen on Spotify
                       </a>
                     </>
                   )}
@@ -319,17 +312,17 @@ const CreatePost = () => {
                         alt={`${selectedItem.title} cover`}
                         className="w-full h-64 object-cover rounded-lg mb-4"
                       />
-                      <p>Artista: {selectedItem.artistName}</p>
-                      <p>Número de Canciones: {selectedItem.songsCount}</p>
-                      <p>Duración Total: {selectedItem.totalDuration}</p>
-                      <p>Canciones: {selectedItem.songsTitles.join(", ")}</p>
+                      <p>Artist: {selectedItem.artistName}</p>
+                      <p>Number of Songs: {selectedItem.songsCount}</p>
+                      <p>Total Duration: {selectedItem.totalDuration}</p>
+                      <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.join(", ") : "No songs available"}</p>
                       <a
                         href={selectedItem.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-500"
                       >
-                        Escuchar en Spotify
+                        Listen on Spotify
                       </a>
                     </>
                   )}
@@ -339,7 +332,7 @@ const CreatePost = () => {
                   onClick={handleClearSelection}
                   className="mt-4 px-4 py-2 bg-red-600 text-white rounde-3d-lg self-center transition duration00"
                 >
-                  Cambiar de Contenido
+                  Change Content
                 </button>
               </div>
             ) : (
@@ -375,7 +368,7 @@ const CreatePost = () => {
               type="submit"
               className="w-full py-2 mt-4 bg-ver  text-white rounded-lg  bg-color4 hover:bg-color3 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
             >
-              Crear Post
+              Create Post
             </button>
           </div>
         </form>

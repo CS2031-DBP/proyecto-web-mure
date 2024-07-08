@@ -1,11 +1,11 @@
 import React from "react";
 import { motion } from 'framer-motion';
 
-// Componente SearchResults que muestra los resultados de búsqueda
+// SearchResults component to display search results
 const SearchResults = ({ results, handleAdd, type }) => {
-  if (!results || results.length === 0) return null; // Si no hay resultados, no muestra nada
+  if (!results || results.length === 0) return null; // If there are no results, don't display anything
 
-  // Función para renderizar los resultados de búsqueda
+  // Function to render the search results
   const renderResults = () => {
     return results.map((result, index) => (
       <motion.div
@@ -17,30 +17,30 @@ const SearchResults = ({ results, handleAdd, type }) => {
       >
         {type === "artist" ? (
           <>
-            <p className="font-bold">Artista: {result.name}</p>
+            <p className="font-bold">Artist: {result.name}</p>
             <p>
-              Algunas canciones:{" "}
+              Some songs:{" "}
               {result.songTitles
                 ? result.songTitles.slice(0, 2).join(", ")
                 : "No songs available"}
             </p>
-            <p>Verificado?: {result.verified ? "Sí" : "No"}</p>
+            <p>Verified?: {result.verified ? "Yes" : "No"}</p>
           </>
         ) : (
           <>
-            <p className="font-bold">Título: {result.title}</p>
+            <p className="font-bold">{result.title}</p>
             <p>
-              Artista:{" "}
+              Artist:{" "}
               {type === "song"
                 ? result.artistsNames.join(", ")
                 : result.artistName}
             </p>
             {type === "song" ? (
-              <p>Género: {result.genre}</p>
+              <p>Genre: {result.genre}</p>
             ) : (
               <>
-                <p>Fecha de Lanzamiento: {result.releaseDate}</p>
-                <p>Canciones: {result.songsTitles.join(", ")}</p>
+                <p>Release Date: {result.releaseDate}</p>
+                <p>Songs: {result.songsTitles ? result.songsTitles.join(", ") : "No songs available"}</p>
               </>
             )}
           </>
@@ -50,7 +50,7 @@ const SearchResults = ({ results, handleAdd, type }) => {
           onClick={() => handleAdd(result.id, type, result)}
           className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
         >
-          Añadir +
+          Add +
         </button>
       </motion.div>
     ));
@@ -63,7 +63,7 @@ const SearchResults = ({ results, handleAdd, type }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h3 className="text-lg font-semibold mb-2">Resultados de Búsqueda</h3>
+      <h3 className="text-lg font-semibold mb-2">Search Results</h3>
       {renderResults()}
     </motion.div>
   );

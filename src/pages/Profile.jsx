@@ -17,12 +17,13 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [pagePosts, setPagePosts] = useState(0);
   const [pagePlaylists, setPagePlaylists] = useState(0);
-  const size = 10; // Número de elementos por página
+  const size = 10; 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userdata = await fetchCurrentUser();
+        console.log(userdata);
         const myposts = await getPostsByUser(userdata.id, pagePosts, size);
         const userPlaylists = await fetchMyPlaylists(pagePlaylists, size);
         setUserData(userdata);
@@ -84,7 +85,7 @@ const Profile = () => {
               <div className="w-1/3 flex justify-center items-center">
                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black">
                   <img
-                    src={userData.profileImage || "default-profile.png"}
+                    src={userData.profileImageUrl || "default-profile.png"}
                     alt="Profile"
                     className="object-cover w-full h-full"
                   />

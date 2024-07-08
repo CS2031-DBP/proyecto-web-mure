@@ -1,14 +1,14 @@
-import Api from "../api";
+import Api from '../api';
 
 const api = new Api({});
 
-export async function createPost(post) {
+export async function createPost(formData) {
     let options = {
-        url: "/post",
+        url: '/post',
     };
 
     try {
-        const res = await api.post(post, options);
+        const res = await api.request(options);
         return res;
     } catch (error) {
         throw error;

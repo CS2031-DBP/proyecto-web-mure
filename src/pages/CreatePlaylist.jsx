@@ -81,8 +81,8 @@ const CreatePlaylist = () => {
     const getId = async () => {
       try {
         const response = await fetchCurrentUser();
-        if (response && response.data && response.data.id) {
-          setData((prevData) => ({ ...prevData, userId: response.data.id }));
+        if (response && response.id) {
+          setData((prevData) => ({ ...prevData, userId: response.id }));
         } else {
           throw new Error("No se pudo obtener el ID del usuario.");
         }
@@ -195,7 +195,7 @@ const CreatePlaylist = () => {
                       />
                       <div className="grid grid-cols-2 gap-4 ml-4">
                         <div>
-                          <p className="font-bold">Título: {song.title}</p>
+                          <p className="font-bold">{song.title}</p>
                           <p>Artista: {song.artistsNames.join(", ")}</p>
                         </div>
                         <div>

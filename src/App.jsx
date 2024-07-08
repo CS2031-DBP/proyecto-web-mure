@@ -18,6 +18,7 @@ import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
 import FriendList from './pages/FriendList';
 import AddArtistInfo from './pages/AddArtistInfo';
+import { getRoleBasedOnToken } from './services/auth/getRoleToken';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -38,6 +39,10 @@ function App() {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
+
+  
+
+  console.log( getRoleBasedOnToken())
 
 
   return (

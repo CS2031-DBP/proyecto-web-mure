@@ -49,25 +49,25 @@ const AddSong = () => {
 
     try {
       if (type === "artist") {
-        const results = await searchArtist(artistSearchTerm);
+        const results = await searchArtist(artistSearchTerm, 0, 10); // Agregada la paginación
         if (results.status === 200) {
-          setArtistSearchResults([results.data]);
+          setArtistSearchResults(results.data.content);
         } else if (results.response && results.response.status === 404) {
-          setError("No se han encontrado artistas con ese nombre :(");
+          setError("No artists found with that name :(");
           setArtistSearchResults([]);
         } else {
-          setError("Error al buscar artistas.");
+          setError("Error searching for artists.");
         }
       }
     } catch (error) {
-      setError("Error al buscar.");
+      setError("Error searching.");
     }
   };
 
   const handleAdd = (id, type, artistDetails) => {
     if (type === "artist") {
       if (data.artistsIds.includes(id)) {
-        setError("El artista ya está añadido.");
+        setError("The artist is already added.");
         return;
       }
 
@@ -99,14 +99,14 @@ const AddSong = () => {
     try {
       const res = await createSong([payload]);
       if (res.status === 201) {
-        setSuccess("Canción creada con éxito.");
+        setSuccess("Song created successfully.");
         navigate("/songs");
       } else {
-        setError("Error al crear la canción.");
+        setError("Error creating the song.");
       }
     } catch (error) {
       console.error(error);
-      setError("Error al crear la canción.");
+      setError("Error creating the song.");
     }
   };
 
@@ -117,21 +117,16 @@ const AddSong = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-
-      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-5   rounded-lg shadow-lg w-full max-w-4xl">
-
-        <button onClick={() => console.log(data)} className="bg-transparent text-white p-2 rounded-lg mb-4 font-mono text-3xl ">Log Data</button>
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-5 rounded-lg shadow-lg w-full max-w-4xl">
+        <button onClick={() => console.log(data)} className="bg-transparent text-white p-2 rounded-lg mb-4 font-mono text-3xl">Log Data</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          
           <div className="col-span-1 md:col-span-2">
-            <label htmlFor="title" className="block text-sm font-medium mb-1">
-              Título
-            </label>
+            <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
             <motion.input
               type="text"
               id="title"
@@ -139,21 +134,14 @@ const AddSong = () => {
               value={data.title}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent  text-whborder-whiteite focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
-
-
           <div className="col-span-1">
-            <label
-              htmlFor="releaseDate"
-              className="block text-sm font-medium mb-1"
-            >
-              Fecha de Lanzamiento
-            </label>
+            <label htmlFor="releaseDate" className="block text-sm font-medium mb-1">Release Date</label>
             <motion.input
               type="date"
               id="releaseDate"
@@ -168,9 +156,7 @@ const AddSong = () => {
             />
           </div>
           <div className="col-span-1">
-            <label htmlFor="genre" className="block text-sm font-medium mb-1">
-              Género
-            </label>
+            <label htmlFor="genre" className="block text-sm font-medium mb-1">Genre</label>
             <motion.input
               type="text"
               id="genre"
@@ -185,12 +171,7 @@ const AddSong = () => {
             />
           </div>
           <div className="col-span-1">
-            <label
-              htmlFor="duration"
-              className="block text-sm font-medium mb-1"
-            >
-              Duración
-            </label>
+            <label htmlFor="duration" className="block text-sm font-medium mb-1">Duration</label>
             <motion.input
               type="text"
               id="duration"
@@ -205,12 +186,7 @@ const AddSong = () => {
             />
           </div>
           <div className="col-span-1">
-            <label
-              htmlFor="coverImage"
-              className="block text-sm font-medium mb-1"
-            >
-              Imagen de Portada
-            </label>
+            <label htmlFor="coverImage" className="block text-sm font-medium mb-1">Cover Image</label>
             <motion.input
               type="text"
               id="coverImage"
@@ -225,12 +201,7 @@ const AddSong = () => {
             />
           </div>
           <div className="col-span-1">
-            <label
-              htmlFor="link"
-              className="block text-sm font-medium mb-1"
-            >
-              Enlace a Spotify
-            </label>
+            <label htmlFor="link" className="block text-sm font-medium mb-1">Spotify Link</label>
             <motion.input
               type="text"
               id="link"
@@ -258,10 +229,10 @@ const AddSong = () => {
             />
           </div>
           <div className="col-span-1 md:col-span-2">
-            <h2 className="text-xl font-bold mb-4">Artistas Añadidos</h2>
+            <h2 className="text-xl font-bold mb-4">Added Artists</h2>
             <AnimatePresence>
               {addedArtists.length === 0 ? (
-                <p>No has añadido artistas aún.</p>
+                <p>No artists added yet.</p>
               ) : (
                 addedArtists.map((artist, index) => (
                   <motion.div
@@ -279,7 +250,7 @@ const AddSong = () => {
                           <VerifiedIcon className="text-blue-500" />
                         )}
                       </p>
-                      <p>Cumpleaños: {artist.birthday}</p>
+                      <p>Birthday: {artist.birthday}</p>
                     </div>
                   </motion.div>
                 ))
@@ -291,15 +262,15 @@ const AddSong = () => {
               type="submit"
               className="w-full py-2 mt-4 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
             >
-              Agregar Canción
+              Add Song
             </button>
           </div>
         </form>
-        <div className="fixed bottom-10 right-5 rounded-full h-20 ">
+        <div className="fixed bottom-10 right-5 rounded-full h-20">
           <button
             onClick={() => navigate('/song/create/spotify')}
-            className=" p-4  shadow-lg  text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "
-            title="Buscar en Spotify"
+            className="p-4 shadow-lg text-white rounded-full transition duration-300 bg-color4 hover:bg-color3"
+            title="Search on Spotify"
           >
             <FaSpotify className="text-2xl" />
           </button>

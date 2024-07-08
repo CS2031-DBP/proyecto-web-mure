@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { getToken, searchTracks, getArtistDetailsFromSpotify } from '../services/spotify/spotify';
-import { checkArtistInDatabase, createArtists } from '../services/artist/artist';
+import { getToken, searchTracks } from '../services/spotify/spotify';
+import { checkArtistInDatabase } from '../services/artist/artist';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import spotifyPIC from '../img/Waves.jpg'
 
 const CreateSpotify = () => {
   const [title, setTitle] = useState('');
@@ -17,7 +16,7 @@ const CreateSpotify = () => {
       const results = await searchTracks(title, token);
       setTracks(results);
     } catch (error) {
-      setError('Error al buscar en Spotify.');
+      setError('Error searching on Spotify.');
     }
   };
 
@@ -27,11 +26,14 @@ const CreateSpotify = () => {
     const missingArtists = [];
 
     for (const artistName of artists) {
-      const response = await checkArtistInDatabase(artistName);
-      if (response && response.data) {
-        artistIds.push(response.data.id);
+      const response = await checkArtistInDatabase(artistName, 0, 1);
+      if (response && response.data.content.length > 0) {
+        artistIds.push(response.data.content[0].id);
       } else {
-        missingArtists.push(artistName);
+        missingArtists.push({
+          name: artistName,
+          imageUrl: track.album.images[0]?.url || '', // Add imageUrl for missing artists
+        });
       }
     }
 
@@ -48,7 +50,7 @@ const CreateSpotify = () => {
       releaseDate: track.album.release_date,
       genre: '',
       duration: `${Math.floor(track.duration_ms / 60000)}:${Math.floor((track.duration_ms % 60000) / 1000).toFixed(0).padStart(2, '0')}`,
-      coverImage: track.album.images[0].url,
+      coverImage: track.album.images[0]?.url || '',
       link: track.external_urls.spotify,
     };
     localStorage.setItem('selectedSong', JSON.stringify(songData));
@@ -57,66 +59,54 @@ const CreateSpotify = () => {
 
   return (
     <motion.div
-      className="items-center justify-center p-8 flex "
+      className="items-center justify-center p-8 flex"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-
-    <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white rounded-lg shadow-lg p-4 aspect-w-1 aspect-h-1" >
-        <h1 className="text-3xl font-mono  mb-6 text-white">Buscar en Spotify</h1>
-
-        <div className='p-4 flex justify-center items-center'>
-        <img src={spotifyPIC} alt='spotifyPIC' className='w-auto h-80 text-center'/>
-        </div>
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white rounded-lg shadow-lg p-4 aspect-w-1 aspect-h-1">
+        <h1 className="text-3xl font-mono mb-6 text-white">Search on Spotify</h1>
+        <div className="p-4 flex justify-center items-center"></div>
         <div className="mb-6">
           <input
             type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
-            placeholder="Nombre de la canción"
+            placeholder="Song title"
           />
           <button
             onClick={handleSearch}
-            className="w-full py-2 mt-4 text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 "
+            className="w-full py-2 mt-4 text-white rounded-full transition duration-300 bg-color4 hover:bg-color3"
           >
-            Buscar
+            Search
           </button>
-
-          <button  className="w-full py-2 mt-4 text-white rounded-full transition duration-300 bg-color4 hover:bg-color3 " onClick={()=>{navigate("/AddSong")}}>
-              Regresar
-            </button>
-        </div>  
-
+          <button
+            className="w-full py-2 mt-4 text-white rounded-full transition duration-300 bg-color4 hover:bg-color3"
+            onClick={() => navigate('/AddSong')}
+          >
+            Back
+          </button>
+        </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        
         <div>
           {tracks.map((track) => (
-            <div key={track.id}  className="bg-spotify-gray p-4 mb-4 rounded-sm flex items-center border border-transparent hover:border-white transition duration-100">
-
-              <img src={track.album.images[0].url} alt={`${track.name} cover`} className="w-16 h-16 object-cover rounded-lg" />
+            <div key={track.id} className="bg-spotify-gray p-4 mb-4 rounded-sm flex items-center border border-transparent hover:border-white transition duration-100">
+              <img src={track.album.images[0]?.url || ''} alt={`${track.name} cover`} className="w-16 h-16 object-cover rounded-lg" />
               <div className="ml-4 flex-1">
                 <p className="font-bold">{track.name}</p>
                 <p>{track.artists.map(artist => artist.name).join(', ')}</p>
                 <button
                   onClick={() => handleSelect(track)}
-
-                  className="rounded-full  bg-color1 hover:bg-color2 text-white px-4 py-2 transition duration-300 mt-2"
-
+                  className="rounded-full bg-color1 hover:bg-color2 text-white px-4 py-2 transition duration-300 mt-2"
                 >
-                  Seleccionar
+                  Select
                 </button>
               </div>
-
             </div>
-
-            </motion.div>
-
           ))}
         </div>
       </div>
-
     </motion.div>
   );
 };

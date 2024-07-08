@@ -8,6 +8,7 @@ const Register = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
+    nickname: "",
     password: "",
     name: "",
     birthdate: "",
@@ -70,7 +71,7 @@ const Register = ({ setIsAuthenticated }) => {
               htmlFor="email"
               className="block text-sm font-medium text-white text-left"
             >
-              Correo
+              Email
             </label>
             <input
               type="email"
@@ -89,10 +90,31 @@ const Register = ({ setIsAuthenticated }) => {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             <label
+              htmlFor="nickname"
+              className="block text-sm font-medium text-white text-left"
+            >
+              Nickname
+            </label>
+            <input
+              type="text"
+              id="nickname"
+              name="nickname"
+              placeholder="Nickname"
+              onChange={handleChange}
+              required
+              className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+          >
+            <label
               htmlFor="password"
               className="block text-sm font-medium text-white text-left"
             >
-              Contraseña
+              Password
             </label>
             <input
               type="password"
@@ -107,13 +129,13 @@ const Register = ({ setIsAuthenticated }) => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
           >
             <label
               htmlFor="name"
               className="block text-sm font-medium text-white text-left"
             >
-              Usuario
+              User
             </label>
             <input
               type="text"
@@ -128,13 +150,13 @@ const Register = ({ setIsAuthenticated }) => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
           >
             <label
               htmlFor="birthdate"
               className="block text-sm font-medium text-white text-left"
             >
-              Fecha de Cumpleaños
+              Birthdate
             </label>
             <input
               type="date"
@@ -148,13 +170,13 @@ const Register = ({ setIsAuthenticated }) => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.5 }}
+            transition={{ duration: 0.3, delay: 0.6 }}
           >
             <button
               type="submit"
               className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
             >
-              Registrarse
+              Sign In
             </button>
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </motion.div>
@@ -163,14 +185,14 @@ const Register = ({ setIsAuthenticated }) => {
           className="mt-6 text-center text-sm text-white"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.6 }}
+          transition={{ duration: 0.3, delay: 0.7 }}
         >
           <span>Already have an account? </span>
           <a
             onClick={() => navigate("/auth/login")}
             className="font-medium hover:text-color2 text-white underline transition duration-300"
           >
-            Log in
+            Login
           </a>
         </motion.div>
       </div>
