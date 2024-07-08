@@ -132,7 +132,6 @@ const CreatePlaylist = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <button onClick={() => console.log(data)}>Debug</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form

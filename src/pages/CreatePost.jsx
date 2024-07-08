@@ -189,8 +189,13 @@ const CreatePost = () => {
     setError("");
     setSuccess("");
 
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+
     try {
-      const res = await createPost(data);
+      const res = await createPost(formData);
       if (res.status === 201) {
         setSuccess("Post created successfully.");
         navigate("/dashboard");
@@ -208,146 +213,150 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white p-5 rounded-lg shadow-lg w-full max-w-4xl">
+        <div className="grid grid-cols-2 gap-4">
+          <SearchInput
+            searchTerm={songSearchTerm}
+            handleSearchTermChange={handleSongSearchTermChange}
+            handleSearch={handleSearch}
+            type="song"
+          />
+          <SearchInput
+            searchTerm={albumSearchTerm}
+            handleSearchTermChange={handleAlbumSearchTermChange}
+            handleSearch={handleSearch}
+            type="album"
+          />
+        </div>
+        
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
  
-        <button onClick={() => console.log(data)} className="bg-red-500 text-white px-4 py-2 rounded-lg mb-4">Debug</button>
         <form onSubmit={handleSubmit} className="gap-6">
-          <div className="col-span-1 py-6">
-            <textarea
-              name="description"
-              value={data.description}
-              onChange={handleChange}
-              placeholder="What are you thinking about..."
-              className="w-full h-32 px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
-            />
-            <div className="mt-4 bg-transparent border rounded-lg px-3 py-2">
-              <div className="grid grid-cols-2 items-center border-transparent bg-transparent">
-                <label className="block text-sm font-medium mb-1 border-transparent text-left">
-                  Add Image
-                </label>
-                {imagePreviewUrl && (
-                  <button
-                    type="button"
-                    onClick={handleClearImage}
-                    className="text-red-500 justify-self-end border-transparent"
-                  >
-                    <Cancel />
-                  </button>
-                )}
-              </div>
-              <div className="relative flex items-center border rounded-lg w-full h-40 border-transparent">
-                {imagePreviewUrl ? (
-                  <img
-                    src={imagePreviewUrl}
-                    alt="Preview"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                ) : (
-                  <label className="flex items-center justify-center w-full h-full cursor-pointer">
-                    <ImageIcon className="text-gray-500 w-16 h-16" />
-                    <input
-                      type="file"
-                      name="image"
-                      accept=".png,.jpg"
-                      onChange={handleChange}
-                      className="absolute border inset-0 w-full h-full opacity-0 cursor-pointer "
-                    />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-1 flex flex-col">
+              <textarea
+                name="description"
+                value={data.description}
+                onChange={handleChange}
+                placeholder="What are you thinking about..."
+                className="w-full h-32 px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white mb-4"
+              />
+              <div className="mt-4 bg-transparent border rounded-lg px-3 py-2">
+                <div className="grid grid-cols-2 items-center border-transparent bg-transparent">
+                  <label className="block text-sm font-medium mb-1 border-transparent text-left">
+                    Add Image
                   </label>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="col-span-1 flex flex-col justify-between">
-            {selectedItem ? (
-              <div className="flex-grow bg-crema5 text-white p-4 rounded-lg flex flex-col justify-between h-full">
-                <div className="flex-grow text-black">
-                  {selectedItem.type === "song" && (
-                    <>
-                      <img
-                        src={selectedItem.coverImage}
-                        alt={`${selectedItem.title} cover`}
-                        className="w-full h-64 object-cover rounded-lg mb-4"
-                      />
-                      <p className="font-bold text-lg">
-                        {selectedItem.title}
-                      </p>
-                      <p>Artist: {selectedItem.artistsNames.join(", ")}</p>
-                      <p>Album: {selectedItem.albumTitle}</p>
-                      <p>Duration: {selectedItem.duration}</p>
-                      <p>Genre: {selectedItem.genre}</p>
-                      <a
-                        href={selectedItem.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500"
-                      >
-                        Listen on Spotify
-                      </a>
-                    </>
-                  )}
-
-                  {selectedItem.type === "album" && (
-                    <>
-                      <p className="font-bold text-lg">
-                        Album: {selectedItem.title}
-                      </p>
-                      <img
-                        src={selectedItem.coverImage}
-                        alt={`${selectedItem.title} cover`}
-                        className="w-full h-64 object-cover rounded-lg mb-4"
-                      />
-                      <p>Artist: {selectedItem.artistName}</p>
-                      <p>Number of Songs: {selectedItem.songsCount}</p>
-                      <p>Total Duration: {selectedItem.totalDuration}</p>
-                      <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.join(", ") : "No songs available"}</p>
-                      <a
-                        href={selectedItem.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500"
-                      >
-                        Listen on Spotify
-                      </a>
-                    </>
+                  {imagePreviewUrl && (
+                    <button
+                      type="button"
+                      onClick={handleClearImage}
+                      className="text-red-500 justify-self-end border-transparent"
+                    >
+                      <Cancel />
+                    </button>
                   )}
                 </div>
-                <button
-                  type="button"
-                  onClick={handleClearSelection}
-                  className="mt-4 px-4 py-2 bg-red-600 text-white rounde-3d-lg self-center transition duration00"
-                >
-                  Change Content
-                </button>
+                <div className="relative flex items-center border rounded-lg w-full h-40 border-transparent">
+                  {imagePreviewUrl ? (
+                    <img
+                      src={imagePreviewUrl}
+                      alt="Preview"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <label className="flex items-center justify-center w-full h-full cursor-pointer">
+                      <ImageIcon className="text-gray-500 w-16 h-16" />
+                      <input
+                        type="file"
+                        name="image"
+                        accept=".png,.jpg"
+                        onChange={handleChange}
+                        className="absolute border inset-0 w-full h-full opacity-0 cursor-pointer "
+                      />
+                    </label>
+                  )}
+                </div>
               </div>
-            ) : (
-              <div className="space-y-6">
-                <SearchInput
-                  searchTerm={songSearchTerm}
-                  handleSearchTermChange={handleSongSearchTermChange}
-                  handleSearch={handleSearch}
-                  type="song"
-                />
-                <SearchResults
-                  results={songSearchResults}
-                  handleAdd={handleAdd}
-                  type="song"
-                />
-                <SearchInput
-                  searchTerm={albumSearchTerm}
-                  handleSearchTermChange={handleAlbumSearchTermChange}
-                  handleSearch={handleSearch}
-                  type="album"
-                />
-                <SearchResults
-                  results={albumSearchResults}
-                  handleAdd={handleAdd}
-                  type="album"
-                />
-              </div>
-            )}
+            </div>
+            <div className="col-span-1">
+              {selectedItem ? (
+                <div className="flex-grow bg-crema5 text-white p-4 rounded-lg flex flex-col justify-between h-full">
+                  <div className="flex-grow text-black">
+                    {selectedItem.type === "song" && (
+                      <>
+                        <img
+                          src={selectedItem.coverImage}
+                          alt={`${selectedItem.title} cover`}
+                          className="w-full h-64 object-cover rounded-lg mb-4"
+                        />
+                        <p className="font-bold text-lg">
+                          {selectedItem.title}
+                        </p>
+                        <p>Artist: {selectedItem.artistsNames.join(", ")}</p>
+                        <p>Album: {selectedItem.albumTitle}</p>
+                        <p>Duration: {selectedItem.duration}</p>
+                        <p>Genre: {selectedItem.genre}</p>
+                        <a
+                          href={selectedItem.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500"
+                        >
+                          Listen on Spotify
+                        </a>
+                      </>
+                    )}
+
+                    {selectedItem.type === "album" && (
+                      <>
+                        <p className="font-bold text-lg">
+                          Album: {selectedItem.title}
+                        </p>
+                        <img
+                          src={selectedItem.coverImage}
+                          alt={`${selectedItem.title} cover`}
+                          className="w-full h-64 object-cover rounded-lg mb-4"
+                        />
+                        <p>Artist: {selectedItem.artistName}</p>
+                        <p>Number of Songs: {selectedItem.songsCount}</p>
+                        <p>Total Duration: {selectedItem.totalDuration}</p>
+                        <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.join(", ") : "No songs available"}</p>
+                        <a
+                          href={selectedItem.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500"
+                        >
+                          Listen on Spotify
+                        </a>
+                      </>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleClearSelection}
+                    className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg self-center transition duration-300"
+                  >
+                    Change Content
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <SearchResults
+                    results={songSearchResults}
+                    handleAdd={handleAdd}
+                    type="song"
+                  />
+
+                  <SearchResults
+                    results={albumSearchResults}
+                    handleAdd={handleAdd}
+                    type="album"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="col-span-1 md:col-span-2 py-2">

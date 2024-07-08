@@ -113,6 +113,15 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
         </div>
         <div className="flex-1">
           <MusicPost post={post} />
+          {post.imageUrl && (
+            <div className="mt-4">
+              <img
+                src={post.imageUrl}
+                alt="Post"
+                className="w-full h-64 object-cover rounded-lg"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="flex justify-between items-center">

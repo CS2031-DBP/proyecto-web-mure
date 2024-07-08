@@ -8,10 +8,12 @@ export async function editProfile(data) {
     };
 
     try {
+        console.log(data);
         const res = await api.patch(data, options);
         if (res.data.token) {
             localStorage.setItem('token', res.data.token);
         }
+        console.log(res);
         return res;
     } catch (error) {
         throw error;

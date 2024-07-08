@@ -67,7 +67,6 @@ const AddArtistInfo = () => {
     >
       <div className="bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6">Add Artist Information</h1>
-        <button onClick={() => console.log(artistDetails)}>Debug</button>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
           {artistDetails.map((artist, index) => (
