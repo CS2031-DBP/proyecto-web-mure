@@ -163,7 +163,7 @@ const UserProfile = () => {
               <div className="w-1/3 flex justify-center items-center">
                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black">
                   <img
-                    src={user.profileImage || "default-profile.png"}
+                    src={user.profileImageUrl || "default-profile.png"}
                     alt="Profile"
                     className="object-cover w-full h-full"
                   />

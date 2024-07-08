@@ -8,7 +8,7 @@ export async function createPost(formData) {
     };
 
     try {
-        const res = await api.request(options);
+        const res = await api.postForm(formData, options);
         return res;
     } catch (error) {
         throw error;

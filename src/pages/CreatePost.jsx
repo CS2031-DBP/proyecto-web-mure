@@ -189,21 +189,8 @@ const CreatePost = () => {
     setError("");
     setSuccess("");
 
-     console.log(data);
-
-    const formData = new FormData();
-    formData.append("userId", data.userId);
-    formData.append("songId", data.songId);
-    formData.append("albumId", data.albumId);
-    formData.append("description", data.description);
-    if (data.image) {
-      formData.append("image", data.image);
-    }
-
-   
-
     try {
-      const res = await createPost(formData);
+      const res = await createPost(data);
       if (res.status === 201) {
         setSuccess("Post created successfully.");
         navigate("/dashboard");

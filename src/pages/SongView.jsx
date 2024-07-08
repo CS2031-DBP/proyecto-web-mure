@@ -29,6 +29,7 @@ const SongView = ({ showSearchBar }) => {
                 switch (searchType) {
                     case 'titulo':
                         res = await searchSongsByTitle(searchTerm, resetPage ? 0 : page, size);
+                        console.log(res);
   
                         if (res.status === 200) {
                             setSongs(res.data.content);
@@ -39,12 +40,15 @@ const SongView = ({ showSearchBar }) => {
                         return;
                     case 'genero':
                         res = await searchSongsByGenre(searchTerm, resetPage ? 0 : page, size);
+                        console.log(res);
                         break;
                     case 'artista':
                         res = await searchSongsByArtistName(searchTerm, resetPage ? 0 : page, size);
+                        console.log(res);
                         break;
                     default:
                         res = await fetchSongs(resetPage ? 0 : page, size);
+                        
                         break;
                 }
             } else {

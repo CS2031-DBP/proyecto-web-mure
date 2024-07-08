@@ -25,24 +25,24 @@ const MusicPost = ({ post }) => {
       <div className="flex-1 flex flex-col justify-between text-black">
         {song ? (
           <>
-            <p className="font-semibold">Canción: {song.title}</p>
-            <p>Artista: {song.artist[0].name}</p>
-            <p>Género: {song.genre}</p>
-            <p>Duración: {song.duration}</p>
+            <p className="font-semibold">Song: {song.title}</p>
+            <p>Artists: {song.artistsNames?.join(', ') || "Unknown"}</p>
+            <p>Genre: {song.genre}</p>
+            <p>Duration: {song.duration}</p>
           </>
         ) : album ? (
           <>
-            <p className="font-semibold">Álbum: {album.title}</p>
-            <p>Artista: {album.artist}</p>
-            <p>Duración: {album.duration}</p>
-            <p>Canciones: {album.songs.join(", ")}</p>
+            <p className="font-semibold">Album: {album.title}</p>
+            <p>Artist: {album.artist}</p>
+            <p>Duration: {album.duration}</p>
+            <p>Songs: {album.songs?.slice(0, 3).join(", ") || "No songs available"}</p>
           </>
         ) : (
-          <p className="font-semibold">Sin Título</p>
+          <p className="font-semibold">Untitled</p>
         )}
       </div>
-      {song?.url || album?.url ? (
-        <a href={song?.url || album?.url} target="_blank" rel="noopener noreferrer">
+      {song?.link || album?.link ? (
+        <a href={song?.link || album?.link} target="_blank" rel="noopener noreferrer">
           <Headphones className="text-lg text-black" />
         </a>
       ) : (

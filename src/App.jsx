@@ -42,7 +42,7 @@ function App() {
 
   
 
-  console.log( getRoleBasedOnToken())
+
 
 
   return (

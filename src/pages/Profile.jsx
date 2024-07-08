@@ -17,7 +17,7 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [pagePosts, setPagePosts] = useState(0);
   const [pagePlaylists, setPagePlaylists] = useState(0);
-  const size = 10; 
+  const size = 10;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,7 @@ const Profile = () => {
         setMyPosts(myposts.content);
         setPlaylists(userPlaylists.content);
       } catch (error) {
-        setError("Error al obtener los datos del usuario.");
+        setError("Error fetching user data.");
         console.error(error);
       }
     };
@@ -50,11 +50,11 @@ const Profile = () => {
     setMyPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
-  const handleNextPagePosts = () => setPagePosts(prevPage => prevPage + 1);
-  const handlePreviousPagePosts = () => setPagePosts(prevPage => prevPage > 0 ? prevPage - 1 : 0);
+  const handleNextPagePosts = () => setPagePosts((prevPage) => prevPage + 1);
+  const handlePreviousPagePosts = () => setPagePosts((prevPage) => (prevPage > 0 ? prevPage - 1 : 0));
 
-  const handleNextPagePlaylists = () => setPagePlaylists(prevPage => prevPage + 1);
-  const handlePreviousPagePlaylists = () => setPagePlaylists(prevPage => prevPage > 0 ? prevPage - 1 : 0);
+  const handleNextPagePlaylists = () => setPagePlaylists((prevPage) => prevPage + 1);
+  const handlePreviousPagePlaylists = () => setPagePlaylists((prevPage) => (prevPage > 0 ? prevPage - 1 : 0));
 
   const animationVariants = {
     hidden: { opacity: 0, x: 35 },
@@ -92,8 +92,9 @@ const Profile = () => {
                 </div>
               </div>
               <div className="w-2/3 text-white text-left">
-                <h1 className="text-2xl font-bold">@{userData.name}</h1>
-                <p>Cumpleaños: 🎉 {userData.birthDate}</p>
+                <h1 className="text-2xl font-bold">@{userData.nickname}</h1>
+                <p className="text-lg">{userData.name}</p>
+                <p>Birthday: 🎉 {userData.birthDate}</p>
               </div>
             </motion.div>
           )}
@@ -107,7 +108,7 @@ const Profile = () => {
               variants={animationVariants}
             >
               <FaUserFriends className="mr-2" />
-              Lista de amigos
+              Friends List
             </motion.button>
             <motion.button
               onClick={() => navigate("/edit")}
@@ -118,7 +119,7 @@ const Profile = () => {
               variants={animationVariants}
             >
               <FaEdit className="mr-2" />
-              Editar Perfil
+              Edit Profile
             </motion.button>
           </div>
         </div>
@@ -132,9 +133,9 @@ const Profile = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-2xl font-bold mb-4 text-spotify-black">Mis Posts</h1>
+            <h1 className="text-2xl font-bold mb-4 text-spotify-black">My Posts</h1>
             {myposts.length === 0 ? (
-              <p className="text-gray-400">No has hecho ningún post aún</p>
+              <p className="text-gray-400">You haven't posted anything yet</p>
             ) : (
               myposts.map((post) => (
                 <motion.div
@@ -167,9 +168,9 @@ const Profile = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-2xl font-bold mb-4 text-spotify-black">Mis PlayLists</h1>
+            <h1 className="text-2xl font-bold mb-4 text-spotify-black">My Playlists</h1>
             {playlists.length === 0 ? (
-              <p className="text-gray-400">No tienes playlists aún</p>
+              <p className="text-gray-400">You don't have any playlists yet</p>
             ) : (
               playlists.map((playlist) => (
                 <motion.div
@@ -197,7 +198,7 @@ const Profile = () => {
       <button
         onClick={() => navigate("/playlist/create")}
         className="fixed bottom-16 right-5 bg-color1 text-white p-4 rounded-full shadow-lg hover:bg-color2 transition duration-300"
-        title="Crear Playlist"
+        title="Create Playlist"
       >
         <PlaylistAddCheck className="text-2xl" />
       </button>

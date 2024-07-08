@@ -14,7 +14,7 @@ class Api {
         let path = this.basePath + options.url;
 
         let headers = {
-            "Content-type": "application/json",
+            "Content-Type": configOptions.headers?.["Content-Type"] || "application/json",
         };
 
         const token = localStorage.getItem("token");
@@ -43,11 +43,22 @@ class Api {
         let configOptions = {
             ...options,
             method: "post",
-            data: JSON.stringify(data),
+            data: data,
         };
 
         return this.request(configOptions);
     }
+
+	 postForm(data , options) {
+		const configOptions = {
+			...options,
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		};
+
+		return this.post(data, configOptions);
+	}
 
     patch(data, options) {
         let configOptions = {
