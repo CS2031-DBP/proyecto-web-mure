@@ -15,7 +15,7 @@ const Edit = () => {
   const [oldData, setOldData] = useState({
     name: "",
     email: "",
-    profileImage: null,
+    profileImage: "null",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -24,6 +24,7 @@ const Edit = () => {
     const getCurrentUser = async () => {
       try {
         const user = await fetchCurrentUser();
+
         setData({
           name: user.name,
           email: user.email,
@@ -32,7 +33,7 @@ const Edit = () => {
         setOldData({
           name: user.name,
           email: user.email,
-          profileImage: user.profileImage,
+          profileImage: user.profileImageUrl,
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -69,8 +70,8 @@ const Edit = () => {
       if (res.status === 204) {
         setSuccess("Profile updated successfully.");
         if (data.email !== oldData.email) {
-          navigate("/auth/login");
           localStorage.removeItem("token");
+          navigate("/auth/login");
         } else {
           navigate("/profile");
         }
@@ -98,13 +99,11 @@ const Edit = () => {
         >
           <div className="flex flex-col items-center mb-4">
             <div className="relative bg-white rounded-full p-6">
-              {oldData.profileImage && (
-                <img
-                  src={oldData.profileImage}
-                  alt="Profile"
-                  className="w-32 h-32 object-cover rounded-full"
-                />
-              )}
+              <img
+                src={oldData.profileImage}
+                alt="Profile"
+                className="w-32 h-32 object-cover rounded-full"
+              />
               <label
                 htmlFor="profileImage"
                 className="absolute bottom-0 right-0 cursor-pointer"

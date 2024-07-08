@@ -26,7 +26,7 @@ export async function createArtists(artists) {
 
     try {
         const res = await api.post(artists, options); 
-        console.log(res);
+
         return res;
     } catch (error) {
         throw error;

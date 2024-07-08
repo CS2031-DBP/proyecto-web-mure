@@ -118,8 +118,7 @@ const AddSong = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-5 rounded-lg shadow-lg w-full max-w-4xl">
-        <button onClick={() => console.log(data)} className="bg-transparent text-white p-2 rounded-lg mb-4 font-mono text-3xl">Log Data</button>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+       {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form
           onSubmit={handleSubmit}

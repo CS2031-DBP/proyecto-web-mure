@@ -23,9 +23,9 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const userdata = await fetchCurrentUser();
-        console.log(userdata);
+
         const myposts = await getPostsByUser(userdata.id, pagePosts, size);
-        console.log(myposts);
+ 
         const userPlaylists = await fetchMyPlaylists(pagePlaylists, size);
         setUserData(userdata);
         setMyPosts(myposts.content);
