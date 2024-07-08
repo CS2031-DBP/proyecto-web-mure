@@ -9,7 +9,7 @@ export async function editProfile(data) {
 
     try {
         console.log(data);
-        const res = await api.patch(data, options);
+        const res = await api.patchForm(data, options);
         if (res.data.token) {
             localStorage.setItem('token', res.data.token);
         }

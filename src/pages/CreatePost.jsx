@@ -191,7 +191,9 @@ const CreatePost = () => {
 
     const formData = new FormData();
     for (const key in data) {
+      if (data[key] !== null) {
       formData.append(key, data[key]);
+      }
     }
 
     try {

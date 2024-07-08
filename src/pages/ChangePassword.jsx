@@ -41,25 +41,28 @@ const ChangePassword = () => {
     e.preventDefault();
 
     const valid = {
-      userId: userId,
-      password: data.oldPassword
+        userId: userId,
+        password: data.oldPassword
     };
     
     try {
-      const isValid = await verifyPassword(valid);
-      if (isValid) {
-        await editProfile({ password: data.newPassword });
-        setSuccess("Password changed successfully.");
+        const isValid = await verifyPassword(valid);
+        if (isValid) {
+            const formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('password', data.newPassword);
 
-      } else {
-        setError("Invalid old password.");
-      }
+            await editProfile(formData);
+            setSuccess("Password changed successfully.");
+            navigate("/profile");
+        } else {
+            setError("Invalid old password.");
+        }
     } catch (error) {
-      setError("Error changing password.");
-      console.error(error);
+        setError("Error changing password.");
+        console.error(error);
     }
-  };
-
+};
   return (
     <motion.div
       className="flex items-center justify-center"

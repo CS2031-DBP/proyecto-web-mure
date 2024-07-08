@@ -1,93 +1,108 @@
 import axios from "axios";
 
 class Api {
-    constructor(config) {
-        this.basePath = "http://localhost:8080";
+  constructor(config) {
+    this.basePath = "http://localhost:8080";
+  }
+
+  async request(options) {
+    let configOptions = {
+      ...options,
+      baseUrl: this.basePath,
+    };
+
+    let path = this.basePath + options.url;
+
+    let headers = {
+      "Content-Type":
+        configOptions.headers?.["Content-Type"] || "application/json",
+    };
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
     }
 
-    async request(options) {
-        let configOptions = {
-            ...options,
-            baseUrl: this.basePath,
-        };
+    let config = {
+      ...configOptions,
+      headers: headers,
+    };
 
-        let path = this.basePath + options.url;
+    return axios(path, config);
+  }
 
-        let headers = {
-            "Content-Type": configOptions.headers?.["Content-Type"] || "application/json",
-        };
+  get(options) {
+    let configOptions = {
+      ...options,
+      method: "get",
+    };
 
-        const token = localStorage.getItem("token");
-        if (token) {
-            headers.Authorization = `Bearer ${token}`;
-        }
+    return this.request(configOptions);
+  }
 
-        let config = {
-            ...configOptions,
-            headers: headers,
-        };
+  post(data, options) {
+    let configOptions = {
+      ...options,
+      method: "post",
+      data: data,
+    };
 
-        return axios(path, config);
-    }
+    return this.request(configOptions);
+  }
 
-    get(options) {
-        let configOptions = {
-            ...options,
-            method: "get",
-        };
+  postForm(data, options) {
+    const configOptions = {
+      ...options,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
 
-        return this.request(configOptions);
-    }
+    return this.post(data, configOptions);
+  }
 
-    post(data, options) {
-        let configOptions = {
-            ...options,
-            method: "post",
-            data: data,
-        };
+  patch(data, options) {
+    let configOptions = {
+      ...options,
+      method: "patch",
+      data: JSON.stringify(data),
+    };
 
-        return this.request(configOptions);
-    }
+    return this.request(configOptions);
+  }
 
-	 postForm(data , options) {
-		const configOptions = {
-			...options,
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		};
+  patchForm(data, options) {
+    const configOptions = {
+        ...options,
+        method: "patch",
+        data: data,
+        headers: {
+            ...options.headers,
+            "Content-Type": "multipart/form-data",
+        },
+    };
 
-		return this.post(data, configOptions);
-	}
+    return this.request(configOptions);
+}
 
-    patch(data, options) {
-        let configOptions = {
-            ...options,
-            method: "patch",
-            data: JSON.stringify(data),
-        };
+  put(data, options) {
+    let configOptions = {
+      ...options,
+      method: "put",
+      data: JSON.stringify(data),
+    };
 
-        return this.request(configOptions);
-    }
+    return this.request(configOptions);
+  }
 
-    put(data, options) {
-        let configOptions = {
-            ...options,
-            method: "put",
-            data: JSON.stringify(data),
-        };
+  delete(options) {
+    let configOptions = {
+      ...options,
+      method: "delete",
+    };
 
-        return this.request(configOptions);
-    }
-
-    delete(options) {
-        let configOptions = {
-            ...options,
-            method: "delete",
-        };
-
-        return this.request(configOptions);
-    }
+    return this.request(configOptions);
+  }
 }
 
 export default Api;

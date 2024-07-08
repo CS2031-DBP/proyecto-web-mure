@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { editProfile } from "../services/profile/editProfile";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { useNavigate } from "react-router-dom";
-import { motion } from 'framer-motion';
-import EditIcon from '@mui/icons-material/Edit';
+import { motion } from "framer-motion";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Edit = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     name: "",
     email: "",
-    profileImage: "",
+    profileImage: null,
+  });
+  const [oldData, setOldData] = useState({
+    name: "",
+    email: "",
+    profileImage: null,
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -22,7 +27,12 @@ const Edit = () => {
         setData({
           name: user.name,
           email: user.email,
-          profileImage: user.profileImageUrl,
+        });
+
+        setOldData({
+          name: user.name,
+          email: user.email,
+          profileImage: user.profileImage,
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -47,18 +57,23 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updateData = {};
-    for (let key in data) {
-      if (data[key]) {
-        updateData[key] = data[key];
+    const formData = new FormData();
+    for (const key in data) {
+      if (data[key] !== null) {
+        formData.append(key, data[key]);
       }
     }
 
     try {
-      const res = await editProfile(updateData);
+      const res = await editProfile(formData);
       if (res.status === 204) {
         setSuccess("Profile updated successfully.");
-        navigate("/profile");
+        if (data.email !== oldData.email) {
+          navigate("/auth/login");
+          localStorage.removeItem("token");
+        } else {
+          navigate("/profile");
+        }
       }
     } catch (error) {
       setError("Error updating profile.");
@@ -76,15 +91,24 @@ const Edit = () => {
       <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black p-7 rounded-lg shadow-lg w-80 max-w-4xl">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col space-y-6"
+          encType="multipart/form-data"
+        >
           <div className="flex flex-col items-center mb-4">
             <div className="relative bg-white rounded-full p-6">
-              <img
-                src={data.profileImage}
-                alt="Profile"
-                className="w-32 h-32 object-cover rounded-full"
-              />
-              <label htmlFor="profileImage" className="absolute bottom-0 right-0 cursor-pointer">
+              {oldData.profileImage && (
+                <img
+                  src={oldData.profileImage}
+                  alt="Profile"
+                  className="w-32 h-32 object-cover rounded-full"
+                />
+              )}
+              <label
+                htmlFor="profileImage"
+                className="absolute bottom-0 right-0 cursor-pointer"
+              >
                 <div className="bg-transparent rounded-full p-2 transition duration-300 border border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white">
                   <EditIcon className="text-white" />
                 </div>
@@ -100,7 +124,10 @@ const Edit = () => {
             </div>
           </div>
           <div className="col-span-1 relative">
-            <label htmlFor="name" className="block text-sm font-medium mb-1 text-left labelLine">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium mb-1 text-left labelLine"
+            >
               Name
             </label>
             <motion.input
@@ -117,7 +144,10 @@ const Edit = () => {
             />
           </div>
           <div className="col-span-1 relative">
-            <label htmlFor="email" className="block text-sm font-light mb-1 text-left labelLine">
+            <label
+              htmlFor="email"
+              className="block text-sm font-light mb-1 text-left labelLine"
+            >
               Email
             </label>
             <motion.input
@@ -133,7 +163,6 @@ const Edit = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             />
           </div>
-
           <div className="col-span-1">
             <button
               type="submit"
@@ -143,7 +172,6 @@ const Edit = () => {
             </button>
           </div>
         </form>
-
         <div className="mt-4">
           <button
             onClick={() => navigate("/profile")}
