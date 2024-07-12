@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import {MusicPlayerProvider} from './contexts/MusicContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -41,6 +42,7 @@ function App() {
 
   return (
     <Router>
+      <MusicPlayerProvider>
       {isAuthenticated && <Navbar onToggleSearchBar={handleToggleSearchBar} setIsAuthenticated={setIsAuthenticated} />}
       <Routes>
         <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/auth/login" />} />
@@ -68,6 +70,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {isAuthenticated ? <Footer /> : null}
+      </MusicPlayerProvider>
     </Router>
   );
 }

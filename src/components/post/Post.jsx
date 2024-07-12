@@ -38,11 +38,10 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
   }, [post.likedByUserIds, currId]);
 
   const handleUserClick = () => {
-    if(isOwner) {
+    if (isOwner) {
       navigate("/user");
       return;
-    }
-    else{
+    } else {
       navigate(`/user/${post.ownerId}`);
     }
   };
@@ -102,11 +101,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
               className="object-cover w-full h-full"
             />
           </div>
-          <a
-            
-            onClick={handleUserClick}
-            className="text-blue-500 text-lg text-center"
-          >
+          <a onClick={handleUserClick} className="text-blue-500 text-lg text-center">
             @{post.owner}
           </a>
           <p className="text-sm text-gray-500">

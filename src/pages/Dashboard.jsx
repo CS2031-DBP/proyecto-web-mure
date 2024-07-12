@@ -4,6 +4,7 @@ import { fetchPosts } from "../services/posts/getAllPosts";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
+import { useMusicPlayer } from '../contexts/MusicContext'; 
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
+  const { stopTrackWithFade } = useMusicPlayer();
 
   const loadPosts = async () => {
     if (isLoading || !hasMore) return;
