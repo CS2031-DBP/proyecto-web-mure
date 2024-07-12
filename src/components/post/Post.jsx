@@ -38,7 +38,13 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
   }, [post.likedByUserIds, currId]);
 
   const handleUserClick = () => {
-    navigate(`/user/${post.ownerId}`);
+    if(isOwner) {
+      navigate("/user");
+      return;
+    }
+    else{
+      navigate(`/user/${post.ownerId}`);
+    }
   };
 
   const handleLikeClick = async () => {

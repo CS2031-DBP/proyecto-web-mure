@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Headphones from "@mui/icons-material/Headphones";
 import HeadsetOff from "@mui/icons-material/HeadsetOff";
 import { motion } from 'framer-motion';
+import ReactPlayer from 'react-player';
+import { getTrackDetailsByTitle } from '../../services/spotify/spotify';
 
 const MusicPost = ({ post }) => {
   const { song, album } = post;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [trackDetails, setTrackDetails] = useState(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchTrackDetails = async () => {
+      if (song && song.title) {
+        try {
+          const details = await getTrackDetailsByTitle(song.title);
+          console.log('Track details:', details);
+          setTrackDetails(details);
+        } catch (error) {
+          setError('Track not found');
+          console.error('Error fetching track details:', error);
+        }
+      }
+    };
+
+    fetchTrackDetails();
+  }, [song]);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
 
   return (
     <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-sm w-full">
@@ -41,10 +67,22 @@ const MusicPost = ({ post }) => {
           <p className="font-semibold">Untitled</p>
         )}
       </div>
-      {song?.link || album?.link ? (
-        <a href={song?.link || album?.link} target="_blank" rel="noopener noreferrer">
-          <Headphones className="text-lg text-black" />
-        </a>
+      {trackDetails?.preview_url ? (
+        <>
+          <button onClick={handlePlayPause}>
+            {isPlaying ? (
+              <HeadsetOff className="text-lg text-black" />
+            ) : (
+              <Headphones className="text-lg text-black" />
+            )}
+          </button>
+          <ReactPlayer
+            url={trackDetails.preview_url}
+            playing={isPlaying}
+            controls
+            style={{ display: 'none' }}
+          />
+        </>
       ) : (
         <HeadsetOff className="text-lg text-black" />
       )}

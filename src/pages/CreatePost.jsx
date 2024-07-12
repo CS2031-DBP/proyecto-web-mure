@@ -78,7 +78,7 @@ const CreatePost = () => {
   const fetchSongDetails = async (songId) => {
     try {
       const result = await searchSongById(songId);
-      console.log(result);
+
 
       if (result.status === 200) {
         setSelectedItem({ ...result.data, type: "song" });
@@ -135,8 +135,6 @@ const CreatePost = () => {
     try {
       if (type === "song") {
         const results = await searchSongsByTitle(songSearchTerm, page, size);
- 
-
         if (results.status === 200) {
           setSongSearchResults(results.data.content);
         }

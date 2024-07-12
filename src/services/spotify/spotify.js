@@ -26,17 +26,22 @@ export async function searchTracks(query, token) {
   return res.data.tracks.items;
 }
 
-export async function getArtistDetailsFromSpotify(artistName) {
+export async function getTrackDetails(trackId) {
   const token = await getToken();
-  const res = await axios.get(`https://api.spotify.com/v1/search?q=${artistName}&type=artist`, {
-      headers: {
-          Authorization: `Bearer ${token}`
-      }
+  const res = await axios.get(`https://api.spotify.com/v1/tracks/${trackId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
-  const artist = res.data.artists.items[0];
-  return {
-      name: artist.name,
-      birthDate: '1990-01-01', 
-      verified: artist.popularity > 50 
-  };
+  return res.data;
+}
+
+export async function getTrackDetailsByTitle(trackTitle) {
+  const token = await getToken();
+  const tracks = await searchTracks(trackTitle, token);
+  if (tracks.length > 0) {
+    return getTrackDetails(tracks[0].id);
+  } else {
+    throw new Error('Track not found');
+  }
 }

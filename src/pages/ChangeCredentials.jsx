@@ -46,7 +46,6 @@ const ChangeCredentials = () => {
     e.preventDefault();
 
     try {
-      // Verify old password only if new password is provided
       if (data.newPassword) {
         const valid = {
           userId: userId,

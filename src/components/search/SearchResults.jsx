@@ -1,11 +1,10 @@
 import React from "react";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-// SearchResults component to display search results
 const SearchResults = ({ results, handleAdd, type }) => {
-  if (!results || results.length === 0) return null; // If there are no results, don't display anything
+  console.log(results);
+  if (!results || results.length === 0) return null;
 
-  // Function to render the search results
   const renderResults = () => {
     return results.map((result, index) => (
       <motion.div
@@ -40,7 +39,12 @@ const SearchResults = ({ results, handleAdd, type }) => {
             ) : (
               <>
                 <p>Release Date: {result.releaseDate}</p>
-                <p>Songs: {result.songsTitles ? result.songsTitles.join(", ") : "No songs available"}</p>
+                <p>
+                  Songs:{" "}
+                  {result.songsTitles
+                    ? result.songsTitles.slice(0, 3).join(", ")
+                    : "No songs available"}
+                </p>
               </>
             )}
           </>
