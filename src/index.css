@@ -28,7 +28,7 @@ a:hover {
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #fffdf0, #faf8e5 , #f4f2da, #eeedd0, #e8e8c5); /* Degradado de gris oscuro a negro */
+  background: linear-gradient(to bottom, #fffdf0, #faf8e5 , #f4f2da, #eeedd0, #e8e8c5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,8 +39,6 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
-
 
 @media (prefers-color-scheme: light) {
   :root {

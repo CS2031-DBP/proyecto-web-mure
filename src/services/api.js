@@ -8,14 +8,11 @@ class Api {
   async request(options) {
     let configOptions = {
       ...options,
-      baseUrl: this.basePath,
+      baseURL: this.basePath,
     };
 
-    let path = this.basePath + options.url;
-
     let headers = {
-      "Content-Type":
-        configOptions.headers?.["Content-Type"] || "application/json",
+      ...configOptions.headers,
     };
 
     const token = localStorage.getItem("token");
@@ -28,80 +25,56 @@ class Api {
       headers: headers,
     };
 
-    return axios(path, config);
+    return axios(config);
   }
 
   get(options) {
-    let configOptions = {
-      ...options,
-      method: "get",
-    };
-
-    return this.request(configOptions);
+    return this.request({ ...options, method: "get" });
   }
 
   post(data, options) {
-    let configOptions = {
-      ...options,
-      method: "post",
-      data: data,
-    };
-
-    return this.request(configOptions);
+    return this.request({ ...options, method: "post", data });
   }
 
   postForm(data, options) {
-    const configOptions = {
+    return this.post(data, {
       ...options,
       headers: {
-        "Content-Type": "multipart/form-data",
       },
-    };
-
-    return this.post(data, configOptions);
+    });
   }
 
   patch(data, options) {
-    let configOptions = {
+    return this.request({
       ...options,
       method: "patch",
-      data: JSON.stringify(data),
-    };
-
-    return this.request(configOptions);
+      data,
+      headers: {
+      },
+    });
   }
 
   patchForm(data, options) {
-    const configOptions = {
-        ...options,
-        method: "patch",
-        data: data,
-        headers: {
-            ...options.headers,
-            "Content-Type": "multipart/form-data",
-        },
-    };
-
-    return this.request(configOptions);
-}
+    return this.patch(data, {
+      ...options,
+      headers: {
+      },
+    });
+  }
 
   put(data, options) {
-    let configOptions = {
+    return this.request({
       ...options,
       method: "put",
       data: JSON.stringify(data),
-    };
-
-    return this.request(configOptions);
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   delete(options) {
-    let configOptions = {
-      ...options,
-      method: "delete",
-    };
-
-    return this.request(configOptions);
+    return this.request({ ...options, method: "delete" });
   }
 }
 

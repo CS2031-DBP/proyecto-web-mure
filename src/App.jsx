@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import User from './pages/User'; 
 import Edit from './pages/Edit';
+import ChangeCredentials from './pages/ChangeCredentials';
 import CreatePost from './pages/CreatePost';
 import SongView from './pages/SongView';
 import AddSong from './pages/AddSong';
@@ -17,7 +18,6 @@ import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
 import FriendList from './pages/FriendList';
 import AddArtistInfo from './pages/AddArtistInfo';
-import ChangePassword from './pages/ChangePassword';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -38,7 +38,7 @@ function App() {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
-  
+
   return (
     <Router>
       {isAuthenticated && <Navbar onToggleSearchBar={handleToggleSearchBar} setIsAuthenticated={setIsAuthenticated} />}
@@ -53,6 +53,7 @@ function App() {
             <Route path="/user/:id" element={<User />} /> 
             <Route path="/user" element={<User />} />
             <Route path="/edit" element={<Edit />} />
+            <Route path="/change-credentials" element={<ChangeCredentials />} />
             <Route path="/post/create" element={<CreatePost />} />
             <Route path='/addsong' element={<AddSong />} />
             <Route path='/playlist/create' element={<CreatePlaylist />} />
@@ -60,7 +61,6 @@ function App() {
             <Route path="/friends" element={<FriendList/>} />
             <Route path="/song/create/spotify" element={<CreateSpotify />} />
             <Route path="/add-artist-info" element={<AddArtistInfo />} />
-            <Route path="/change-password" element={<ChangePassword />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/auth/login" />} />

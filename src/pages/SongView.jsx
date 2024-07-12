@@ -10,7 +10,7 @@ import SearchInput from '../components/search/SearchInput';
 const SongView = ({ showSearchBar }) => {
     const [songs, setSongs] = useState([]);
     const [page, setPage] = useState(0);
-    const [size] = useState(10);
+    const [size] = useState(9);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [role, setRole] = useState(null);

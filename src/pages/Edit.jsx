@@ -10,12 +10,10 @@ const Edit = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     name: "",
-    email: "",
     profileImage: null,
   });
   const [oldData, setOldData] = useState({
     name: "",
-    email: "",
     profileImage: "",
   });
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
@@ -28,12 +26,10 @@ const Edit = () => {
         const user = await fetchCurrentUser();
         setData({
           name: user.data.name,
-          email: user.data.email,
         });
 
         setOldData({
           name: user.data.name,
-          email: user.data.email,
           profileImage: user.data.profileImageUrl,
         });
 
@@ -61,6 +57,7 @@ const Edit = () => {
 
   const handleClearImage = () => {
     setData((prevData) => ({ ...prevData, profileImage: null }));
+    URL.revokeObjectURL(imagePreviewUrl);
     setImagePreviewUrl(oldData.profileImage);
   };
 
@@ -78,12 +75,7 @@ const Edit = () => {
       const res = await editProfile(formData);
       if (res.status === 204) {
         setSuccess("Profile updated successfully.");
-        if (data.email !== oldData.email) {
-          localStorage.removeItem("token");
-          navigate("/auth/login");
-        } else {
-          navigate("/profile");
-        }
+        navigate("/user");
       }
     } catch (error) {
       setError("Error updating profile.");
@@ -161,26 +153,6 @@ const Edit = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
-          <div className="col-span-1 relative">
-            <label
-              htmlFor="email"
-              className="block text-sm font-light mb-1 text-left labelLine"
-            >
-              Email
-            </label>
-            <motion.input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              value={data.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            />
-          </div>
           <div className="col-span-1">
             <button
               type="submit"
@@ -192,18 +164,10 @@ const Edit = () => {
         </form>
         <div className="mt-4">
           <button
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate("/change-credentials")}
             className="w-full py-2 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
           >
-            Back to Profile
-          </button>
-        </div>
-        <div className="mt-4">
-          <button
-            onClick={() => navigate("/change-password")}
-            className="w-full py-2 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
-          >
-            Change Password
+            Change Credentials
           </button>
         </div>
       </div>
