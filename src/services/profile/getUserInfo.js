@@ -9,7 +9,7 @@ export async function fetchCurrentUser() {
 
     try {
         const res = await api.get(options);
-        return res.data;
+        return res;
     } catch (error) {
         throw error;
     }

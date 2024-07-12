@@ -9,7 +9,7 @@ export async function verifyPassword(data) {
 
     try {
         const response = await api.post(data, options);
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }

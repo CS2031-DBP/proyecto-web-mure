@@ -16,6 +16,7 @@ const FriendList = () => {
   const loadFriends = async () => {
     try {
       const currentUserResponse = await fetchCurrentUser();
+
       setCurrentUser(currentUserResponse.data);
 
       const friendsDataResponse = await fetchUserFriends(friendIds);

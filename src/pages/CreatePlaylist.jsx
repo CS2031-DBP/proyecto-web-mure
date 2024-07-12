@@ -6,7 +6,7 @@ import SearchResults from "../components/search/SearchResults";
 import { useNavigate } from "react-router-dom";
 import Headphones from "@mui/icons-material/Headphones";
 import { createPlaylist } from "../services/playlists/createPlayllist";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 
 const CreatePlaylist = () => {
   const navigate = useNavigate();
@@ -81,10 +81,8 @@ const CreatePlaylist = () => {
     const getId = async () => {
       try {
         const response = await fetchCurrentUser();
-        if (response && response.id) {
-          setData((prevData) => ({ ...prevData, userId: response.id }));
-        } else {
-          throw new Error("No se pudo obtener el ID del usuario.");
+        if (response.status === 200) {
+          setData((prevData) => ({ ...prevData, userId: response.data.id }));
         }
       } catch (error) {
         setError("Error obteniendo la información del usuario.");

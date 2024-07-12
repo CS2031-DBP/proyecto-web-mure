@@ -11,7 +11,7 @@ import { PlaylistAddCheck } from "@mui/icons-material";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const [myposts, setMyPosts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState("");
@@ -23,13 +23,13 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const userdata = await fetchCurrentUser();
+        setUserData(userdata.data);
 
-        const myposts = await getPostsByUser(userdata.id, pagePosts, size);
- 
+        const userPosts = await getPostsByUser(userdata.data.id, pagePosts, size);
+        setMyPosts(userPosts.data.content ); 
+
         const userPlaylists = await fetchMyPlaylists(pagePlaylists, size);
-        setUserData(userdata);
-        setMyPosts(myposts.content);
-        setPlaylists(userPlaylists.content);
+        setPlaylists(userPlaylists.data.content ); 
       } catch (error) {
         setError("Error fetching user data.");
         console.error(error);
@@ -41,7 +41,7 @@ const Profile = () => {
   const fetchPlaylists = async () => {
     try {
       const userPlaylists = await fetchMyPlaylists(pagePlaylists, size);
-      setPlaylists(userPlaylists.content);
+      setPlaylists(userPlaylists.content ); 
     } catch (err) {
       setError("Error fetching playlists");
     }
@@ -134,7 +134,9 @@ const Profile = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-2xl font-bold mb-4 text-spotify-black">My Posts</h1>
+            <h1 className="text-2xl font-bold mb-4 text-spotify-black">
+              My Posts
+            </h1>
             {myposts.length === 0 ? (
               <p className="text-gray-400">You haven't posted anything yet</p>
             ) : (
@@ -154,22 +156,10 @@ const Profile = () => {
                 </motion.div>
               ))
             )}
-            <div className="flex justify-between mt-4">
-              <button onClick={handlePreviousPagePosts} disabled={pagePosts === 0}>
-                Previous
-              </button>
-              <button onClick={handleNextPagePosts}>
-                Next
-              </button>
-            </div>
-          </motion.div>
-          <motion.div
-            className="flex-1"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-2xl font-bold mb-4 text-spotify-black">My Playlists</h1>
+
+            <h1 className="text-2xl font-bold mb-4 text-spotify-black">
+              My Playlists
+            </h1>
             {playlists.length === 0 ? (
               <p className="text-gray-400">You don't have any playlists yet</p>
             ) : (
@@ -180,17 +170,24 @@ const Profile = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <Playlist key={playlist.id} playlist={playlist} onUpdate={fetchPlaylists} edit={false} />
+                  <Playlist
+                    key={playlist.id}
+                    playlist={playlist}
+                    onUpdate={fetchPlaylists}
+                    edit={false}
+                  />
                 </motion.div>
               ))
             )}
+
             <div className="flex justify-between mt-4">
-              <button onClick={handlePreviousPagePlaylists} disabled={pagePlaylists === 0}>
+              <button
+                onClick={handlePreviousPagePlaylists}
+                disabled={pagePlaylists === 0}
+              >
                 Previous
               </button>
-              <button onClick={handleNextPagePlaylists}>
-                Next
-              </button>
+              <button onClick={handleNextPagePlaylists}>Next</button>
             </div>
           </motion.div>
         </div>

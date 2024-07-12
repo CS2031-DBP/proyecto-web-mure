@@ -19,7 +19,7 @@ const ChangePassword = () => {
     const getCurrentUserId = async () => {
       try {
         const user = await fetchCurrentUser();
-        setUserId(user.id);
+        setUserId(user.data.id);
       } catch (error) {
         setError("Error fetching user data.");
         console.error(error);
@@ -47,7 +47,8 @@ const ChangePassword = () => {
     
     try {
         const isValid = await verifyPassword(valid);
-        if (isValid) {
+
+        if (isValid.data) {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('password', data.newPassword);

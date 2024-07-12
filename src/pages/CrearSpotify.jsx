@@ -13,6 +13,7 @@ const CreateSpotify = () => {
   const handleSearch = async () => {
     try {
       const token = await getToken();
+
       const results = await searchTracks(title, token);
       setTracks(results);
     } catch (error) {

@@ -9,7 +9,7 @@ export async function fetchMyPlaylists(page = 0, size = 10) {
 
     try {
         const res = await api.get(options);
-        return res.data;
+        return res;
     } catch (error) {
         throw error;
     }

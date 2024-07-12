@@ -38,8 +38,8 @@ const CreatePost = () => {
     const getId = async () => {
       try {
         const response = await fetchCurrentUser();
-        if (response && response.id) {
-          setData((prevData) => ({ ...prevData, userId: response.id }));
+        if (response.status === 200) {
+          setData((prevData) => ({ ...prevData, userId: response.data.id }));
         } else {
           throw new Error("Could not fetch user ID.");
         }
@@ -52,6 +52,7 @@ const CreatePost = () => {
     const fetchSongDetails = async (songId) => {
       try {
         const result = await searchSongById(songId);
+
         if (result.status === 200) {
           setSelectedItem({ ...result.data, type: "song" });
         }
@@ -77,6 +78,7 @@ const CreatePost = () => {
   const fetchSongDetails = async (songId) => {
     try {
       const result = await searchSongById(songId);
+
       if (result.status === 200) {
         setSelectedItem({ ...result.data, type: "song" });
       }
@@ -88,6 +90,7 @@ const CreatePost = () => {
   const fetchAlbumDetails = async (albumId) => {
     try {
       const result = await searchAlbum(albumId);
+
       if (result.status === 200) {
         setSelectedItem({ ...result.data, type: "album" });
       }
@@ -131,6 +134,7 @@ const CreatePost = () => {
     try {
       if (type === "song") {
         const results = await searchSongsByTitle(songSearchTerm, page, size);
+
         if (results.status === 200) {
           setSongSearchResults(results.data.content);
         }
@@ -147,6 +151,7 @@ const CreatePost = () => {
     try {
       if (type === "album") {
         const results = await searchAlbum(albumSearchTerm, page, size);
+
         if (results.status === 200) {
           setAlbumSearchResults(results.data.content);
         }
@@ -230,6 +235,7 @@ const CreatePost = () => {
             type="album"
           />
         </div>
+
         
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}

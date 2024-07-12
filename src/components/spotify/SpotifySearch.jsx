@@ -14,6 +14,7 @@ const SpotifySearch = ({ onSelectSong }) => {
 
     try {
       const token = await getToken();
+
       const results = await searchTracks(query, token);
       setTracks(results);
     } catch (err) {

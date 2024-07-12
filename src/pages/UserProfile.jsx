@@ -43,6 +43,7 @@ const UserProfile = () => {
       try {
         const response = await getUserPlaylists(id, pagePlaylists, size);
         
+        
         if (response.status === 200) {
           setPlaylists(response.data.content.slice(0, 4));
         } 
@@ -67,6 +68,7 @@ const UserProfile = () => {
     const fetchCurrentUserId = async () => {
       try {
         const res = await fetchCurrentUser();
+        
         if (res.status === 200) {
           setCurrUserId(res.data.id);
         }
@@ -86,7 +88,7 @@ const UserProfile = () => {
     try {
       const response = await getPostsByUser(id, pagePosts, size);
 
-        setPosts(response.content);
+        setPosts(response.data.content);
       
     } catch (err) {
       console.error(err);
@@ -170,7 +172,8 @@ const UserProfile = () => {
                 </div>
               </div>
               <div className="w-1/3 text-white text-left">
-                <h1 className="text-2xl font-bold">@{user.name}</h1>
+                <h1 className="text-2xl font-bold">@{user.nickname}</h1>
+                <p className="text-l">{user.name}</p>
                 <p>Cumpleaños: 🎉 {user.birthDate}</p>
               </div>
               <div className="w-1/3 flex flex-col items-end">

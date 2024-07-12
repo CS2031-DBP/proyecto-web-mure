@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import EditIcon from "@mui/icons-material/Edit";
 
+///TODO, falta un buen
+
+
 const Edit = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -24,17 +27,20 @@ const Edit = () => {
     const getCurrentUser = async () => {
       try {
         const user = await fetchCurrentUser();
-
         setData({
-          name: user.name,
-          email: user.email,
+          name: user.data.name,
+          email: user.data.email,
         });
 
         setOldData({
-          name: user.name,
-          email: user.email,
-          profileImage: user.profileImageUrl,
+          name: user.data.name,
+          email: user.data.email,
+          profileImage: user.data.profileImageUrl,
         });
+
+
+    
+
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
