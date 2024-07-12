@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from '../../img/Logo_Fondo-removebg-preview.png';
-import { FaHome, FaMusic, FaPlusSquare, FaSignOutAlt, FaUser, FaSearch } from "react-icons/fa";
+import logo from "../../img/Logo_Fondo-removebg-preview.png";
+import {
+  FaHome,
+  FaMusic,
+  FaPlusSquare,
+  FaSignOutAlt,
+  FaUser,
+  FaSearch,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 
-// Variantes para las animaciones de entrada y salida
 const navbarVariants = {
   hidden: { opacity: 0, y: -50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -38,9 +44,9 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
     const { pathname } = location;
 
     if (pathname.match(/^\/playlist\/edit\/\d+$/)) {
-      return "Edit Playlist";
+      return "Editar Playlist";
     } else if (pathname.match(/^\/user\/\d+$/)) {
-      return "User Profile";
+      return "Perfil de Usuario";
     }
 
     switch (pathname) {
@@ -50,7 +56,7 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
         return "Songs";
       case "/post/create":
         return "Create Post";
-      case "/profile":
+      case "/user":
         return "Profile";
       case "/addsong":
         return "Add Song";
@@ -84,21 +90,27 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/dashboard")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/dashboard")} transition duration-300`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                  "/dashboard"
+                )} transition duration-300`}
                 title="Dashboard"
               >
                 <FaHome className="text-2xl" />
               </button>
               <button
                 onClick={() => navigate("/songs")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/songs")} transition duration-300`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                  "/songs"
+                )} transition duration-300`}
                 title="Songs"
               >
                 <FaMusic className="text-2xl" />
               </button>
               <button
                 onClick={() => navigate("/post/create")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/post/create")} transition duration-300`}
+                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                  "/post/create"
+                )} transition duration-300`}
                 title="Create Post"
               >
                 <FaPlusSquare className="text-2xl" />
@@ -119,8 +131,10 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
                 </button>
               )}
               <button
-                onClick={() => navigate("/profile")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass("/profile")} transition duration-300`}
+                onClick={() => navigate("/user")}
+                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                  "/user"
+                )} transition duration-300`}
                 title="Profile"
               >
                 <FaUser className="text-2xl" />

@@ -4,7 +4,7 @@ import { fetchUserFriends } from "../services/profile/getUserFriends";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { deleteFriend } from "../services/friends/deleteFriend";
 import Friend from "../components/friend/Friend";
-import pic from "../img/Alone.jpg"
+import pic from "../img/Alone.jpg";
 
 const FriendList = () => {
   const navigate = useNavigate();
@@ -16,15 +16,12 @@ const FriendList = () => {
   const loadFriends = async () => {
     try {
       const currentUserResponse = await fetchCurrentUser();
-
       setCurrentUser(currentUserResponse.data);
 
       const friendsDataResponse = await fetchUserFriends(friendIds);
-      
-
-      const friendsData = friendsDataResponse.data.map(friend => ({
+      const friendsData = friendsDataResponse.data.map((friend) => ({
         ...friend,
-        profileImage: friend.profileImage || "default-profile.png"
+        profileImage: friend.profileImage || "default-profile.png",
       }));
       setFriends(friendsData);
     } catch (error) {
@@ -37,17 +34,15 @@ const FriendList = () => {
   }, [friendIds]);
 
   const handleFriendPress = (friendId) => {
-    if (currentUser && friendId === currentUser.id) {
-      navigate("/profile");
-    } else {
-      navigate(`/user/${friendId}`);
-    }
+    navigate(`/user/${friendId}`);
   };
 
   const handleDeleteFriend = async (friendId) => {
     try {
       await deleteFriend(friendId);
-      setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== friendId));
+      setFriends((prevFriends) =>
+        prevFriends.filter((friend) => friend.id !== friendId)
+      );
     } catch (error) {
       setErrors("Failed to remove friend");
     }
@@ -68,21 +63,18 @@ const FriendList = () => {
             />
           ))
         ) : (
-          <>
-          
           <div className="text-center p-10 bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black rounded-lg shadow-lg">
-            <h1 className="text-3xl font-mono mb-4">No se encontraron amigos :(</h1>
-              
-              <img src={pic} alt ="pic" className="mx-auto mb-8 h-96"/>
-
-            <button 
-              onClick={() => navigate('/Profile')}
+            <h1 className="text-3xl font-mono mb-4">
+              No se encontraron amigos :(
+            </h1>
+            <img src={pic} alt="pic" className="mx-auto mb-8 h-96" />
+            <button
+              onClick={() => navigate("/user")}
               className="bg-color4 text-white py-2 px-4 rounded-full hover:bg-color3 transition duration-300"
             >
               Regresar al Perfil
             </button>
           </div>
-          </>
         )}
       </div>
     </div>

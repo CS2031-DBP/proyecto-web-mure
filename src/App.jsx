@@ -3,12 +3,11 @@ import './App.css';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
+import User from './pages/User'; 
 import Edit from './pages/Edit';
 import CreatePost from './pages/CreatePost';
 import SongView from './pages/SongView';
 import AddSong from './pages/AddSong';
-import UserProfile from './pages/UserProfile';
 import CreatePlaylist from './pages/CreatePlaylist';
 import EditPlaylist from './pages/EditPlaylist';
 import CreateSpotify from './pages/CrearSpotify';
@@ -51,12 +50,12 @@ function App() {
           <>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/songs" element={<SongView showSearchBar={showSearchBar} />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/user/:id" element={<User />} /> 
+            <Route path="/user" element={<User />} />
             <Route path="/edit" element={<Edit />} />
             <Route path="/post/create" element={<CreatePost />} />
             <Route path='/addsong' element={<AddSong />} />
             <Route path='/playlist/create' element={<CreatePlaylist />} />
-            <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
             <Route path="/friends" element={<FriendList/>} />
             <Route path="/song/create/spotify" element={<CreateSpotify />} />
