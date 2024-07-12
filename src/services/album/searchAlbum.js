@@ -14,3 +14,16 @@ export async function searchAlbum(title, page = 0, size = 10) {
         throw error;
     }
 }
+
+export async function searchAlbumById(id) {
+    const options = {
+        url: `/album/${id}`,
+    };
+
+    try {
+        const res = await api.get(options);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}

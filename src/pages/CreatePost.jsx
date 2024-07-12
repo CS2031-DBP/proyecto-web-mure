@@ -3,7 +3,7 @@ import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { searchSongsByTitle } from '../services/songs/searchSongBy';
 import { searchSongById } from "../services/songs/searchSongById";
-import { searchAlbum } from "../services/album/searchAlbum";
+import { searchAlbum, searchAlbumById } from "../services/album/searchAlbum";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
@@ -78,6 +78,7 @@ const CreatePost = () => {
   const fetchSongDetails = async (songId) => {
     try {
       const result = await searchSongById(songId);
+      console.log(result);
 
       if (result.status === 200) {
         setSelectedItem({ ...result.data, type: "song" });
@@ -89,7 +90,7 @@ const CreatePost = () => {
 
   const fetchAlbumDetails = async (albumId) => {
     try {
-      const result = await searchAlbum(albumId);
+      const result = await searchAlbumById(albumId);
 
       if (result.status === 200) {
         setSelectedItem({ ...result.data, type: "album" });
@@ -134,6 +135,7 @@ const CreatePost = () => {
     try {
       if (type === "song") {
         const results = await searchSongsByTitle(songSearchTerm, page, size);
+ 
 
         if (results.status === 200) {
           setSongSearchResults(results.data.content);
@@ -151,6 +153,7 @@ const CreatePost = () => {
     try {
       if (type === "album") {
         const results = await searchAlbum(albumSearchTerm, page, size);
+
 
         if (results.status === 200) {
           setAlbumSearchResults(results.data.content);
@@ -225,13 +228,13 @@ const CreatePost = () => {
           <SearchInput
             searchTerm={songSearchTerm}
             handleSearchTermChange={handleSongSearchTermChange}
-            handleSearch={handleSearch}
+            handleSearch={() => handleSearch("song")}
             type="song"
           />
           <SearchInput
             searchTerm={albumSearchTerm}
             handleSearchTermChange={handleAlbumSearchTermChange}
-            handleSearch={handleSearch}
+            handleSearch={() => handleSearch("album")}
             type="album"
           />
         </div>
@@ -292,7 +295,7 @@ const CreatePost = () => {
                 <div className="flex-grow bg-crema5 text-white p-4 rounded-lg flex flex-col justify-between h-full">
                   <div className="flex-grow text-black">
                     {selectedItem.type === "song" && (
-                      <>
+                      <>                                     
                         <img
                           src={selectedItem.coverImage}
                           alt={`${selectedItem.title} cover`}
@@ -316,20 +319,20 @@ const CreatePost = () => {
                       </>
                     )}
 
-                    {selectedItem.type === "album" && (
+                    {selectedItem.type === "album" && (                      
                       <>
+             
                         <p className="font-bold text-lg">
                           Album: {selectedItem.title}
                         </p>
                         <img
-                          src={selectedItem.coverImage}
+                          src={selectedItem.coverImage || 'default-image-url'} 
                           alt={`${selectedItem.title} cover`}
                           className="w-full h-64 object-cover rounded-lg mb-4"
                         />
                         <p>Artist: {selectedItem.artistName}</p>
-                        <p>Number of Songs: {selectedItem.songsCount}</p>
                         <p>Total Duration: {selectedItem.totalDuration}</p>
-                        <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.join(", ") : "No songs available"}</p>
+                        <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.slice(0, 4).join(", ") : "No songs available"}</p>
                         <a
                           href={selectedItem.link}
                           target="_blank"
