@@ -4,9 +4,7 @@ import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import EditIcon from "@mui/icons-material/Edit";
-
-///TODO, falta un buen
-
+import Cancel from "@mui/icons-material/Cancel";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -18,8 +16,9 @@ const Edit = () => {
   const [oldData, setOldData] = useState({
     name: "",
     email: "",
-    profileImage: "null",
+    profileImage: "",
   });
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -38,9 +37,7 @@ const Edit = () => {
           profileImage: user.data.profileImageUrl,
         });
 
-
-    
-
+        setImagePreviewUrl(user.data.profileImageUrl);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -53,12 +50,18 @@ const Edit = () => {
     const { name, value, files } = e.target;
     if (files && files[0]) {
       setData({ ...data, profileImage: files[0] });
+      setImagePreviewUrl(URL.createObjectURL(files[0]));
     } else {
       setData({
         ...data,
         [name]: value,
       });
     }
+  };
+
+  const handleClearImage = () => {
+    setData((prevData) => ({ ...prevData, profileImage: null }));
+    setImagePreviewUrl(oldData.profileImage);
   };
 
   const handleSubmit = async (e) => {
@@ -104,12 +107,22 @@ const Edit = () => {
           encType="multipart/form-data"
         >
           <div className="flex flex-col items-center mb-4">
-            <div className="relative bg-white rounded-full p-6">
+            <div className="relative bg-white rounded-full p-3">
               <img
-                src={oldData.profileImage}
+                src={imagePreviewUrl}
                 alt="Profile"
                 className="w-32 h-32 object-cover rounded-full"
               />
+              {imagePreviewUrl !== oldData.profileImage && (
+                <button
+                  type="button"
+                  onClick={handleClearImage}
+                  className="absolute top-0 right-0 p-1 transition duration-300"
+                  title="Clear Image"
+                >
+                  <Cancel style={{ fill: "red" }} />
+                </button>
+              )}
               <label
                 htmlFor="profileImage"
                 className="absolute bottom-0 right-0 cursor-pointer"
