@@ -260,7 +260,7 @@ const User = () => {
                 <Playlist
                   key={playlist.id}
                   playlist={playlist}
-                  onUpdate={isCurrentUser ? fetchPlaylists : null}
+                  onUpdate={() => {}}
                   edit={isCurrentUser}
                 />
               </motion.div>

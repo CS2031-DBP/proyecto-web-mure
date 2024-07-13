@@ -76,8 +76,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="hide-scrollbar overflow-auto w-full max-w-6xl h-[calc(100vh-150px)]">
+    <div className="flex flex-col items-center justify-center min-h-screen mt-6">
+      <div className="hide-scrollbar overflow-auto w-full max-w-6xl flex-1">
         <ul>
           {posts.map((post, index) => {
             if (posts.length === index + 1 && hasMore) {

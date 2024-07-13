@@ -69,7 +69,6 @@ function App() {
         )}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {isAuthenticated ? <Footer /> : null}
       </MusicPlayerProvider>
     </Router>
   );

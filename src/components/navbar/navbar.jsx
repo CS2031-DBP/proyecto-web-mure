@@ -81,12 +81,12 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
     return (
       <div className="w-full">
         <motion.nav
-          className="fixed top-0 left-0 right-0 bg-gradient-to-r from-gradient5 via-gradient1 to-gradient5 text-white shadow-lg z-50 rounded-b-3xl"
+          className="fixed top-0 left-0 right-0 bg-gradient-to-r from-textPrimary via-gradient1 to-textPrimary text-white shadow-lg z-50 rounded-b-3xl"
           variants={navbarVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="container mx-auto flex justify-between items-center px-4 py-2">
+          <div className="container mx-auto flex justify-between items-center px-4 py-1.5">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/dashboard")}
@@ -117,7 +117,7 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              <img src={logo} alt="Logo" className="w-16 h-16" />
+              <img src={logo} alt="Logo" className="w-14 h-14" />
               <div className="text-lg font-bold">{`Mure - ${getCurrentPage()}`}</div>
             </div>
             <div className="flex items-center space-x-4">
@@ -149,7 +149,7 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
             </div>
           </div>
         </motion.nav>
-        <div className="h-16"></div>
+        <div className="h-14"></div>
       </div>
     );
   }

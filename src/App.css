@@ -1,10 +1,4 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
+/* Mantén solo los estilos necesarios */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -20,13 +14,11 @@
 
 .app-container {
   width: 100%;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
-
 
 @keyframes logo-spin {
   from {
@@ -51,9 +43,7 @@
   color: #888;
 }
 
-/* App.css */
+/* Estilos de Tailwind para el fondo */
 .bg-gradient-to-r {
   background: radial-gradient(circle, var(--gradient5) 0%, var(--gradient1) 70%, var(--gradient5) 100%);
 }
-
-

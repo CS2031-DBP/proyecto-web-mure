@@ -1,127 +1,179 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../services/auth/auth';
-import logo from '..//img/Logo_Fondo-removebg-preview.png';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../services/auth/auth";
+import logo from "../img/Logo_Fondo-removebg-preview.png";
+import { motion } from "framer-motion";
 
 const Login = ({ setIsAuthenticated }) => {
-    const navigate = useNavigate();
-    const [data, setData] = useState({
-        email: '',
-        password: ''
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
     });
-    const [error, setError] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    setError("");
+    setEmailError("");
+    setPasswordError("");
+  };
 
-    const handleChange = (e) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value
-        });
-        setError('');
-        setEmailError('');
-        setPasswordError('');
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await login(data);
-            if (res.status === 200) {
-                localStorage.setItem('token', res.data.token);
-                setIsAuthenticated(true);
-                navigate('/dashboard');
-
-            }
-        } catch (error) {
-            if (error.response) {
-                if (error.response.status === 404) {
-                    setEmailError('Email no encontrado.');
-                } else if (error.response.status === 400) {
-                    setPasswordError('Contraseña incorrecta.');
-                } else {
-                    setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
-                }
-            } else {
-                setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
-            }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login(data);
+      if (res.status === 200) {
+        localStorage.setItem("token", res.data.token);
+        setIsAuthenticated(true);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 404) {
+          setEmailError("Email not found.");
+        } else if (error.response.status === 400) {
+          setPasswordError("Incorrect password.");
+        } else {
+          setError("An error occurred. Please try again.");
         }
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     }
+  };
 
-    return (
-        <motion.div
-            className="bg-black p-8 rounded-lg shadow-lg w-full"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+  return (
+    <div className="flex items-center justify-center bg-[#FFFDF1] min-h-screen">
+      <div className="grid grid-cols-2 gap-6 max-w-4xl w-full p-4">
+        <div className="col-span-1 flex flex-col items-center justify-center h-auto">
+          <motion.h1
+            className="text-4xl text-fontColor font-poppins text-center pb-4"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-        >
-            <img src={logo} alt="Logo" className="mx-auto mb-4 w-20 h-20" />
-            <div className="text-center mb-6 w-full max-w-md">
-                <h1 className="text-3xl font-semibold text-white">Log in to Mure</h1>
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                    <label htmlFor="email" className="block text-sm font-medium text-white text-left">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        onChange={handleChange}
-                        required
-                        className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
-                    />
-                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
-                </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                    <label htmlFor="password" className="block text-sm font-medium text-white text-left">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Password"
-                        onChange={handleChange}
-                        required
-                        className="w-full p-1 mt-1 border border-white bg-black text-white focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
-                    />
-                    {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
-                </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                    <button
-                        type="submit"
-                        className="w-full bg-color3 text-white py-2 px-4 rounded-full font-semibold hover:bg-color4 focus:outline-none focus:ring-2 focus:ring-color4 transition duration-300"
-                    >
-                        Log In
-                    </button>
-                    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-                </motion.div>
-            </form>
-            <motion.div
-                className="mt-6 text-center text-sm text-white"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Welcome to{" "}
+            <motion.span
+              className="text-highlightColor font-oleo"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
-                <span>Don't have an account? </span>
-                <a onClick={() => navigate('/auth/register')} className="font-medium hover:text-color2 text-white underline transition duration-300">
-                    Sign up for Mure
-                </a>
-            </motion.div>
-        </motion.div>
-    );
-}
+              Mure
+            </motion.span>
+          </motion.h1>
+          <motion.div
+            className="bg-bgColor p-6 rounded-xl w-full max-w-md pt-8 pb-8 px-3"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-center font-poppins text-md mb-3 text-textPrimary">
+              Enter your email and password
+            </p>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <label
+                  htmlFor="email"
+                  className="block text-md font-medium text-left text-textPrimary font-poppins"
+                >
+                  Email
+                </label>
+                <motion.input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="youremail@example.com"
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                )}
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <label
+                  htmlFor="password"
+                  className="block text-md font-medium text-left text-textPrimary font-poppins"
+                >
+                  Password
+                </label>
+                <motion.input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="password123"
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                />
+                {passwordError && (
+                  <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                )}
+              </motion.div>
+              <motion.div
+                className="flex justify-between pt-6"
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <motion.button
+                  type="submit"
+                  className="w-full py-2 px-3 mr-2 rounded-full font-semibold transition duration-300 bg-buttonColor text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Log In
+                </motion.button>
+                <motion.button 
+                  type="button"
+                  onClick={() => navigate("/auth/register")}
+                  className="w-full py-2 px-3 ml-2 rounded-full font-semibold transition duration-300 bg-buttonColor text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Register
+                </motion.button>
+              </motion.div>
+              {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </form>
+          </motion.div>
+        </div>
+
+        <div className="col-span-1 flex items-center justify-center h-auto">
+          <motion.img
+            src={logo}
+            alt="Logo"
+            className="w-[400px] h-[350px]"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Login;

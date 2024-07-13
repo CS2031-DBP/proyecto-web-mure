@@ -11,7 +11,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import moment from "moment";
 import { motion } from 'framer-motion';
 
-const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) => {
+const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
   const [likes, setLikes] = useState(post.likes);
   const [liked, setLiked] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
@@ -40,7 +40,6 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
   const handleUserClick = () => {
     if (isOwner) {
       navigate("/user");
-      return;
     } else {
       navigate(`/user/${post.ownerId}`);
     }
@@ -74,7 +73,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
   return (
     <motion.div
       key={post.id}
-      className="border p-5 rounded-md shadow-lg bg-white mb-4 flex flex-col w-screen max-w-screen-md mx-auto relative"
+      className="border p-5 rounded-md shadow-lg bg-white mb-4 flex flex-col w-full max-w-screen-md mx-auto relative"
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -101,7 +100,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
               className="object-cover w-full h-full"
             />
           </div>
-          <a onClick={handleUserClick} className="text-blue-500 text-lg text-center">
+          <a onClick={handleUserClick} className="text-blue-500 text-lg text-center cursor-pointer">
             @{post.owner}
           </a>
           <p className="text-sm text-gray-500">
@@ -110,18 +109,19 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete, isLast }, ref) 
         </div>
         <div className="flex-1">
           <MusicPost post={post} />
-          {post.imageUrl && (
-            <div className="mt-4">
-              <img
-                src={post.imageUrl}
-                alt="Post"
-                className="w-full h-64 object-cover rounded-lg"
-              />
-            </div>
-          )}
         </div>
       </div>
-      <div className="flex justify-between items-center">
+      {post.imageUrl && (
+        <div className="mt-4">
+          <img
+            src={post.imageUrl}
+            alt="Post"
+            className="w-full object-cover rounded-lg"
+            style={{ maxHeight: '500px' }}
+          />
+        </div>
+      )}
+      <div className="flex justify-between items-center mt-4">
         <p className="text-black mb-4 mt-2 flex-grow text-left">
           {post.description}
         </p>
