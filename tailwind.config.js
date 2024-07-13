@@ -14,7 +14,8 @@ export default {
         inputBgColor: '#FFFDF1',
         textPrimary: '#8E3356',
         placeholderColor: '#828282',
-        gradient1: '#d3486c'
+        gradient1: '#d3486c',
+        profilePink:'#d7556d',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

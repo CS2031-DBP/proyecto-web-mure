@@ -40,35 +40,6 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
       : "hover:bg-color2";
   };
 
-  const getCurrentPage = () => {
-    const { pathname } = location;
-
-    if (pathname.match(/^\/playlist\/edit\/\d+$/)) {
-      return "Editar Playlist";
-    } else if (pathname.match(/^\/user\/\d+$/)) {
-      return "Perfil de Usuario";
-    }
-
-    switch (pathname) {
-      case "/dashboard":
-        return "Dashboard";
-      case "/songs":
-        return "Songs";
-      case "/post/create":
-        return "Create Post";
-      case "/user":
-        return "Profile";
-      case "/addsong":
-        return "Add Song";
-      case "/playlist/create":
-        return "Create Playlist";
-      case "/edit":
-        return "Edit Profile";
-      default:
-        return "App";
-    }
-  };
-
   const handleToggleSearchBar = () => {
     const newShowSearchBar = !showSearchBar;
     setShowSearchBar(newShowSearchBar);
@@ -86,7 +57,7 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
           initial="hidden"
           animate="visible"
         >
-          <div className="container mx-auto flex justify-between items-center px-4 py-1.5">
+          <div className="container mx-auto flex justify-between items-center px-4 py-2">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/dashboard")}
@@ -117,8 +88,8 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              <img src={logo} alt="Logo" className="w-14 h-14" />
-              <div className="text-lg font-bold">{`Mure - ${getCurrentPage()}`}</div>
+              <img src={logo} alt="Logo" className="w-16 h-16" />
+              <div className="text-lg font-bold">Mure</div>
             </div>
             <div className="flex items-center space-x-4">
               {location.pathname === "/songs" && (
@@ -149,7 +120,7 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
             </div>
           </div>
         </motion.nav>
-        <div className="h-14"></div>
+        <div className="h-16"></div>
       </div>
     );
   }

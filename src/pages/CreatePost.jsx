@@ -9,6 +9,9 @@ import SearchResults from "../components/search/SearchResults";
 import { motion } from 'framer-motion';
 import ImageIcon from '@mui/icons-material/Image';
 import Cancel from "@mui/icons-material/Cancel";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import HeadsetIcon from '@mui/icons-material/Headset';
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -138,7 +141,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-bgColor p-6 rounded-xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-16 h-648px mt-14">
         <div className="col-span-1 flex flex-col">
           <SearchInput
             searchTerm={searchTerm}
@@ -190,61 +193,40 @@ const CreatePost = () => {
         </div>
         <div className="col-span-1 flex flex-col">
           {selectedItem ? (
-            <div className="bg-white text-black p-4 rounded-lg flex flex-col justify-between h-full">
-              <div className="flex-grow">
-                {selectedItem.type === "song" && (
-                  <>
-                    <img
-                      src={selectedItem.coverImage}
-                      alt={`${selectedItem.title} cover`}
-                      className="w-full h-64 object-cover rounded-lg mb-4"
-                    />
-                    <p className="font-bold text-lg">{selectedItem.title}</p>
-                    <p>Artist: {selectedItem.artistsNames.join(", ")}</p>
-                    <p>Album: {selectedItem.albumTitle}</p>
-                    <p>Duration: {selectedItem.duration}</p>
-                    <p>Genre: {selectedItem.genre}</p>
-                    <a
-                      href={selectedItem.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500"
-                    >
-                      Listen on Spotify
-                    </a>
-                  </>
+            <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center">
+              <p className="font-bold text-lg">{selectedItem.title}</p>
+              <img
+                src={selectedItem.coverImageUrl || 'default-image-url'}
+                alt={`${selectedItem.title} cover`}
+                className="w-8/12 h-8/12 object-cover mb-4"
+              />
+              {selectedItem.type === "song" && (
+                <>
+                  <p>Artist: {selectedItem.artistsNames.join(", ")}</p>
+                  <p>Album: {selectedItem.albumTitle}</p>
+                  <p>Duration: {selectedItem.duration}</p>
+                  <p>Genre: {selectedItem.genre}</p>
+                </>
+              )}
+              {selectedItem.type === "album" && (
+                <>
+                  <p>Artist: {selectedItem.artistName}</p>
+                  <p>Total Duration: {selectedItem.totalDuration}</p>
+                  <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.slice(0, 4).join(", ") : "No songs available"}</p>
+                </>
+              )}
+              <div className="flex justify-between w-3/4 mt-4">
+                {selectedItem.spotifyPreviewUrl ? (
+                  <PlayArrowIcon className="text-gray-500 cursor-pointer" style={{ fontSize: 40 }} />
+                ) : (
+                  <HeadsetIcon className="text-gray-500 cursor-pointer" style={{ fontSize: 40 }} />
                 )}
-                {selectedItem.type === "album" && (
-                  <>
-                    <p className="font-bold text-lg">
-                      Album: {selectedItem.title}
-                    </p>
-                    <img
-                      src={selectedItem.coverImage || 'default-image-url'} 
-                      alt={`${selectedItem.title} cover`}
-                      className="w-full h-64 object-cover rounded-lg mb-4"
-                    />
-                    <p>Artist: {selectedItem.artistName}</p>
-                    <p>Total Duration: {selectedItem.totalDuration}</p>
-                    <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.slice(0, 4).join(", ") : "No songs available"}</p>
-                    <a
-                      href={selectedItem.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500"
-                    >
-                      Listen on Spotify
-                    </a>
-                  </>
-                )}
+                <DoNotDisturbOnIcon
+                  onClick={handleClearSelection}
+                  className="text-gray-500 cursor-pointer"
+                  style={{ fontSize: 40 }}
+                />
               </div>
-              <button
-                type="button"
-                onClick={handleClearSelection}
-                className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg self-center transition duration-300"
-              >
-                Change Content
-              </button>
             </div>
           ) : (
             <div className="space-y-4">
@@ -260,7 +242,7 @@ const CreatePost = () => {
         <div className="col-span-1 md:col-span-2">
           <button
             type="submit"
-            className="w-full py-2 mt-4 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
+            className="w-full py-2 mt-10 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
             onClick={handleSubmit}
           >
             Share

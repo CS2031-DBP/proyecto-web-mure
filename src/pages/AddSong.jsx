@@ -202,9 +202,9 @@ const AddSong = () => {
           <div className="col-span-1 flex flex-col items-center justify-center">
 
             {data.coverImage ? (
-              <img src={data.coverImage} alt="Cover" className="w-20 h-20 object-cover rounded-lg mt-1" />
+              <img src={data.coverImage} alt="Cover" className="w-24 h-24 object-cover rounded-lg mt-1" />
             ) : (
-              <div className="w-20 h-20 flex items-center justify-center bg-gray-200 rounded-lg text-red-500 mt-1">
+              <div className="w-24 h-24 flex items-center justify-center bg-gray-200 rounded-lg text-red-500 mt-1">
                 No Image
               </div>
             )}
@@ -264,7 +264,7 @@ const AddSong = () => {
         <div className="fixed bottom-10 right-5 rounded-full h-20">
           <button
             onClick={() => navigate('/song/create/spotify')}
-            className="p-3 shadow-lg text-white rounded-full transition duration-300 bg-buttonColor hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
+            className=" fixed bottom-4 right-4 p-3 shadow-lg text-white rounded-full transition duration-300 bg-buttonColor hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
             title="Search on Spotify"
           >
             <FaSpotify className="text-2xl" />

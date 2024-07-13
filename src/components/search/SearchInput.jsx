@@ -20,7 +20,7 @@ const SearchInput = ({
         value={searchTerm}
         onChange={handleSearchTermChange}
         placeholder="Search by title/album"
-        className="w-full px-3 py-2 border rounded-l-lg bg-white border-buttonColor text-gray-500 focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+        className="w-full px-3 py-2 border rounded-lg bg-white border-buttonColor text-gray-500 focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
       />
     </motion.div>
   );

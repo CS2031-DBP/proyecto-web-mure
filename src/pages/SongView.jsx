@@ -162,7 +162,7 @@ const SongView = ({ showSearchBar }) => {
             {role === 'ROLE_ADMIN' && (
                 <button
                     onClick={handleAddSongClick}
-                    className="fixed bottom-4 right-4 bg-gray-400 text-white p-3 rounded-full shadow-lg hover:bg-color3 transition duration-300"
+                    className="fixed bottom-4 right-4 bg-buttonColor text-white p-3 rounded-full shadow-lg hover:bg-color3 transition duration-300"
                     title="Agregar Canción"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -5,32 +5,12 @@ import Send from "@mui/icons-material/Send";
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import Stop from "@mui/icons-material/Stop";
 import Headphones from "@mui/icons-material/Headphones";
-import { motion } from 'framer-motion';
-import { getTrackDetailsByTitle } from '../../services/spotify/spotify'; 
 import { useMusicPlayer } from '../../contexts/MusicContext'; 
 
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [trackDetails, setTrackDetails] = useState(null);
-  const [error, setError] = useState('');
   const { playTrackWithFade, stopTrackWithFade, currentTrack } = useMusicPlayer();
-
-  useEffect(() => {
-    const fetchTrackDetails = async () => {
-      if (song && song.title) {
-        try {
-          const details = await getTrackDetailsByTitle(song.title);
-          setTrackDetails(details);
-        } catch (error) {
-          setError('Track not found');
-          console.error('Error fetching track details:', error);
-        }
-      }
-    };
-
-    fetchTrackDetails();
-  }, [song]);
 
   const handlePlayPause = async () => {
     if (isPlaying) {
@@ -40,7 +20,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
       if (currentTrack) {
         await stopTrackWithFade();
       }
-      await playTrackWithFade(trackDetails.preview_url);
+      await playTrackWithFade(song.spotifyPreviewUrl);
       setIsPlaying(true);
     }
   };
@@ -77,7 +57,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
         <div className="flex justify-between items-center mb-4">
           <Send className="text-[#676A6F] cursor-pointer" onClick={handleCreatePost} />
           <h2 className="text-xl font-bold">{song.title}</h2>
-          {trackDetails?.preview_url ? (
+          {song.spotifyPreviewUrl ? (
             <button onClick={handlePlayPause}>
               {isPlaying ? (
                 <Stop className="text-[#5F6368]" />
@@ -91,11 +71,11 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
             </a>
           )}
         </div>
-        {song.coverImage ? (
+        {song.coverImageUrl ? (
           <img
-            src={song.coverImage}
+            src={song.coverImageUrl}
             alt={`${song.title} cover`}
-            className="w-full h-48 object-cover rounded-lg mb-4"
+            className="w-full h-full object-cover rounded-lg mb-4"
           />
         ) : (
           <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded-lg mb-4 text-red-500">

@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { getUserById } from "../services/profile/getUserById";
 import { getPostsByUser } from "../services/posts/getPostByUserId";
-import { getUserPlaylists } from "../services/playlists/getPlaylistsByUserId";
-import { fetchMyPlaylists } from "../services/playlists/getMyPlaylists";
 import { isFriends } from "../services/friends/isFriends";
 import { addFriend } from "../services/friends/addFriend";
 import { deleteFriend } from "../services/friends/deleteFriend";
 import Post from "../components/post/Post";
-import Playlist from "../components/playlist/Playlist";
 import { motion } from "framer-motion";
-import { FaUserFriends, FaEdit } from "react-icons/fa";
-import { PlaylistAddCheck } from "@mui/icons-material";
+import { FaUserFriends } from "react-icons/fa";
+import EditIcon from "@mui/icons-material/Edit";
+import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 
 const User = () => {
   const navigate = useNavigate();
@@ -20,12 +18,14 @@ const User = () => {
   const [user, setUser] = useState(null);
   const [currUser, setCurrUser] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState("");
   const [friends, setFriends] = useState(false);
-  const [pagePosts, setPagePosts] = useState(0);
-  const [pagePlaylists, setPagePlaylists] = useState(0);
+  const [friendsCount, setFriendsCount] = useState(0);
+  const [page, setPage] = useState(0);
   const size = 10;
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,23 +36,15 @@ const User = () => {
         if (id) {
           const userResponse = await getUserById(id);
           setUser(userResponse.data);
+          setFriendsCount(userResponse.data.friendsIds.length);
 
-          const userPostsResponse = await getPostsByUser(id, pagePosts, size);
-          setPosts(userPostsResponse.data.content);
-
-          const userPlaylistsResponse = await getUserPlaylists(id, pagePlaylists, size);
-          setPlaylists(userPlaylistsResponse.data.content);
-
+          await loadPosts(id, 0);
           const friendsResponse = await isFriends(id);
           setFriends(friendsResponse.data);
         } else {
           setUser(currentUserResponse.data);
-
-          const userPostsResponse = await getPostsByUser(currentUserResponse.data.id, pagePosts, size);
-          setPosts(userPostsResponse.data.content);
-
-          const userPlaylistsResponse = await fetchMyPlaylists(pagePlaylists, size);
-          setPlaylists(userPlaylistsResponse.data.content);
+          setFriendsCount(currentUserResponse.data.friendsIds.length);
+          await loadPosts(currentUserResponse.data.id, 0);
         }
       } catch (err) {
         setError("Error fetching data.");
@@ -60,20 +52,47 @@ const User = () => {
       }
     };
     fetchData();
-  }, [id, pagePosts, pagePlaylists]);
+  }, [id]);
+
+  const loadPosts = async (userId, page) => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    try {
+      const res = await getPostsByUser(userId, page, size);
+      if (res.status === 200) {
+        setPosts((prevPosts) => [...prevPosts, ...res.data.content]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMore(res.data.content.length > 0);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
+  };
+
+  const lastPostElementRef = useCallback(
+    (node) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadPosts(id || currUser.id, page);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
 
   const handleDeletePost = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
-
-  const handleNextPagePosts = () => setPagePosts((prevPage) => prevPage + 1);
-  const handlePreviousPagePosts = () =>
-    setPagePosts((prevPage) => (prevPage > 0 ? prevPage - 1 : 0));
-
-  const handleNextPagePlaylists = () =>
-    setPagePlaylists((prevPage) => prevPage + 1);
-  const handlePreviousPagePlaylists = () =>
-    setPagePlaylists((prevPage) => (prevPage > 0 ? prevPage - 1 : 0));
 
   const handleAddFriend = async () => {
     try {
@@ -113,62 +132,52 @@ const User = () => {
   const isCurrentUser = !id || currUser?.id === user.id;
 
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col items-center bg-crema2 ">
       <motion.div
-        className="rounded-lg"
+        className="rounded-lg w-full max-w-4xl mt-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center mb-4">
-          <motion.div
-            className="flex items-center bg-gradient1 p-4 rounded-lg shadow-md w-full"
-            custom={0}
-            initial="hidden"
-            animate="visible"
-            variants={animationVariants}
-          >
-            <div className="w-1/3 flex justify-center items-center">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black">
-                <img
-                  src={user.profileImageUrl || "default-profile.png"}
-                  alt="Profile"
-                  className="object-cover w-full h-full"
-                />
-              </div>
+        <div className="grid grid-cols-3 gap-4 items-center mb-4 bg-profilePink p-4 rounded-lg shadow-md">
+          <div className="flex flex-col items-center">
+            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black">
+              <img
+                src={user.profileImageUrl || "default-profile.png"}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
             </div>
-            <div className="w-2/3 text-white text-left">
-              <h1 className="text-2xl font-bold">@{user.nickname}</h1>
-              <p className="text-lg">{user.name}</p>
-              <p>Birthday: 🎉 {user.birthDate}</p>
-            </div>
-          </motion.div>
-          <div className="flex flex-col ml-4">
+            <h1 className="text-2xl font-bold text-white mt-2">
+              @{user.nickname}
+            </h1>
+          </div>
+          <div className="text-white">
+            <p className="text-lg">{user.name}</p>
+            <p>Birthday: 🎉 {user.birthDate}</p>
+          </div>
+          <div className="flex flex-col items-center space-y-2">
             {isCurrentUser ? (
-              <>
-                <motion.button
-                  onClick={() => navigate("/friends")}
-                  className="bg-color1 text-white py-2 rounded-md px-4 mb-2 transition duration-150 flex items-center justify-center hover:bg-color2"
-                  custom={1}
-                  initial="hidden"
-                  animate="visible"
-                  variants={animationVariants}
-                >
-                  <FaUserFriends className="mr-2" />
-                  Friends List
-                </motion.button>
-                <motion.button
-                  onClick={() => navigate("/edit")}
-                  className="bg-color1 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
-                  custom={2}
-                  initial="hidden"
-                  animate="visible"
-                  variants={animationVariants}
-                >
-                  <FaEdit className="mr-2" />
-                  Edit Profile
-                </motion.button>
-              </>
+              friendsCount > 0 ? (
+                <>
+                  <p className="text-white">Amigos: {friendsCount}</p>
+                  <motion.button
+                    onClick={() => navigate("/friends")}
+                    className="bg-color1 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
+                    custom={1}
+                    initial="hidden"
+                    animate="visible"
+                    variants={animationVariants}
+                  >
+                    <FaUserFriends className="mr-2" />
+                    Friends List
+                  </motion.button>
+                </>
+              ) : (
+                <p className="text-white">
+                  No tienes amigos aún. Prueba a ver posts para conocer gente.
+                </p>
+              )
             ) : friends ? (
               <motion.button
                 onClick={handleDeleteFriend}
@@ -190,104 +199,80 @@ const User = () => {
         </div>
       </motion.div>
 
-      <div className="flex flex-col md:flex-row mt-8">
+      <div className="w-full max-w-4xl mt-2">
         <motion.div
-          className="flex-1 md:mr-8 mb-8 md:mb-0"
+          className="mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl font-bold mb-4 text-spotify-black">
+          <h1 className="text-2xl font-bold mb-4 text-black">
             {isCurrentUser ? "My Posts" : `${user.name}'s Posts`}
           </h1>
           {posts.length === 0 ? (
-            <p className="text-gray-400">
+            <p className="text-gray-700">
               {isCurrentUser
                 ? "You haven't posted anything yet"
                 : "This user has not made any posts yet."}
             </p>
           ) : (
-            posts.map((post) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Post
-                  post={post}
-                  currUserName={user.name}
-                  currId={user.id}
-                  onDelete={isCurrentUser ? handleDeletePost : null}
-                />
-              </motion.div>
-            ))
+            posts.map((post, index) => {
+              if (posts.length === index + 1 && hasMore) {
+                return (
+                  <Post
+                    ref={lastPostElementRef}
+                    key={post.id}
+                    post={post}
+                    currUserName={user.name}
+                    currId={user.id}
+                    onDelete={isCurrentUser ? handleDeletePost : null}
+                  />
+                );
+              } else {
+                return (
+                  <Post
+                    key={post.id}
+                    post={post}
+                    currUserName={user.name}
+                    currId={user.id}
+                    onDelete={isCurrentUser ? handleDeletePost : null}
+                  />
+                );
+              }
+            })
           )}
 
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={handlePreviousPagePosts}
-              disabled={pagePosts === 0}
+          {!hasMore && (
+            <motion.div
+              className="text-center text-gray-500 py-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              Previous
-            </button>
-            <button onClick={handleNextPagePosts}>Next</button>
-          </div>
-        </motion.div>
-        <motion.div
-          className="flex-1"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-2xl font-bold mb-4 text-spotify-black">
-            {isCurrentUser ? "My Playlists" : `${user.name}'s Playlists`}
-          </h1>
-          {playlists.length === 0 ? (
-            <p className="text-gray-400">
-              {isCurrentUser
-                ? "You don't have any playlists yet"
-                : "This user has not created any playlists yet."}
-            </p>
-          ) : (
-            playlists.map((playlist) => (
-              <motion.div
-                key={playlist.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Playlist
-                  key={playlist.id}
-                  playlist={playlist}
-                  onUpdate={() => {}}
-                  edit={isCurrentUser}
-                />
-              </motion.div>
-            ))
+              No hay más posts
+            </motion.div>
           )}
-
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={handlePreviousPagePlaylists}
-              disabled={pagePlaylists === 0}
-            >
-              Previous
-            </button>
-            <button onClick={handleNextPagePlaylists}>Next</button>
-          </div>
         </motion.div>
       </div>
       {isCurrentUser && (
         <button
-          onClick={() => navigate("/playlist/create")}
-          className="fixed bottom-16 right-5 bg-color1 text-white p-4 rounded-full shadow-lg hover:bg-color2 transition duration-300"
-          title="Create Playlist"
+          onClick={() => navigate("/edit")}
+          className="fixed bottom-24 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
+          title="Edit Profile"
         >
-          <PlaylistAddCheck className="text-2xl" />
+          <EditIcon className="text-2xl" />
         </button>
       )}
-      {error && <p className="text-center text-red-500 mt-4">{error}</p>}
+
+      <button
+        onClick={() => console.log("View Playlists")}
+        className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
+        title="View Playlists"
+      >
+        <QueueMusicIcon className="text-2xl" />
+      </button>
+      {isLoading && <p className="text-center mt-4">Loading...</p>}
     </div>
   );
 };
