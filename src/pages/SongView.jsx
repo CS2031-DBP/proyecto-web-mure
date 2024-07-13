@@ -29,8 +29,6 @@ const SongView = ({ showSearchBar }) => {
                 switch (searchType) {
                     case 'titulo':
                         res = await searchSongsByTitle(searchTerm, resetPage ? 0 : page, size);
-       
-  
                         if (res.status === 200) {
                             setSongs(res.data.content);
                             setHasMore(false); 
@@ -40,15 +38,12 @@ const SongView = ({ showSearchBar }) => {
                         return;
                     case 'genero':
                         res = await searchSongsByGenre(searchTerm, resetPage ? 0 : page, size);
-       
                         break;
                     case 'artista':
                         res = await searchSongsByArtistName(searchTerm, resetPage ? 0 : page, size);
-                
                         break;
                     default:
                         res = await fetchSongs(resetPage ? 0 : page, size);
-                        
                         break;
                 }
             } else {
@@ -113,13 +108,7 @@ const SongView = ({ showSearchBar }) => {
     };
 
     return (
-        <motion.div
-            className="flex flex-col items-center justify-center relative"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.5 }}
-        >
+        <div className="flex flex-col items-center justify-center min-h-screen mt-6">
             {showSearchBar && (
                 <motion.div
                     className="flex justify-center mb-4"
@@ -142,7 +131,7 @@ const SongView = ({ showSearchBar }) => {
                     />
                 </motion.div>
             )}
-            <div className="hide-scrollbar overflow-auto w-full max-w-5xl h-[calc(100vh-150px)]">
+            <div className="hide-scrollbar overflow-auto w-full max-w-5xl flex-1">
                 {noResults && !isLoading && (
                     <p className="text-center mt-4 text-spotify-black ">No se encontraron canciones con esas características</p>
                 )}
@@ -173,7 +162,7 @@ const SongView = ({ showSearchBar }) => {
             {role === 'ROLE_ADMIN' && (
                 <button
                     onClick={handleAddSongClick}
-                    className="fixed bottom-16 right-5 bg-color4 text-white p-4 rounded-full shadow-lg hover:bg-color3 transition duration-300"
+                    className="fixed bottom-4 right-4 bg-gray-400 text-white p-3 rounded-full shadow-lg hover:bg-color3 transition duration-300"
                     title="Agregar Canción"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -181,7 +170,7 @@ const SongView = ({ showSearchBar }) => {
                     </svg>
                 </button>
             )}
-        </motion.div>
+        </div>
     );
 };
 

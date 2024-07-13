@@ -1,59 +1,108 @@
-import React, { forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import { deleteSong } from "../../services/songs/deleteSong";
-import Headphones from "@mui/icons-material/Headphones";
 import { useNavigate } from "react-router-dom";
+import Send from "@mui/icons-material/Send";
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import Stop from "@mui/icons-material/Stop";
+import Headphones from "@mui/icons-material/Headphones";
+import { motion } from 'framer-motion';
+import { getTrackDetailsByTitle } from '../../services/spotify/spotify'; 
+import { useMusicPlayer } from '../../contexts/MusicContext'; 
 
-// Componente Song que recibe props: song, role, onDelete y ref
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
-  const navigate = useNavigate(); // Hook de navegación para redirigir a otras páginas
+  const navigate = useNavigate();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [trackDetails, setTrackDetails] = useState(null);
+  const [error, setError] = useState('');
+  const { playTrackWithFade, stopTrackWithFade, currentTrack } = useMusicPlayer();
 
-  // Función para manejar la eliminación de una canción
-  const handleDelete = async (id) => {
-    try {
-      const res = await deleteSong(id); // Llama a la API para eliminar la canción
-      if (res.status === 204) {
-        // Si la eliminación es exitosa
-        onDelete(id); // Llama a la función onDelete pasada por props
+  useEffect(() => {
+    const fetchTrackDetails = async () => {
+      if (song && song.title) {
+        try {
+          const details = await getTrackDetailsByTitle(song.title);
+          setTrackDetails(details);
+        } catch (error) {
+          setError('Track not found');
+          console.error('Error fetching track details:', error);
+        }
       }
-    } catch (error) {
-      console.error(`Failed to delete song ${id}`, error); // Manejo de errores
+    };
+
+    fetchTrackDetails();
+  }, [song]);
+
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      await stopTrackWithFade();
+      setIsPlaying(false);
+    } else {
+      if (currentTrack) {
+        await stopTrackWithFade();
+      }
+      await playTrackWithFade(trackDetails.preview_url);
+      setIsPlaying(true);
     }
   };
 
-  // Función para manejar la creación de un post basado en la canción
+  useEffect(() => {
+    if (currentTrack) {
+      const handleEnded = () => setIsPlaying(false);
+      currentTrack.addEventListener('ended', handleEnded);
+      return () => currentTrack.removeEventListener('ended', handleEnded);
+    }
+  }, [currentTrack]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteSong(id);
+      if (res.status === 204) {
+        onDelete(id);
+      }
+    } catch (error) {
+      console.error(`Failed to delete song ${id}`, error);
+    }
+  };
+
   const handleCreatePost = () => {
-    navigate("/post/create", { state: { songId: song.id } }); // Redirige a la página de creación de posts
+    navigate("/post/create", { state: { songId: song.id } });
   };
 
   return (
     <div
       ref={ref}
-      className="border rounded-2xl shadow-lg bg-white text-black w-80 flex flex-col justify-between min-h-[450px]"
+      className="border rounded-2xl shadow-lg bg-[#D9D9D9] text-black w-80 flex flex-col justify-between min-h-[450px] p-4"
     >
       <div className="relative">
-        <div className="flex justify-between items-center px-4 pt-4">
-          <h2 className="text-xl font-bold flex items-center">
-            {song.title}
-            {song.link && (
-              <a
-                href={song.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 ml-2"
-              >
-                <Headphones className="inline-block" />{" "}
-                {/* Enlace a la canción en una plataforma externa */}
-              </a>
-            )}
-          </h2>
-          <button
-            onClick={handleCreatePost}
-            className="bg-green-500 text-white px-3 py-1 rounded-full transition duration-300"
-          >
-            Post
-          </button>
+        <div className="flex justify-between items-center mb-4">
+          <Send className="text-[#676A6F] cursor-pointer" onClick={handleCreatePost} />
+          <h2 className="text-xl font-bold">{song.title}</h2>
+          {trackDetails?.preview_url ? (
+            <button onClick={handlePlayPause}>
+              {isPlaying ? (
+                <Stop className="text-[#5F6368]" />
+              ) : (
+                <PlayArrow className="text-[#5F6368]" />
+              )}
+            </button>
+          ) : (
+            <a href={song.link} target="_blank" rel="noopener noreferrer">
+              <Headphones className="text-[#5F6368]" />
+            </a>
+          )}
         </div>
-        <div className="px-5">
+        {song.coverImage ? (
+          <img
+            src={song.coverImage}
+            alt={`${song.title} cover`}
+            className="w-full h-48 object-cover rounded-lg mb-4"
+          />
+        ) : (
+          <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded-lg mb-4 text-red-500">
+            No se encontró la imagen :(
+          </div>
+        )}
+        <div>
           <p className="mb-1">
             <span className="font-semibold">Artista:</span>{" "}
             {song.artistsNames ? song.artistsNames.join(", ") : "Desconocido"}
@@ -82,29 +131,13 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
           </p>
         </div>
       </div>
-      {song.coverImage ? (
-        <img
-          src={song.coverImage}
-          alt={`${song.title} cover`}
-          className="w-full h-64 object-cover rounded-lg mb-2 px-5 pt-5"
-        />
-      ) : (
-        <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded-lg mb-2 text-red-500">
-          No se encontró la imagen :(
-        </div>
-      )}
       {role === "ROLE_ADMIN" && (
-        <div className="flex justify-between mt-2 space-x-2 pb-5 px-5">
-          <button className="bg-yellow-500 text-white px-4 py-2 rounded-full transition duration-300">
-            Cambiar Imagen
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded-full transition duration-300"
-            onClick={() => handleDelete(song.id)}
-          >
-            Eliminar Canción
-          </button>
-        </div>
+        <button
+          className="bg-[#8E3356] text-white px-4 py-2 rounded-full transition duration-300 mt-4"
+          onClick={() => handleDelete(song.id)}
+        >
+          Eliminar Canción
+        </button>
       )}
     </div>
   );

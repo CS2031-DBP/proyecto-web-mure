@@ -112,20 +112,17 @@ const AddSong = () => {
 
   return (
     <motion.div
-      className="items-center justify-center"
+      className="flex items-center justify-center bg-[#FFFDF1] px-4 pt-4"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black text-white px-7 py-5 rounded-lg shadow-lg w-full max-w-4xl">
-       {error && <p className="text-red-500 mb-4">{error}</p>}
-        {success && <p className="text-green-500 mb-4">{success}</p>}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
+      <div className="bg-bgColor p-4 rounded-xl w-full max-w-2xl mt-8">
+        {error && <p className="text-red-500 mb-2">{error}</p>}
+        {success && <p className="text-green-500 mb-2">{success}</p>}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1 md:col-span-2">
-            <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+            <label htmlFor="title" className="block text-sm font-medium text-left text-textPrimary font-poppins">Title</label>
             <motion.input
               type="text"
               id="title"
@@ -133,14 +130,14 @@ const AddSong = () => {
               value={data.title}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full p-1 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
           <div className="col-span-1">
-            <label htmlFor="releaseDate" className="block text-sm font-medium mb-1">Release Date</label>
+            <label htmlFor="releaseDate" className="block text-sm font-medium text-left text-textPrimary font-poppins">Release Date</label>
             <motion.input
               type="date"
               id="releaseDate"
@@ -148,14 +145,14 @@ const AddSong = () => {
               value={data.releaseDate}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full p-1 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             />
           </div>
           <div className="col-span-1">
-            <label htmlFor="genre" className="block text-sm font-medium mb-1">Genre</label>
+            <label htmlFor="genre" className="block text-sm font-medium text-left text-textPrimary font-poppins">Genre</label>
             <motion.input
               type="text"
               id="genre"
@@ -163,14 +160,14 @@ const AddSong = () => {
               value={data.genre}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full p-1 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             />
           </div>
           <div className="col-span-1">
-            <label htmlFor="duration" className="block text-sm font-medium mb-1">Duration</label>
+            <label htmlFor="duration" className="block text-sm font-medium text-left text-textPrimary font-poppins">Duration</label>
             <motion.input
               type="text"
               id="duration"
@@ -178,29 +175,17 @@ const AddSong = () => {
               value={data.duration}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full p-1 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             />
           </div>
-          <div className="col-span-1">
-            <label htmlFor="coverImage" className="block text-sm font-medium mb-1">Cover Image</label>
-            <motion.input
-              type="text"
-              id="coverImage"
-              name="coverImage"
-              value={data.coverImage}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            />
+          <div className="col-span-1 flex flex-col items-center justify-center">
+          <label className="block text-sm font-medium text-left text-textPrimary font-poppins">Cover Image</label>
           </div>
           <div className="col-span-1">
-            <label htmlFor="link" className="block text-sm font-medium mb-1">Spotify Link</label>
+            <label htmlFor="link" className="block text-sm font-medium text-left text-textPrimary font-poppins">Spotify Link</label>
             <motion.input
               type="text"
               id="link"
@@ -208,12 +193,23 @@ const AddSong = () => {
               value={data.link}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-lg bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
+              className="w-full p-1 mt-1 border rounded-md bg-inputBgColor text-fontColor placeholder-placeholderColor border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             />
           </div>
+          <div className="col-span-1 flex flex-col items-center justify-center">
+
+            {data.coverImage ? (
+              <img src={data.coverImage} alt="Cover" className="w-20 h-20 object-cover rounded-lg mt-1" />
+            ) : (
+              <div className="w-20 h-20 flex items-center justify-center bg-gray-200 rounded-lg text-red-500 mt-1">
+                No Image
+              </div>
+            )}
+          </div>
+
           <div className="col-span-1 md:col-span-2">
             <SearchInput
               searchTerm={artistSearchTerm}
@@ -228,28 +224,28 @@ const AddSong = () => {
             />
           </div>
           <div className="col-span-1 md:col-span-2">
-            <h2 className="text-xl font-bold mb-4">Added Artists</h2>
+            <h2 className="text-lg font-bold text-textPrimary font-poppins mb-2">Added Artists</h2>
             <AnimatePresence>
               {addedArtists.length === 0 ? (
-                <p>No artists added yet.</p>
+                <p className="text-textPrimary font-poppins">No artists added yet.</p>
               ) : (
                 addedArtists.map((artist, index) => (
                   <motion.div
                     key={index}
-                    className="bg-crema5 text-black p-4 mb-4 rounded-lg flex items-center"
+                    className="bg-crema5 text-black p-3 mb-2 rounded-lg flex items-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.3 }}
                   >
                     <div className="flex-1">
-                      <p className="font-bold">
+                      <p className="font-bold text-textPrimary font-poppins">
                         {artist.name}{" "}
                         {artist.verified && (
                           <VerifiedIcon className="text-blue-500" />
                         )}
                       </p>
-                      <p>Birthday: {artist.birthday}</p>
+                      <p className="text-textPrimary font-poppins">Birthday: {artist.birthday}</p>
                     </div>
                   </motion.div>
                 ))
@@ -259,7 +255,7 @@ const AddSong = () => {
           <div className="col-span-1 md:col-span-2">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
+              className="w-full py-1.5 mt-2 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
             >
               Add Song
             </button>
@@ -268,7 +264,7 @@ const AddSong = () => {
         <div className="fixed bottom-10 right-5 rounded-full h-20">
           <button
             onClick={() => navigate('/song/create/spotify')}
-            className="p-4 shadow-lg text-white rounded-full transition duration-300 bg-color4 hover:bg-color3"
+            className="p-3 shadow-lg text-white rounded-full transition duration-300 bg-buttonColor hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
             title="Search on Spotify"
           >
             <FaSpotify className="text-2xl" />
