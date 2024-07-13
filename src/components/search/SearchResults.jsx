@@ -1,12 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const SearchResults = ({ results, handleAdd, type }) => {
-  console.log(results);
-  if (!results || results.length === 0) return null;
+const SearchResults = ({ results, handleAdd, page, setPage }) => {
+  const resultsPerPage = 2;
+  const totalPages = Math.ceil(results.length / resultsPerPage);
+
+  const paginatedResults = results.slice(
+    page * resultsPerPage,
+    (page + 1) * resultsPerPage
+  );
 
   const renderResults = () => {
-    return results.map((result, index) => (
+    return paginatedResults.map((result, index) => (
       <motion.div
         key={index}
         className="bg-crema5 text-black p-4 mb-4 rounded-lg"
@@ -14,44 +19,23 @@ const SearchResults = ({ results, handleAdd, type }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
       >
-        {type === "artist" ? (
+        <p className="font-bold">{result.title}</p>
+        {result.type === "song" ? (
           <>
-            <p className="font-bold">Artist: {result.name}</p>
-            <p>
-              Some songs:{" "}
-              {result.songTitles
-                ? result.songTitles.slice(0, 2).join(", ")
-                : "No songs available"}
-            </p>
-            <p>Verified?: {result.verified ? "Yes" : "No"}</p>
+            <p>Artist: {result.artistsNames.join(", ")}</p>
+            <p>Genre: {result.genre}</p>
+            <p>Type: Song</p>
           </>
         ) : (
           <>
-            <p className="font-bold">{result.title}</p>
-            <p>
-              Artist:{" "}
-              {type === "song"
-                ? result.artistsNames.join(", ")
-                : result.artistName}
-            </p>
-            {type === "song" ? (
-              <p>Genre: {result.genre}</p>
-            ) : (
-              <>
-                <p>Release Date: {result.releaseDate}</p>
-                <p>
-                  Songs:{" "}
-                  {result.songsTitles
-                    ? result.songsTitles.slice(0, 3).join(", ")
-                    : "No songs available"}
-                </p>
-              </>
-            )}
+            <p>Artist: {result.artistName}</p>
+            <p>Release Date: {result.releaseDate}</p>
+            <p>Type: Album</p>
           </>
         )}
         <button
           type="button"
-          onClick={() => handleAdd(result.id, type, result)}
+          onClick={() => handleAdd(result.id, result)}
           className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
         >
           Add +
@@ -67,8 +51,26 @@ const SearchResults = ({ results, handleAdd, type }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h3 className="text-lg font-semibold mb-2">Search Results</h3>
+      <h3 className="text-lg font-semibold mb-2 text-buttonColor">Search Results</h3>
       {renderResults()}
+      {totalPages > 1 && (
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => setPage((prevPage) => Math.max(prevPage - 1, 0))}
+            className="px-4 py-2 bg-gray-500 text-white rounded-lg"
+            disabled={page === 0}
+          >
+            {"<"}
+          </button>
+          <button
+            onClick={() => setPage((prevPage) => Math.min(prevPage + 1, totalPages - 1))}
+            className="px-4 py-2 bg-gray-500 text-white rounded-lg"
+            disabled={page >= totalPages - 1}
+          >
+            {">"}
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 };

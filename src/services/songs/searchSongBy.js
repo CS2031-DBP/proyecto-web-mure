@@ -7,12 +7,8 @@ export async function searchSongsByTitle(title, page, size) {
     url: `/songs/title?title=${title}&page=${page}&size=${size}`,
   };
 
-  try {
-    const res = await api.get(options);
-    return res;
-  } catch (error) {
-    throw error;
-  }
+  const res = await api.get(options);
+  return res;
 }
 
 export async function searchSongsByGenre(genre, page, size) {

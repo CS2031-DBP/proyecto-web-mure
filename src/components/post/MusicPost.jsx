@@ -2,33 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import Stop from "@mui/icons-material/Stop";
 import Headphones from "@mui/icons-material/Headphones";
-import HeadsetOff from "@mui/icons-material/HeadsetOff";
 import { motion } from 'framer-motion';
-import { getTrackDetailsByTitle } from '../../services/spotify/spotify'; 
 import { useMusicPlayer } from '../../contexts/MusicContext'; 
 
 const MusicPost = ({ post }) => {
   const { song, album } = post;
   const [isPlaying, setIsPlaying] = useState(false);
-  const [trackDetails, setTrackDetails] = useState(null);
-  const [error, setError] = useState('');
   const { playTrackWithFade, stopTrackWithFade, currentTrack } = useMusicPlayer();
-
-  useEffect(() => {
-    const fetchTrackDetails = async () => {
-      if (song && song.title) {
-        try {
-          const details = await getTrackDetailsByTitle(song.title);
-          setTrackDetails(details);
-        } catch (error) {
-          setError('Track not found');
-          console.error('Error fetching track details:', error);
-        }
-      }
-    };
-
-    fetchTrackDetails();
-  }, [song]);
 
   const handlePlayPause = async () => {
     if (isPlaying) {
@@ -38,7 +18,7 @@ const MusicPost = ({ post }) => {
       if (currentTrack) {
         await stopTrackWithFade();
       }
-      await playTrackWithFade(trackDetails.preview_url);
+      await playTrackWithFade(song.spotifyPreviewUrl);
       setIsPlaying(true);
     }
   };
@@ -53,9 +33,9 @@ const MusicPost = ({ post }) => {
 
   return (
     <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-sm w-full">
-      {song?.coverUrl || album?.coverUrl ? (
+      {song?.coverImageUrl || album?.coverImageUrl ? (
         <motion.img
-          src={song?.coverUrl || album?.coverUrl}
+          src={song?.coverImageUrl || album?.coverImageUrl}
           alt="cover"
           className="w-24 h-auto rounded"
           initial={{ scale: 0.9 }}
@@ -86,7 +66,7 @@ const MusicPost = ({ post }) => {
           <p className="font-semibold">Untitled</p>
         )}
       </div>
-      {trackDetails?.preview_url ? (
+      {song?.spotifyPreviewUrl ? (
         <button onClick={handlePlayPause}>
           {isPlaying ? (
             <Stop className="text-lg text-black" />
@@ -95,7 +75,7 @@ const MusicPost = ({ post }) => {
           )}
         </button>
       ) : (
-        <a href={song?.link || album?.link} target="_blank" rel="noopener noreferrer">
+        <a href={song?.spotifyUrl || album?.spotifyUrl} target="_blank" rel="noopener noreferrer">
           <Headphones className="text-lg text-black" />
         </a>
       )}
