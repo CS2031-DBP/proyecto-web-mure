@@ -23,7 +23,8 @@ import { useState, useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import FriendList from "./pages/FriendList";
 import AddArtistInfo from "./pages/AddArtistInfo";
-import {jwtDecode} from 'jwt-decode';
+import AlbumView from "./pages/AlbumView"; 
+import { jwtDecode } from 'jwt-decode';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -51,7 +52,7 @@ function App() {
   useEffect(() => {
     checkTokenValidity();
 
-    const intervalId = setInterval(checkTokenValidity, 5 * 60 * 1000); 
+    const intervalId = setInterval(checkTokenValidity, 5 * 60 * 1000);
 
     const handleStorageChange = () => {
       setIsAuthenticated(!!localStorage.getItem("token"));
@@ -128,6 +129,7 @@ function App() {
               <Route path="/friends" element={<FriendList />} />
               <Route path="/song/create/spotify" element={<CreateSpotify />} />
               <Route path="/add-artist-info" element={<AddArtistInfo />} />
+              <Route path="/album/:albumId" element={<AlbumView />} /> 
             </>
           ) : (
             <Route path="*" element={<Navigate to="/auth/login" />} />
