@@ -7,7 +7,7 @@ import { isFriends } from "../services/friends/isFriends";
 import { addFriend } from "../services/friends/addFriend";
 import { deleteFriend } from "../services/friends/deleteFriend";
 import Post from "../components/post/Post";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaUserFriends } from "react-icons/fa";
 import EditIcon from "@mui/icons-material/Edit";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
@@ -52,6 +52,14 @@ const User = () => {
       }
     };
     fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) {
+      setPosts([]);
+      setPage(0);
+      setHasMore(true);
+    }
   }, [id]);
 
   const loadPosts = async (userId, page) => {
@@ -113,12 +121,9 @@ const User = () => {
   };
 
   const animationVariants = {
-    hidden: { opacity: 0, x: 35 },
-    visible: (i) => ({
-      opacity: 1,
-      x: 0,
-      transition: { delay: i * 0.125 },
-    }),
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 20 },
   };
 
   if (error) {
@@ -132,11 +137,13 @@ const User = () => {
   const isCurrentUser = !id || currUser?.id === user.id;
 
   return (
-    <div className="flex flex-col items-center bg-crema2 ">
+    <div className="flex flex-col items-center bg-crema2">
       <motion.div
         className="rounded-lg w-full max-w-4xl mt-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={animationVariants}
         transition={{ duration: 0.5 }}
       >
         <div className="grid grid-cols-3 gap-4 items-center mb-4 bg-profilePink p-4 rounded-lg shadow-md">
@@ -148,53 +155,83 @@ const User = () => {
                 className="object-cover w-full h-full"
               />
             </div>
-            <h1 className="text-2xl font-bold text-white mt-2">
-              @{user.nickname}
-            </h1>
+            <h1 className="text-2xl font-bold text-white mt-2">@{user.nickname}</h1>
           </div>
           <div className="text-white">
             <p className="text-lg">{user.name}</p>
             <p>Birthday: 🎉 {user.birthDate}</p>
           </div>
           <div className="flex flex-col items-center space-y-2">
-            {isCurrentUser ? (
-              friendsCount > 0 ? (
-                <>
-                  <p className="text-white">Amigos: {friendsCount}</p>
-                  <motion.button
-                    onClick={() => navigate("/friends")}
-                    className="bg-color1 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
-                    custom={1}
+            <AnimatePresence>
+              {isCurrentUser ? (
+                friendsCount > 0 ? (
+                  <motion.div
                     initial="hidden"
                     animate="visible"
+                    exit="exit"
                     variants={animationVariants}
+                    transition={{ duration: 0.5 }}
+                    className="flex items-center"
+                  >
+                    <span className="text-white">Amigos: {friendsCount}</span>
+                    <motion.button
+                      onClick={() => navigate("/friends")}
+                      className="bg-buttonColor text-white py-2 px-4 ml-2 rounded-full transition duration-150 flex items-center justify-center hover:bg-color2"
+                      custom={1}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={animationVariants}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <FaUserFriends />
+                    </motion.button>
+                  </motion.div>
+                ) : (
+                  <motion.p
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={animationVariants}
+                    transition={{ duration: 0.5 }}
+                    className="text-white"
+                  >
+                    No tienes amigos aún. Prueba a ver posts para conocer gente.
+                  </motion.p>
+                )
+              ) : friends ? (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={animationVariants}
+                  transition={{ duration: 0.5 }}
+                  className="flex items-center"
+                >
+                  <p className="text-white mr-2">You and {user.name} are friends!</p>
+                  <motion.button
+                    onClick={handleDeleteFriend}
+                    className="bg-red-500 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-red-600"
                   >
                     <FaUserFriends className="mr-2" />
-                    Friends List
+                    Remove Friend
                   </motion.button>
-                </>
+                </motion.div>
               ) : (
-                <p className="text-white">
-                  No tienes amigos aún. Prueba a ver posts para conocer gente.
-                </p>
-              )
-            ) : friends ? (
-              <motion.button
-                onClick={handleDeleteFriend}
-                className="bg-red-500 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-red-600"
-              >
-                <FaUserFriends className="mr-2" />
-                Remove Friend
-              </motion.button>
-            ) : (
-              <motion.button
-                onClick={handleAddFriend}
-                className="bg-color1 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
-              >
-                <FaUserFriends className="mr-2" />
-                Add Friend
-              </motion.button>
-            )}
+                <motion.button
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={animationVariants}
+                  transition={{ duration: 0.5 }}
+                  onClick={handleAddFriend}
+                  className="bg-color1 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
+                >
+                  <FaUserFriends className="mr-2" />
+                  Add Friend
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </motion.div>
@@ -202,52 +239,63 @@ const User = () => {
       <div className="w-full max-w-4xl mt-2">
         <motion.div
           className="mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={animationVariants}
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-2xl font-bold mb-4 text-black">
             {isCurrentUser ? "My Posts" : `${user.name}'s Posts`}
           </h1>
-          {posts.length === 0 ? (
-            <p className="text-gray-700">
-              {isCurrentUser
-                ? "You haven't posted anything yet"
-                : "This user has not made any posts yet."}
-            </p>
-          ) : (
-            posts.map((post, index) => {
-              if (posts.length === index + 1 && hasMore) {
-                return (
-                  <Post
-                    ref={lastPostElementRef}
-                    key={post.id}
-                    post={post}
-                    currUserName={user.name}
-                    currId={user.id}
-                    onDelete={isCurrentUser ? handleDeletePost : null}
-                  />
-                );
-              } else {
-                return (
-                  <Post
-                    key={post.id}
-                    post={post}
-                    currUserName={user.name}
-                    currId={user.id}
-                    onDelete={isCurrentUser ? handleDeletePost : null}
-                  />
-                );
-              }
-            })
-          )}
-
+          <AnimatePresence>
+            {posts.length === 0 ? (
+              <motion.p
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={animationVariants}
+                transition={{ duration: 0.5 }}
+                className="text-gray-700"
+              >
+                {isCurrentUser
+                  ? "You haven't posted anything yet"
+                  : "This user has not made any posts yet."}
+              </motion.p>
+            ) : (
+              posts.map((post, index) => {
+                if (posts.length === index + 1 && hasMore) {
+                  return (
+                    <Post
+                      ref={lastPostElementRef}
+                      key={post.id}
+                      post={post}
+                      currUserName={user.name}
+                      currId={user.id}
+                      onDelete={isCurrentUser ? handleDeletePost : null}
+                    />
+                  );
+                } else {
+                  return (
+                    <Post
+                      key={post.id}
+                      post={post}
+                      currUserName={user.name}
+                      currId={user.id}
+                      onDelete={isCurrentUser ? handleDeletePost : null}
+                    />
+                  );
+                }
+              })
+            )}
+          </AnimatePresence>
           {!hasMore && (
             <motion.div
               className="text-center text-gray-500 py-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={animationVariants}
               transition={{ duration: 0.5 }}
             >
               No hay más posts
@@ -256,22 +304,31 @@ const User = () => {
         </motion.div>
       </div>
       {isCurrentUser && (
-        <button
+        <motion.button
           onClick={() => navigate("/edit")}
           className="fixed bottom-24 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
           title="Edit Profile"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={animationVariants}
+          transition={{ duration: 0.5 }}
         >
           <EditIcon className="text-2xl" />
-        </button>
+        </motion.button>
       )}
-
-      <button
+      <motion.button
         onClick={() => console.log("View Playlists")}
         className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
         title="View Playlists"
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={animationVariants}
+        transition={{ duration: 0.5 }}
       >
         <QueueMusicIcon className="text-2xl" />
-      </button>
+      </motion.button>
       {isLoading && <p className="text-center mt-4">Loading...</p>}
     </div>
   );

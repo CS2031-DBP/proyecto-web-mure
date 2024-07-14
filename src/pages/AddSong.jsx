@@ -204,7 +204,7 @@ const AddSong = () => {
             {data.coverImage ? (
               <img src={data.coverImage} alt="Cover" className="w-24 h-24 object-cover rounded-lg mt-1" />
             ) : (
-              <div className="w-24 h-24 flex items-center justify-center bg-gray-200 rounded-lg text-red-500 mt-1">
+              <div className="w-24 h-24 flex items-center justify-center bg-inputBgColor rounded-lg text-textPrimary border border-buttonColor mt-1">
                 No Image
               </div>
             )}

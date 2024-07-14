@@ -86,17 +86,17 @@ const ChangeCredentials = () => {
 
   return (
     <motion.div
-      className="flex items-center justify-center"
+      className="flex items-center justify-center px-6 pt-8"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-gradient-to-b from-spotify-black via-spotify-gray to-spotify-black p-7 rounded-lg shadow-lg w-80 max-w-4xl">
+      <div className="bg-bgColor p-6 rounded-xl w-full max-w-md grid grid-cols-1 gap-4 mt-28">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
           <div className="col-span-1 relative">
-            <label htmlFor="email" className="block text-sm font-light mb-1 text-left labelLine">
+            <label htmlFor="email" className="block text-sm font-medium mb-1 text-left text-buttonColor">
               New Email
             </label>
             <motion.input
@@ -106,14 +106,14 @@ const ChangeCredentials = () => {
               placeholder="New Email"
               value={data.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
+              className="w-full px-3 py-2 border bg-white border-buttonColor text-buttonColor focus:input-focus focus:outline-none focus:ring-1 focus:ring-buttonColor rounded-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             />
           </div>
           <div className="col-span-1 relative">
-            <label htmlFor="oldPassword" className="block text-sm font-light mb-1 text-left labelLine">
+            <label htmlFor="oldPassword" className="block text-sm font-medium mb-1 text-left text-buttonColor">
               Old Password
             </label>
             <motion.input
@@ -123,23 +123,24 @@ const ChangeCredentials = () => {
               placeholder="Old Password"
               value={data.oldPassword}
               onChange={handleChange}
-              className="w-full px-3 py-2 border bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
+              className="w-full px-3 py-2 border bg-white border-buttonColor text-buttonColor focus:input-focus focus:outline-none focus:ring-1 focus:ring-buttonColor rounded-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             />
           </div>
           <div className="col-span-1 relative">
-            <label htmlFor="newPassword" className="block text-sm font-light mb-1 text-left labelLine">
+            <label htmlFor="newPassword" className="block text-sm font-medium mb-1 text-left text-buttonColor">
               New Password
             </label>
             <motion.input
               type="password"
-              id="newPassword"a
+              id="newPassword"
+              name="newPassword"
               placeholder="New Password"
               value={data.newPassword}
               onChange={handleChange}
-              className="w-full px-3 py-2 border bg-transparent border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white rounded-sm"
+              className="w-full px-3 py-2 border bg-white border-buttonColor text-buttonColor focus:input-focus focus:outline-none focus:ring-1 focus:ring-buttonColor rounded-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -148,7 +149,7 @@ const ChangeCredentials = () => {
           <div className="col-span-1">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
+              className="w-full py-2 mt-4 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-buttonHover"
             >
               Save Changes
             </button>
@@ -157,7 +158,7 @@ const ChangeCredentials = () => {
         <div className="mt-4">
           <button
             onClick={() => navigate("/user")}
-            className="w-full py-2 bg-ver text-white rounded-lg transition duration-300 bg-color4 hover:bg-color3"
+            className="w-full py-2 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-buttonHover"
           >
             Back to Profile
           </button>

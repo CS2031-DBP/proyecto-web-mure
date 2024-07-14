@@ -100,7 +100,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
               className="object-cover w-full h-full"
             />
           </div>
-          <a onClick={handleUserClick} className="text-blue-500 text-lg text-center cursor-pointer">
+          <a onClick={handleUserClick} className="text-atColor text-lg text-center cursor-pointer hover:text-atColor2">
             @{post.owner}
           </a>
           <p className="text-sm text-gray-500">

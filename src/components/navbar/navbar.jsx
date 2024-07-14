@@ -61,27 +61,27 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/dashboard")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                className={`focus:outline-none focus:bg-navbarFocus p-2 rounded ${getButtonClass(
                   "/dashboard"
-                )} transition duration-300`}
+                )} transition duration-300 hover:bg-navbarHover`}
                 title="Dashboard"
               >
                 <FaHome className="text-2xl" />
               </button>
               <button
                 onClick={() => navigate("/songs")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                className={`focus:outline-none  focus:bg-navbarFocus focus p-2 rounded ${getButtonClass(
                   "/songs"
-                )} transition duration-300`}
+                )} transition duration-300 hover:bg-navbarHover`}
                 title="Songs"
               >
                 <FaMusic className="text-2xl" />
               </button>
               <button
                 onClick={() => navigate("/post/create")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                className={`focus:outline-none focus:bg-navbarFocus p-2 rounded ${getButtonClass(
                   "/post/create"
-                )} transition duration-300`}
+                )} transition duration-300 hover:bg-navbarHover`}
                 title="Create Post"
               >
                 <FaPlusSquare className="text-2xl" />
@@ -103,16 +103,16 @@ const Navbar = ({ onToggleSearchBar, setIsAuthenticated }) => {
               )}
               <button
                 onClick={() => navigate("/user")}
-                className={`focus:outline-none p-2 rounded ${getButtonClass(
+                className={`focus:outline-none focus:bg-navbarFocus p-2 rounded ${getButtonClass(
                   "/user"
-                )} transition duration-300`}
+                )} transition duration-300 hover:bg-navbarHover`}
                 title="Profile"
               >
                 <FaUser className="text-2xl" />
               </button>
               <button
                 onClick={handleLogout}
-                className="focus:outline-none p-2 rounded hover:bg-color2 transition duration-300"
+                className="focus:outline-none focus:bg-navbarFocus p-2 rounded hover:bg-color2 transition duration-300 hover:bg-navbarHover"
                 title="Logout"
               >
                 <FaSignOutAlt className="text-2xl" />

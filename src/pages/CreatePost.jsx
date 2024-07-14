@@ -141,7 +141,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-16 h-648px mt-14">
+      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-16 h-648px mt-6">
         <div className="col-span-1 flex flex-col">
           <SearchInput
             searchTerm={searchTerm}
@@ -152,9 +152,9 @@ const CreatePost = () => {
             value={data.description}
             onChange={handleChange}
             placeholder="What are you thinking about..."
-            className="w-full h-32 p-3 border rounded-lg bg-white text-black border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor mb-4"
+            className="w-full h-32 p-3 border rounded-lg bg-inputBgColor  text-black border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor mb-4"
           />
-          <div className="bg-white border rounded-lg p-3">
+          <div className="bg-inputBgColor border rounded-lg px-3 pt-3 h-full max-h-fit border-buttonColor">
             <div className="grid grid-cols-2 items-center">
               <label className="block text-sm font-medium mb-1 text-black">
                 Add Image
@@ -169,7 +169,7 @@ const CreatePost = () => {
                 </button>
               )}
             </div>
-            <div className="relative flex items-center border rounded-lg w-full h-40 border-buttonColor">
+            <div className="relative flex items-center  rounded-lg w-full h-full max-h-72 ">
               {imagePreviewUrl ? (
                 <img
                   src={imagePreviewUrl}
@@ -242,7 +242,7 @@ const CreatePost = () => {
         <div className="col-span-1 md:col-span-2">
           <button
             type="submit"
-            className="w-full py-2 mt-10 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
+            className="w-full py-2 mt-4 bg-buttonColor text-white rounded-lg transition duration-300 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"
             onClick={handleSubmit}
           >
             Share

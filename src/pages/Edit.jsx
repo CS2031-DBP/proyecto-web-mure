@@ -111,10 +111,10 @@ const Edit = () => {
                 <button
                   type="button"
                   onClick={handleClearImage}
-                  className="absolute top-0 right-0 p-1 transition duration-300 transform mr-24 "
+                  className="absolute top-0 right-0 p-1 transition duration-300 transform mr-28 "
                   title="Clear Image"
                 >
-                  <Cancel style={{ fill: "red" }} />
+                  <Cancel style={{ fill: "#8E3356" }} />
                 </button>
               )}
             <label

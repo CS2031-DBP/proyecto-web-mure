@@ -24,13 +24,11 @@ const SearchResults = ({ results, handleAdd, page, setPage }) => {
           <>
             <p>Artist: {result.artistsNames.join(", ")}</p>
             <p>Genre: {result.genre}</p>
-            <p>Type: Song</p>
           </>
         ) : (
           <>
             <p>Artist: {result.artistName}</p>
             <p>Release Date: {result.releaseDate}</p>
-            <p>Type: Album</p>
           </>
         )}
         <button
