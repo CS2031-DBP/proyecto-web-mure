@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import Post from "../components/post/Post";
 import { fetchPosts } from "../services/posts/getAllPosts";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { useMusicPlayer } from '../contexts/MusicContext'; 
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [size] = useState(7);
@@ -50,6 +51,10 @@ const Dashboard = () => {
     fetchUserName();
     loadPosts();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const lastPostElementRef = useCallback(
     (node) => {

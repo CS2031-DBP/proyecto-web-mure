@@ -5,7 +5,7 @@ import { editProfile } from "../services/profile/editProfile";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { motion } from 'framer-motion';
 
-const ChangeCredentials = () => {
+const ChangeCredentials = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
@@ -42,6 +42,12 @@ const ChangeCredentials = () => {
     });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate("/auth/login");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,15 +74,8 @@ const ChangeCredentials = () => {
         formData.append('password', data.newPassword);
       }
 
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-      }
-
-      const res = await editProfile(formData);
-      console.log(res)
-      setSuccess("Credentials updated successfully.");
-      localStorage.removeItem("token");
-      navigate("/auth/login");
+      await editProfile(formData);
+      handleLogout();
 
     } catch (error) {
       setError("Error updating credentials.");

@@ -16,12 +16,8 @@ export async function searchSongsByGenre(genre, page, size) {
     url: `/songs/genre?genre=${genre}&page=${page}&size=${size}`,
   };
 
-  try {
-    const res = await api.get(options);
-    return res;
-  } catch (error) {
-    throw error;
-  }
+  const res = await api.get(options);
+  return res;
 }
 
 export async function searchSongsByArtistName(artistName, page, size) {
@@ -29,10 +25,6 @@ export async function searchSongsByArtistName(artistName, page, size) {
     url: `/songs/artistName?artistName=${artistName}&page=${page}&size=${size}`,
   };
 
-  try {
-    const res = await api.get(options);
-    return res;
-  } catch (error) {
-    throw error;
-  }
+  const res = await api.get(options);
+  return res;
 }

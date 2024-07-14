@@ -3,53 +3,52 @@ import { fetchSongs } from '../services/songs/getAllSongs';
 import { searchSongsByTitle, searchSongsByGenre, searchSongsByArtistName } from '../services/songs/searchSongBy';
 import Song from '../components/songs/Song';
 import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchInput from '../components/search/SearchInput';
 
 const SongView = ({ showSearchBar }) => {
     const [songs, setSongs] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
     const [page, setPage] = useState(0);
     const [size] = useState(9);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [role, setRole] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchType, setSearchType] = useState('titulo');
     const [noResults, setNoResults] = useState(false);
     const observer = useRef();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const loadSongs = async (isSearch = false, resetPage = false) => {
+    const fetchData = async () => {
+        try {
+            const titleResults = await searchSongsByTitle(searchTerm, page, size);
+            console.log("Title results:");
+            console.log(titleResults);
+            const genreResults = await searchSongsByGenre(searchTerm, page, size);
+            console.log("Genre results:");
+            console.log(genreResults);
+            const artistResults = await searchSongsByArtistName(searchTerm, page, size);
+            console.log("Artist results:");
+            console.log(artistResults);
+
+            setSearchResults([
+                ...titleResults.data.content.map(song => ({ ...song, type: 'song' })),
+                ...genreResults.data.content.map(song => ({ ...song, type: 'song' })),
+                ...artistResults.data.content.map(song => ({ ...song, type: 'song' }))
+            ]);
+            setNoResults(searchResults.length === 0);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const loadSongs = async (resetPage = false) => {
         if (isLoading || (!hasMore && !resetPage)) return;
         setIsLoading(true);
         try {
-            let res;
-            if (isSearch) {
-                switch (searchType) {
-                    case 'titulo':
-                        res = await searchSongsByTitle(searchTerm, resetPage ? 0 : page, size);
-                        if (res.status === 200) {
-                            setSongs(res.data.content);
-                            setHasMore(false); 
-                            setNoResults(res.data.length === 0);
-                        }
-                        setIsLoading(false);
-                        return;
-                    case 'genero':
-                        res = await searchSongsByGenre(searchTerm, resetPage ? 0 : page, size);
-                        break;
-                    case 'artista':
-                        res = await searchSongsByArtistName(searchTerm, resetPage ? 0 : page, size);
-                        break;
-                    default:
-                        res = await fetchSongs(resetPage ? 0 : page, size);
-                        break;
-                }
-            } else {
-                res = await fetchSongs(resetPage ? 0 : page, size);
-            }
-
+            const res = await fetchSongs(resetPage ? 0 : page, size);
             if (res.status === 200) {
                 const newSongs = resetPage ? res.data.content : [...songs, ...res.data.content];
                 setSongs(newSongs);
@@ -75,12 +74,16 @@ const SongView = ({ showSearchBar }) => {
         setRole(role);
     }, []);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
     const lastSongElementRef = useCallback((node) => {
         if (isLoading) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && hasMore) {
-                loadSongs(searchTerm !== '', false);
+                loadSongs(false);
             }
         });
         if (node) observer.current.observe(node);
@@ -92,6 +95,14 @@ const SongView = ({ showSearchBar }) => {
         };
     }, []);
 
+    useEffect(() => {
+        if (searchTerm.length > 2) {
+            fetchData();
+        } else if (searchTerm.length === 0) {
+            setSearchResults([]);
+        }
+    }, [searchTerm]);
+
     const handleDeleteSong = (id) => {
         setSongs((prevSongs) => prevSongs.filter((song) => song.id !== id));
     };
@@ -100,11 +111,8 @@ const SongView = ({ showSearchBar }) => {
         navigate('/addsong');
     };
 
-    const handleSearch = async () => {
-        setPage(0);
-        setHasMore(true);
-        setSongs([]);
-        await loadSongs(true, true);
+    const handleSearchTermChange = (e) => {
+        setSearchTerm(e.target.value);
     };
 
     return (
@@ -119,15 +127,7 @@ const SongView = ({ showSearchBar }) => {
                 >
                     <SearchInput
                         searchTerm={searchTerm}
-                        handleSearchTermChange={(e) => setSearchTerm(e.target.value)}
-                        handleSearch={handleSearch}
-                        searchType={searchType}
-                        setSearchType={setSearchType}
-                        options={[
-                            { value: 'titulo', label: 'Titulo' },
-                            { value: 'genero', label: 'Genero' },
-                            { value: 'artista', label: 'Artista' },
-                        ]}
+                        handleSearchTermChange={handleSearchTermChange}
                     />
                 </motion.div>
             )}
@@ -137,23 +137,45 @@ const SongView = ({ showSearchBar }) => {
                 )}
                 <AnimatePresence>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-                        {songs.map((song, index) => (
-                            <motion.div
-                                key={song.id}
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 50 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <Song
-                                    ref={songs.length === index + 1 ? lastSongElementRef : null}
+                        {searchTerm.length > 2 ? (
+                            searchResults.map((result, index) => (
+                                <motion.div
+                                    key={result.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 50 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    <Song
+                                        ref={searchResults.length === index + 1 ? lastSongElementRef : null}
+                                        key={result.id}
+                                        song={result}
+                                        role={role}
+                                        onDelete={handleDeleteSong}
+                                        className="h-full"
+                                    />
+                                </motion.div>
+                            ))
+                        ) : (
+                            songs.map((song, index) => (
+                                <motion.div
                                     key={song.id}
-                                    song={song}
-                                    role={role}
-                                    onDelete={handleDeleteSong}
-                                />
-                            </motion.div>
-                        ))}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 50 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    <Song
+                                        ref={songs.length === index + 1 ? lastSongElementRef : null}
+                                        key={song.id}
+                                        song={song}
+                                        role={role}
+                                        onDelete={handleDeleteSong}
+                                        className="h-full"
+                                    />
+                                </motion.div>
+                            ))
+                        )}
                     </div>
                 </AnimatePresence>
             </div>
