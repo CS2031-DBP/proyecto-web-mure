@@ -131,7 +131,7 @@ const User = () => {
   };
 
   const animationVariants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, x: 15 },
     visible: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: 20 },
   };
@@ -221,7 +221,7 @@ const User = () => {
                   <p className="text-white mr-2">You and {user.name} are friends!</p>
                   <motion.button
                     onClick={handleDeleteFriend}
-                    className="bg-red-500 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-red-600"
+                    className="bg-buttonColor text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-red-600"
                   >
                     <FaUserFriends className="mr-2" />
                     Remove Friend
@@ -235,7 +235,7 @@ const User = () => {
                   variants={animationVariants}
                   transition={{ duration: 0.5 }}
                   onClick={handleAddFriend}
-                  className="bg-color1 text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
+                  className="bg-buttonColor text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-color2"
                 >
                   <FaUserFriends className="mr-2" />
                   Add Friend
