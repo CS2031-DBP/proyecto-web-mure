@@ -1,3 +1,4 @@
+// User.jsx
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
@@ -11,6 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaUserFriends } from "react-icons/fa";
 import EditIcon from "@mui/icons-material/Edit";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { useMusicPlayer } from '../contexts/MusicContext';
 
 const User = () => {
   const navigate = useNavigate();
@@ -26,6 +29,8 @@ const User = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
+  const {  volume, changeVolume } = useMusicPlayer();
+  const [showVolumeControl, setShowVolumeControl] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +102,11 @@ const User = () => {
       if (observer.current) observer.current.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+  }, [navigate]);
 
   const handleDeletePost = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
@@ -292,10 +302,9 @@ const User = () => {
           {!hasMore && (
             <motion.div
               className="text-center text-gray-500 py-4"
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={animationVariants}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
               No hay más posts
@@ -329,6 +338,48 @@ const User = () => {
       >
         <QueueMusicIcon className="text-2xl" />
       </motion.button>
+      <motion.button
+        onClick={() => setShowVolumeControl(!showVolumeControl)}
+        className="fixed bottom-5 left-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
+        title="Volume Control"
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={{
+          hidden: { opacity: 0, scale: 0.5 },
+          visible: { opacity: 1, scale: 1 },
+          exit: { opacity: 0, scale: 0.5 },
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <VolumeUpIcon className="text-2xl" />
+      </motion.button>
+      {showVolumeControl && (
+        <motion.div
+          className="fixed left-5 bottom-24 bg-white p-2 rounded-lg shadow-lg w-40"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={{
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: { opacity: 1, scale: 1 },
+            exit: { opacity: 0, scale: 0.8 },
+          }}
+          transition={{ duration: 0.3 }}
+        >
+
+          <input
+            id="volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => changeVolume(e.target.value)}
+            className="w-full"
+          />
+        </motion.div>
+      )}
       {isLoading && <p className="text-center mt-4">Loading...</p>}
     </div>
   );

@@ -5,6 +5,8 @@ import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { deleteFriend } from "../services/friends/deleteFriend";
 import Friend from "../components/friend/Friend";
 
+//todo
+
 const FriendList = () => {
   const navigate = useNavigate();
   const { friendIds } = useParams();
@@ -68,3 +70,4 @@ const FriendList = () => {
 };
 
 export default FriendList;
+ 

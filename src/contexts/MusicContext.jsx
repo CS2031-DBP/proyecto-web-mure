@@ -8,6 +8,7 @@ export const useMusicPlayer = () => {
 
 export const MusicPlayerProvider = ({ children }) => {
   const [currentTrack, setCurrentTrack] = useState(null);
+  const [volume, setVolume] = useState(0.35);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -18,18 +19,23 @@ export const MusicPlayerProvider = ({ children }) => {
     };
   }, []);
 
-  const playTrackWithFade = async (url, fadeDuration = 0.2) => {
+  useEffect(() => {
     if (audioRef.current) {
-      await stopTrackWithFade(fadeDuration);
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  const playTrack = async (url) => {
+    if (audioRef.current) {
+      stopTrack();
     }
 
     const audio = new Audio(url);
     audioRef.current = audio;
+    audio.volume = volume;
 
     audio.addEventListener('canplaythrough', () => {
-      audio.volume = 0;
       audio.play();
-      fadeIn(audio, fadeDuration);
       setCurrentTrack(audio);
     });
 
@@ -38,44 +44,21 @@ export const MusicPlayerProvider = ({ children }) => {
     });
   };
 
-  const stopTrackWithFade = async (fadeDuration = 0.5) => {
+  const stopTrack = () => {
     if (!audioRef.current) return;
-    await fadeOut(audioRef.current, fadeDuration);
     audioRef.current.pause();
     setCurrentTrack(null);
   };
 
-  const fadeIn = (audio, duration) => {
-    let volume = 0;
-    const step = 1 / (duration * 10);
-    const interval = setInterval(() => {
-      volume += step;
-      if (volume >= 1) {
-        volume = 1; 
-        clearInterval(interval);
-      }
-      audio.volume = volume;
-    }, 100);
-  };
-
-  const fadeOut = (audio, duration) => {
-    let volume = 1;
-    const step = 1 / (duration * 10);
-    return new Promise((resolve) => {
-      const interval = setInterval(() => {
-        volume -= step;
-        if (volume <= 0) {
-          volume = 0; 
-          clearInterval(interval);
-          resolve();
-        }
-        audio.volume = volume;
-      }, 100);
-    });
+  const changeVolume = (newVolume) => {
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
   };
 
   return (
-    <MusicPlayerContext.Provider value={{ playTrackWithFade, stopTrackWithFade, currentTrack }}>
+    <MusicPlayerContext.Provider value={{ playTrack, stopTrack, currentTrack, volume, changeVolume }}>
       {children}
     </MusicPlayerContext.Provider>
   );

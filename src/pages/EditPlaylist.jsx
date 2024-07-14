@@ -8,6 +8,8 @@
   import { addSongToPlaylist } from "../services/playlists/addSongToPlaylist";
   import { motion } from 'framer-motion';
 
+//todo
+
   const EditPlaylist = () => {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -94,7 +96,7 @@
             handleSearchTermChange={handleSongSearchTermChange}
             handleSearch={handleSearch}
             type="song"
-          />
+          /> 
           <SearchResults
             results={songSearchResults}
             handleAdd={(id) => handleAdd(id)}

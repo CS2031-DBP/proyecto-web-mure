@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+//todo
+
 const NotFound = () => {
   const navigate = useNavigate();
   const hasToken = localStorage.getItem('token');
@@ -11,7 +13,7 @@ const NotFound = () => {
     } else {
       navigate('/auth/login');
     }
-  };
+  }; 
 
   return (
     <div className="flex flex-col items-center justify-center bg-gradient-to-br text-white">

@@ -8,11 +8,13 @@ import Headphones from "@mui/icons-material/Headphones";
 import { createPlaylist } from "../services/playlists/createPlayllist";
 import { motion, AnimatePresence } from "framer-motion";
 
+//todo
+
 const CreatePlaylist = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     userId: "",
-    name: "",
+    name: "", 
     songsIds: [],
   });
   const [songsDetails, setSongsDetails] = useState([]);

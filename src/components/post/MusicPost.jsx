@@ -8,17 +8,17 @@ import { useMusicPlayer } from '../../contexts/MusicContext';
 const MusicPost = ({ post }) => {
   const { song, album } = post;
   const [isPlaying, setIsPlaying] = useState(false);
-  const { playTrackWithFade, stopTrackWithFade, currentTrack } = useMusicPlayer();
+  const { playTrack, stopTrack, currentTrack } = useMusicPlayer();
 
   const handlePlayPause = async () => {
     if (isPlaying) {
-      await stopTrackWithFade();
+      await stopTrack();
       setIsPlaying(false);
     } else {
       if (currentTrack) {
-        await stopTrackWithFade();
+        await stopTrack();
       }
-      await playTrackWithFade(song.spotifyPreviewUrl);
+      await playTrack(song.spotifyPreviewUrl);
       setIsPlaying(true);
     }
   };

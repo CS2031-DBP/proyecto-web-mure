@@ -1,3 +1,4 @@
+// CreatePost.jsx
 import React, { useEffect, useState } from "react";
 import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
@@ -12,6 +13,8 @@ import Cancel from "@mui/icons-material/Cancel";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HeadsetIcon from '@mui/icons-material/Headset';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { useMusicPlayer } from '../contexts/MusicContext';
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -33,6 +36,8 @@ const CreatePost = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [page, setPage] = useState(0);
   const [size] = useState(10);
+  const { volume, changeVolume } = useMusicPlayer();
+  const [showVolumeControl, setShowVolumeControl] = useState(false);
 
   useEffect(() => {
     const getId = async () => {
@@ -141,7 +146,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-16 h-648px mt-6">
+      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 h-648px mt-6">
         <div className="col-span-1 flex flex-col">
           <SearchInput
             searchTerm={searchTerm}
@@ -249,6 +254,48 @@ const CreatePost = () => {
           </button>
         </div>
       </div>
+      <motion.button
+        onClick={() => setShowVolumeControl(!showVolumeControl)}
+        className="fixed bottom-5 left-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
+        title="Volume Control"
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={{
+          hidden: { opacity: 0, scale: 0.5 },
+          visible: { opacity: 1, scale: 1 },
+          exit: { opacity: 0, scale: 0.5 },
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <VolumeUpIcon className="text-2xl" />
+      </motion.button>
+      {showVolumeControl && (
+        <motion.div 
+          className="fixed left-5 bottom-24 bg-white p-2 rounded-lg shadow-lg w-24"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={{
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: { opacity: 1, scale: 1 },
+            exit: { opacity: 0, scale: 0.8 },
+          }}
+          transition={{ duration: 0.3 }}
+        >
+
+          <input
+            id="volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => changeVolume(e.target.value)}
+            className="w-full"
+          />
+        </motion.div>
+      )}
     </motion.div>
   );
 };

@@ -20,10 +20,10 @@ import EditPlaylist from "./pages/EditPlaylist";
 import CreateSpotify from "./pages/CrearSpotify";
 import Navbar from "./components/navbar/navbar";
 import { useState, useEffect } from "react";
-import Footer from "./components/footer/Footer";
 import NotFound from "./pages/NotFound";
 import FriendList from "./pages/FriendList";
 import AddArtistInfo from "./pages/AddArtistInfo";
+import {jwtDecode} from 'jwt-decode';
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -35,7 +35,24 @@ function App() {
     setShowSearchBar(show);
   };
 
+  const checkTokenValidity = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decodedToken.exp < currentTime) {
+        localStorage.removeItem("token");
+        setIsAuthenticated(false);
+      }
+    }
+  };
+
   useEffect(() => {
+    checkTokenValidity();
+
+    const intervalId = setInterval(checkTokenValidity, 5 * 60 * 1000); 
+
     const handleStorageChange = () => {
       setIsAuthenticated(!!localStorage.getItem("token"));
     };
@@ -43,6 +60,7 @@ function App() {
     window.addEventListener("storage", handleStorageChange);
 
     return () => {
+      clearInterval(intervalId);
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
