@@ -41,7 +41,6 @@ const Friend = ({ friend, handleFriendPress, handleDeleteFriend, index }) => {
         </div>
         <div className="flex flex-col items-center">
           <a
-            href="#"
             onClick={() => handleFriendPress(friend.id)}
             className="font-bold text-blue-500 text-lg"
           >
