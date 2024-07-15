@@ -12,7 +12,7 @@ import { FaUserFriends } from "react-icons/fa";
 import EditIcon from "@mui/icons-material/Edit";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { useMusicPlayer } from '../contexts/MusicContext';
+import { useMusicPlayer } from "../contexts/MusicContext";
 
 const User = () => {
   const navigate = useNavigate();
@@ -104,7 +104,6 @@ const User = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
   }, [navigate]);
 
   const handleDeletePost = (postId) => {
@@ -164,7 +163,9 @@ const User = () => {
                 className="object-cover w-full h-full"
               />
             </div>
-            <h1 className="text-2xl font-bold text-white mt-2">@{user.nickname}</h1>
+            <h1 className="text-2xl font-bold text-white mt-2">
+              @{user.nickname}
+            </h1>
           </div>
           <div className="text-white">
             <p className="text-lg">{user.name}</p>
@@ -217,7 +218,9 @@ const User = () => {
                   transition={{ duration: 0.5 }}
                   className="flex items-center"
                 >
-                  <p className="text-white mr-2">You and {user.name} are friends!</p>
+                  <p className="text-white mr-2">
+                    You and {user.name} are friends!
+                  </p>
                   <motion.button
                     onClick={handleDeleteFriend}
                     className="bg-buttonColor text-white py-2 px-4 rounded-md transition duration-150 flex items-center justify-center hover:bg-red-600"
@@ -326,7 +329,9 @@ const User = () => {
         </motion.button>
       )}
       <motion.button
-        onClick={() => navigate(`/user/${user.id}/playlists`)}
+        onClick={() =>
+          navigate(`/user${"/"+user.id}/playlists`)
+        }
         className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
         title="View Playlists"
         initial="hidden"
@@ -337,6 +342,7 @@ const User = () => {
       >
         <QueueMusicIcon className="text-2xl" />
       </motion.button>
+
       <motion.button
         onClick={() => setShowVolumeControl(!showVolumeControl)}
         className="fixed bottom-5 left-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
@@ -366,7 +372,6 @@ const User = () => {
           }}
           transition={{ duration: 0.3 }}
         >
-
           <input
             id="volume"
             type="range"
