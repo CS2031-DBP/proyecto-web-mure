@@ -23,8 +23,10 @@ import { useState, useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import FriendList from "./pages/FriendList";
 import AddArtistInfo from "./pages/AddArtistInfo";
-import AlbumView from "./pages/AlbumView"; 
-import { jwtDecode } from 'jwt-decode';
+import AlbumView from "./pages/AlbumView";
+import UserPlaylistsPage from "./pages/UserPlaylistPage";
+import PlaylistPage from "./pages/PlaylistPage";
+import {jwtDecode} from "jwt-decode";
 
 function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -129,7 +131,9 @@ function App() {
               <Route path="/friends" element={<FriendList />} />
               <Route path="/song/create/spotify" element={<CreateSpotify />} />
               <Route path="/add-artist-info" element={<AddArtistInfo />} />
-              <Route path="/album/:albumId" element={<AlbumView />} /> 
+              <Route path="/album/:albumId" element={<AlbumView />} />
+              <Route path="/user/:id/playlists" element={<UserPlaylistsPage />} />
+              <Route path="/playlist/:id" element={<PlaylistPage />} />
             </>
           ) : (
             <Route path="*" element={<Navigate to="/auth/login" />} />

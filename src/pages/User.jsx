@@ -1,4 +1,3 @@
-// User.jsx
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
@@ -29,7 +28,7 @@ const User = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
-  const {  volume, changeVolume } = useMusicPlayer();
+  const { volume, changeVolume } = useMusicPlayer();
   const [showVolumeControl, setShowVolumeControl] = useState(false);
 
   useEffect(() => {
@@ -327,7 +326,7 @@ const User = () => {
         </motion.button>
       )}
       <motion.button
-        onClick={() => console.log("View Playlists")}
+        onClick={() => navigate(`/user/${user.id}/playlists`)}
         className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
         title="View Playlists"
         initial="hidden"
