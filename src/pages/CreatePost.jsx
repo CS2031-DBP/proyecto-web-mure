@@ -1,4 +1,3 @@
-// CreatePost.jsx
 import React, { useEffect, useState } from "react";
 import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
@@ -33,9 +32,10 @@ const CreatePost = () => {
   const [success, setSuccess] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [page, setPage] = useState(0);
-  const [size] = useState(10);
+  const [size] = useState(2); // Define the page size for the search results
   const { volume, changeVolume } = useMusicPlayer();
   const [showVolumeControl, setShowVolumeControl] = useState(false);
 
@@ -69,11 +69,11 @@ const CreatePost = () => {
     try {
       const songs = await searchSongsByTitle(searchTerm, page, size);
       const albums = await searchAlbum(searchTerm, page, size);
-
       setSearchResults([
         ...songs.data.content.map(song => ({ ...song, type: "song" })),
         ...albums.data.content.map(album => ({ ...album, type: "album" }))
       ]);
+      setTotalPages(Math.max(songs.data.totalPages, albums.data.totalPages));
     } catch (error) {
       console.error("Error in handleSearchText:", error);
     }
@@ -240,6 +240,7 @@ const CreatePost = () => {
                 handleAdd={handleAdd}
                 page={page}
                 setPage={setPage}
+                totalPages={totalPages}
               />
             </div>
           )}

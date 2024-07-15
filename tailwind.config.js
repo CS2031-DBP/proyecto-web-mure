@@ -19,7 +19,8 @@ export default {
         atColor: '#5BB8D5',
         atColor2: '#5C98C3',
         navbarHover: '#bf4167',
-        navbarFocus: '#8A2E50'
+        navbarFocus: '#8A2E50',
+        buttonColorPl: '#C5205A'
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

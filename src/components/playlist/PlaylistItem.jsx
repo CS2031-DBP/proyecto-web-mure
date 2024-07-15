@@ -30,7 +30,7 @@ const PlaylistItem = ({ playlist, index }) => {
         </div>
       )}
       <h3 className="font-bold text-xl">{playlist.name}</h3>
-      <p className="text-gray-600">{playlist.songsCount} songs</p>
+      
       <button
         className="bg-buttonColor text-white px-4 py-2 rounded-lg"
         onClick={handleNavigate}

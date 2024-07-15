@@ -4,69 +4,73 @@ import { searchSongsByTitle } from "../services/songs/searchSongBy";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import { useNavigate } from "react-router-dom";
-import Headphones from "@mui/icons-material/Headphones";
 import { createPlaylist } from "../services/playlists/createPlayllist";
-import { motion, AnimatePresence } from "framer-motion";
-
-//todo
+import { motion } from "framer-motion";
+import ImageIcon from "@mui/icons-material/Image";
+import Cancel from "@mui/icons-material/Cancel";
 
 const CreatePlaylist = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     userId: "",
-    name: "", 
+    name: "",
     songsIds: [],
+    coverImage: null,
   });
   const [songsDetails, setSongsDetails] = useState([]);
   const [songSearchTerm, setSongSearchTerm] = useState("");
-  const [songSearchResults, setSongSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [page, setPage] = useState(0);
   const [size] = useState(10);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+    if (files && files[0]) {
+      setData({ ...data, coverImage: files[0] });
+      setImagePreviewUrl(URL.createObjectURL(files[0]));
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   const handleSongSearchTermChange = (e) => {
     setSongSearchTerm(e.target.value);
+    setPage(0);
   };
 
-  const handleSearch = async () => {
-    setError("");
-    setSuccess("");
+  useEffect(() => {
+    if (songSearchTerm.length > 2) {
+      fetchData(0);
+    } else {
+      setSearchResults([]);
+    }
+  }, [songSearchTerm, page]);
 
+  const fetchData = async () => {
     try {
       const results = await searchSongsByTitle(songSearchTerm, page, size);
-      if (results.status === 200) {
-        setSongSearchResults(results.data.content);
-      }
+      setSearchResults(results.data.content);
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setError("No se han encontrado canciones con ese título :(");
-        setSongSearchResults([]);
-      } else {
-        setError("Error al buscar canciones.");
-      }
+      console.error("Error in handleSearchText:", error);
     }
   };
 
-  const handleAdd = (id, type, songDetails) => {
-    if (type === "song") {
-      if (data.songsIds.includes(id)) {
-        setError("La canción ya está añadida a la playlist.");
-        return;
-      }
-
-      setData((prevData) => ({
-        ...prevData,
-        songsIds: [...prevData.songsIds, id],
-      }));
-      setSongsDetails((prevDetails) => [...prevDetails, songDetails]);
-      setSongSearchResults([]);
-      setSongSearchTerm("");
+  const handleAdd = (id, songDetails) => {
+    if (data.songsIds.includes(id)) {
+      setError("The song is already added to the playlist.");
+      return;
     }
+
+    setData((prevData) => ({
+      ...prevData,
+      songsIds: [...prevData.songsIds, id],
+    }));
+    setSongsDetails((prevDetails) => [...prevDetails, songDetails]);
+    setSearchResults([]);
+    setSongSearchTerm("");
   };
 
   const handleRemoveSong = (id) => {
@@ -87,7 +91,7 @@ const CreatePlaylist = () => {
           setData((prevData) => ({ ...prevData, userId: response.data.id }));
         }
       } catch (error) {
-        setError("Error obteniendo la información del usuario.");
+        setError("Error fetching user info.");
         console.error("Error getting id:", error);
       }
     };
@@ -99,145 +103,159 @@ const CreatePlaylist = () => {
     setError("");
     setSuccess("");
 
-    if (!data.userId) {
-      setError("No se pudo obtener el ID del usuario. Intenta de nuevo.");
-      return;
+    const formData = new FormData();
+    for (const key in data) {
+      if (data[key] !== null) {
+        formData.append(key, data[key]);
+      }
     }
 
-    const payload = {
-      userId: data.userId,
-      name: data.name,
-      songsIds: data.songsIds,
-    };
-
     try {
-      const res = await createPlaylist([payload]);
+      const res = await createPlaylist(formData);
       if (res.status === 201) {
-        setSuccess("Playlist creada con éxito.");
-        navigate("/profile");
+        setSuccess("Playlist created successfully.");
+        navigate(-1);
       } else {
-        setError("Error al crear la playlist.");
+        setError("Error creating the playlist.");
       }
     } catch (error) {
       console.error(error);
-      setError("Error al crear la playlist.");
+      setError("Error creating the playlist.");
     }
   };
 
   return (
-    <motion.div
-      className="items-center justify-center"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="bg-gradient-to-r from-gradient1 via-prueba to-gradient3 text-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+    <div className="flex items-center justify-center mt-10">
+      <motion.div
+        className="bg-gradient-to-b from-[#F39560] to-[#C7486A] text-white px-8 py-4 rounded-lg shadow-lg w-full max-w-2xl"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          <div className="col-span-1 md:col-span-2">
-            <label htmlFor="name" className="block text-sm font-medium mb-1">
-              Nombre de la Playlist:
-            </label>
-            <motion.input
-              type="text"
-              id="name"
-              name="name"
-              value={data.name}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-lg bg-crema5 text-black"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            />
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2">
+          <div className="flex flex-col">
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col items-center">
+                <label className="block text-sm font-medium mb-2">
+                  Add playlist photo
+                </label>
+                <div className="relative w-32 h-32 mb-4">
+                  {imagePreviewUrl ? (
+                    <img
+                      src={imagePreviewUrl}
+                      alt="Preview"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <label className="flex items-center justify-center w-full h-full cursor-pointer rounded-lg bg-inputBgColor">
+                      <ImageIcon className="text-gray-500 w-16 h-16" />
+                      <input
+                        type="file"
+                        name="coverImage"
+                        accept=".png,.jpg"
+                        onChange={handleChange}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                    </label>
+                  )}
+                  {imagePreviewUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setData({ ...data, coverImage: null });
+                        setImagePreviewUrl("");
+                      }}
+                      className="absolute top-0 right-0 text-buttonColor rounded-full p-1"
+                    >
+                      <Cancel />
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col mt-8">
+                <input
+                  type="text"
+                  name="name"
+                  value={data.name}
+                  onChange={handleChange}
+                  placeholder="Add playlist name"
+                  className="w-full px-3 py-2 border rounded-lg bg-inputBgColor text-black mb-4"
+                  required
+                />
+                <SearchInput
+                  searchTerm={songSearchTerm}
+                  handleSearchTermChange={handleSongSearchTermChange}
+                />
+              </div>
+            </div>
           </div>
-          <div className="col-span-1 flex flex-col">
-            <SearchInput
-              searchTerm={songSearchTerm}
-              handleSearchTermChange={handleSongSearchTermChange}
-              handleSearch={handleSearch}
-              type="song"
-            />
-            <SearchResults
-              results={songSearchResults}
-              handleAdd={(id, type) =>
-                handleAdd(
-                  id,
-                  type,
-                  songSearchResults.find((song) => song.id === id)
-                )
-              }
-              type="song"
-            />
-          </div>
-          <div className="col-span-1 flex flex-col justify-between">
-            {songsDetails.length > 0 ? (
-              <div className="bg-crema5 text-black p-4 rounded-lg flex flex-col justify-between h-full">
-                <AnimatePresence>
-                  {songsDetails.map((song) => (
+          <div className="p-4 rounded-lg h-64 overflow-y-auto ">
+            {searchResults.length > 0 ? (
+              <SearchResults
+                results={searchResults}
+                handleAdd={(id, item) => handleAdd(id, item)}
+                page={page}
+                setPage={setPage}
+              />
+            ) : (
+              <>
+                {songsDetails.length > 0 ? (
+                  songsDetails.map((song) => (
                     <motion.div
                       key={song.id}
-                      className="flex mb-4"
+                      className="flex items-center justify-between mb-4 w-full"
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.3 }}
+                      style={{ paddingRight: '64px' }}
                     >
-                      <img
-                        src={song.coverImage}
-                        alt={`${song.title} cover`}
-                        className="w-24 h-24 object-cover rounded-lg"
-                      />
-                      <div className="grid grid-cols-2 gap-4 ml-4">
-                        <div>
-                          <p className="font-bold">{song.title}</p>
-                          <p>Artista: {song.artistsNames.join(", ")}</p>
-                        </div>
-                        <div>
-                          <p>Duración: {song.duration}</p>
-                          <p>Género: {song.genre}</p>
-                        </div>
-                        <div className="col-span-2 flex justify-between items-center">
-                          <a
-                            href={song.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500"
-                          >
-                            <Headphones />
-                          </a>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveSong(song.id)}
-                            className="ml-4 px-2 py-1 bg-red-600 text-white rounded-lg transition duration-300"
-                          >
-                            Eliminar
-                          </button>
+                      <div className="flex items-center w-4/5 ml-16">
+                        <img
+                          src={song.coverImageUrl}
+                          alt={`${song.title} cover`}
+                          className="w-10 h-10 object-cover rounded-lg mr-2"
+                        />
+                        <div className="flex flex-col">
+                          <p className="font-bold text-sm">{song.title}</p>
+                          <p className="text-xs">{song.artistsNames.join(", ")}</p>
                         </div>
                       </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSong(song.id)}
+                        className="text-red-500"
+                      >
+                        <Cancel />
+                      </button>
                     </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <p>No has añadido canciones aún.</p>
+                  ))
+                ) : (
+                  <p className="text-black">No songs added yet.</p>
+                )}
+              </>
             )}
           </div>
-          <div className="col-span-1 md:col-span-2">
+          <div className="flex flex-col gap-4 mt-4 items-center">
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-ver text-black rounded-lg transition duration-300 bg-color3 hover:bg-color4"
+              className="bg-buttonColorPl text-white py-2 px-4 rounded-lg w-3/4"
             >
-              Crear Playlist
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="bg-buttonColorPl text-white py-2 px-4 rounded-lg w-3/4"
+            >
+              Back
             </button>
           </div>
         </form>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

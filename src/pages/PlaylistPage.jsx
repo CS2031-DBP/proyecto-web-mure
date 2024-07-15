@@ -21,10 +21,11 @@ const PlaylistPage = () => {
     const fetchPlaylistData = async () => {
       try {
         const userData = await fetchCurrentUser();
-        console.log('Current User:', userData.data);
+
 
         const playlistData = await getPlaylistById(id);
-        console.log('Playlist Data:', playlistData.data);
+
+
         setPlaylist(playlistData.data);
 
         if (playlistData.data.songsIds) {
@@ -34,7 +35,9 @@ const PlaylistPage = () => {
               return songDetail.data;
             })
           );
-          console.log('Song Details:', songDetails);
+
+     
+
           setSongs(songDetails);
         }
       } catch (err) {
@@ -101,11 +104,7 @@ const PlaylistPage = () => {
         <div className="ml-6">
           <h1 className="text-3xl font-bold">{playlist.name}</h1>
           <p className="text-lg text-gray-600">by {playlist.nickname}</p>
-          <div className="mt-2">
-            <p>{playlist.songsCount} songs</p>
-            <p>Total Duration: {playlist.totalDuration}</p>
-            <p>Release Date: {playlist.releaseDate}</p>
-          </div>
+
         </div>
       </motion.div>
 

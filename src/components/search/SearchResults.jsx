@@ -1,17 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const SearchResults = ({ results, handleAdd, page, setPage }) => {
-  const resultsPerPage = 2;
-  const totalPages = Math.ceil(results.length / resultsPerPage);
-
-  const paginatedResults = results.slice(
-    page * resultsPerPage,
-    (page + 1) * resultsPerPage
-  );
-
+const SearchResults = ({ results = [], handleAdd, page, setPage, totalPages }) => {
+  console.log(results);
   const renderResults = () => {
-    return paginatedResults.map((result, index) => (
+    return results.map((result, index) => (
       <motion.div
         key={index}
         className="bg-crema5 text-black p-4 mb-4 rounded-lg"
@@ -19,15 +12,15 @@ const SearchResults = ({ results, handleAdd, page, setPage }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
       >
-        <p className="font-bold">{result.title}</p>
+        <p className="font-bold">{result.type === "song" ? `Song: ${result.title}` : `Album: ${result.title}`}</p>
         {result.type === "song" ? (
           <>
-            <p>Artist: {result.artistsNames.join(", ")}</p>
+            <p>Artist: {Array.isArray(result.artistsNames) ? result.artistsNames.join(", ") : result.artistsNames}</p>
             <p>Genre: {result.genre}</p>
           </>
         ) : (
           <>
-            <p>Artist: {result.artistName}</p>
+            <p>Artist: {Array.isArray(result.artistsNames) ? result.artistsNames.join(", ") : result.artistName}</p>
             <p>Release Date: {result.releaseDate}</p>
           </>
         )}
