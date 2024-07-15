@@ -16,37 +16,49 @@ const UserPlaylistsPage = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [owner, setOwner] = useState(null);
   const [page, setPage] = useState(0);
-  const [size] = useState(10);
+  const [size] = useState(6); // Change to 8 to fetch only 8 playlists per page
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
   const [fetchedFromMyPlaylists, setFetchedFromMyPlaylists] = useState(false);
 
-  useEffect(() => {
-    const loadPlaylists = async () => {
-      try {
-        const currentUserResponse = await fetchCurrentUser();
-        setCurrentUser(currentUserResponse.data);
+  const loadPlaylists = async () => {
+    try {
+      const currentUserResponse = await fetchCurrentUser();
+      setCurrentUser(currentUserResponse.data);
 
-        let playlistsData;
-        if (!id || id == currentUserResponse.data.id) {
-          playlistsData = await fetchMyPlaylists(page, size);
-          setOwner(currentUserResponse.data);
-          setFetchedFromMyPlaylists(true);
-
-        } else {
-          playlistsData = await getUserPlaylists(id, page, size);
-          const ownerResponse = await getUserById(id);
-          setOwner(ownerResponse.data);
-        }
-
-        setPlaylists(playlistsData.data.content || playlistsData.data);
-      } catch (error) {
-        console.error("Error loading playlists:", error);
-        setErrors("Failed to load playlists");
+      let playlistsData;
+      if (!id || id == currentUserResponse.data.id) {
+        playlistsData = await fetchMyPlaylists(page, size);
+        setOwner(currentUserResponse.data);
+        setFetchedFromMyPlaylists(true);
+      } else {
+        playlistsData = await getUserPlaylists(id, page, size);
+        const ownerResponse = await getUserById(id);
+        setOwner(ownerResponse.data);
       }
-    };
 
+      setPlaylists(playlistsData.data.content || playlistsData.data);
+      setHasMore(playlistsData.data.content ? playlistsData.data.content.length === size : playlistsData.data.length === size);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error loading playlists:", error);
+      setErrors("Failed to load playlists");
+    }
+  };
+
+  useEffect(() => {
     loadPlaylists();
   }, [id, page, size]);
 
+  const handlePreviousPage = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+  };
 
   return (
     <div className="container mx-auto py-8">
@@ -63,7 +75,7 @@ const UserPlaylistsPage = () => {
       <h1 className="text-3xl font-bold mb-6 text-black">
         {fetchedFromMyPlaylists ? "My Playlists" : `${owner?.name}'s Playlists`}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" style={{ height: '450px' }}>
         {playlists.length > 0 ? (
           playlists.map((playlist, index) => (
             <PlaylistItem key={playlist.id} playlist={playlist} index={index} />
@@ -79,7 +91,26 @@ const UserPlaylistsPage = () => {
           </motion.p>
         )}
       </div>
-      { fetchedFromMyPlaylists && (
+      <div className="flex justify-between mt-12">
+        {page > 0 && (
+          <button
+            onClick={handlePreviousPage}
+            className="bg-buttonColor text-white px-4 py-2 rounded-lg shadow-lg hover:bg-buttonHover transition duration-300"
+          >
+            &larr; Previous
+          </button>
+        )}
+        <div className="flex-grow"></div> {/* This will push the next button to the right */}
+        {hasMore && (
+          <button
+            onClick={handleNextPage}
+            className="bg-buttonColor text-white px-4 py-2 rounded-lg shadow-lg hover:bg-buttonHover transition duration-300"
+          >
+            Next &rarr;
+          </button>
+        )}
+      </div>
+      {fetchedFromMyPlaylists && (
         <motion.button
           onClick={() => navigate("/playlist/create")}
           className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"

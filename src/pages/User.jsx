@@ -156,7 +156,7 @@ const User = () => {
       >
         <div className="grid grid-cols-3 gap-4 items-center mb-4 bg-profilePink p-4 rounded-lg shadow-md">
           <div className="flex flex-col items-center">
-            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black">
+            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-black bg-white">
               <img
                 src={user.profileImageUrl || "default-profile.png"}
                 alt="Profile"

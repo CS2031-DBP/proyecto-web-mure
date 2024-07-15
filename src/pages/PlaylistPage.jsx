@@ -25,6 +25,7 @@ const PlaylistPage = () => {
       try {
         const userData = await fetchCurrentUser();
         const playlistData = await getPlaylistById(id);
+        console.log(playlistData);
         setPlaylist(playlistData.data);
 
         if (playlistData.data.songsIds) {
@@ -98,7 +99,7 @@ const PlaylistPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 bg-white max-w-screen-md">
+    <div className="container mx-auto px-6 pt-6 pb-3 bg-bgColor max-w-screen-md mb-4">
       <motion.button
         onClick={() => navigate(-1)}
         className="text-white bg-textPrimary p-2 rounded-full fixed top-24 left-4 shadow-lg hover:bg-buttonHover transition duration-300" // Cambiado top-4 a top-16
