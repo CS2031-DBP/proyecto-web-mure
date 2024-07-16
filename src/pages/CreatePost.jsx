@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { searchSongsByTitle } from "../services/songs/searchSongBy";
+import { searchSongById } from "../services/songs/searchSongById";
 import { searchAlbum } from "../services/album/searchAlbum";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
@@ -56,6 +57,20 @@ const CreatePost = () => {
 
     getId();
   }, []);
+
+  useEffect(() => {
+    if (initialSongId) {
+      const fetchSongDetails = async () => {
+        try {
+          const response = await searchSongById(initialSongId);
+          setSelectedItem({ ...response.data, type: "song" });
+        } catch (error) {
+          console.error("Error fetching initial song details:", error);
+        }
+      };
+      fetchSongDetails();
+    }
+  }, [initialSongId]);
 
   useEffect(() => {
     if (searchTerm.length > 2) {
