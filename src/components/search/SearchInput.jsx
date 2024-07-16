@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from 'framer-motion';
 
-// SearchInput component for search input
 const SearchInput = ({
   searchTerm,
   handleSearchTermChange

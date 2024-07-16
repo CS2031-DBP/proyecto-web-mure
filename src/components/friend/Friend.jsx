@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaUserFriends } from "react-icons/fa";
 import Cancel from "@mui/icons-material/Cancel";
 
 const Friend = ({ friend, handleFriendPress, handleDeleteFriend, index }) => {

@@ -183,7 +183,7 @@ const User = () => {
                     transition={{ duration: 0.5 }}
                     className="flex items-center"
                   >
-                    <span className="text-white">Amigos: {friendsCount}</span>
+                    <span className="text-white">Friends: {friendsCount}</span>
                     <motion.button
                       onClick={() => navigate("/friends")}
                       className="bg-buttonColor text-white py-2 px-4 ml-2 rounded-full transition duration-150 flex items-center justify-center hover:bg-color2"
@@ -206,7 +206,7 @@ const User = () => {
                     transition={{ duration: 0.5 }}
                     className="text-white"
                   >
-                    No tienes amigos aún. Prueba a ver posts para conocer gente.
+                    You don't have any friends yet. Try viewing posts to meet people.
                   </motion.p>
                 )
               ) : friends ? (
@@ -309,7 +309,7 @@ const User = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              No hay más posts
+              No more posts
             </motion.div>
           )}
         </motion.div>

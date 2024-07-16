@@ -79,34 +79,34 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
           />
         ) : (
           <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded-lg mb-4 text-red-500">
-            No se encontró la imagen :(
+            Image not found :(
           </div>
         )}
         <div>
           <p className="mb-1">
-            <span className="font-semibold">Artista:</span>{" "}
-            {song.artistsNames ? song.artistsNames.join(", ") : "Desconocido"}
+            <span className="font-semibold">Artist:</span>{" "}
+            {song.artistsNames ? song.artistsNames.join(", ") : "Unknown"}
           </p>
           {song.albumTitle && (
             <p className="mb-1">
-              <span className="font-semibold">Álbum:</span> {song.albumTitle}
+              <span className="font-semibold">Album:</span> {song.albumTitle}
             </p>
           )}
           <p className="mb-1">
-            <span className="font-semibold">Duración:</span> {song.duration}
+            <span className="font-semibold">Duration:</span> {song.duration}
           </p>
           <p className="mb-1">
-            <span className="font-semibold">Género:</span> {song.genre}
+            <span className="font-semibold">Genre:</span> {song.genre}
           </p>
           <p className="mb-1">
             <span className="font-semibold">Likes:</span> {song.likes}
           </p>
           <p className="mb-1">
-            <span className="font-semibold">Número de reproducciones:</span>{" "}
+            <span className="font-semibold">Number of plays:</span>{" "}
             {song.timesPlayed}
           </p>
           <p className="mb-1">
-            <span className="font-semibold">Fecha de Lanzamiento:</span>{" "}
+            <span className="font-semibold">Release Date:</span>{" "}
             {song.releaseDate}
           </p>
         </div>
@@ -116,7 +116,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
           className="bg-[#8E3356] text-white px-4 py-2 rounded-full transition duration-300 mt-4"
           onClick={() => handleDelete(song.id)}
         >
-          Eliminar Canción
+          Delete Song
         </button>
       )}
     </div>

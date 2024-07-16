@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaSpotify } from "react-icons/fa";
-import { getToken, searchTracks } from "../../services/spotify/spotify"; // Importa las funciones necesaria
+import { getToken, searchTracks } from "../../services/spotify/spotify"; 
 
 const SpotifySearch = ({ onSelectSong }) => {
   const [query, setQuery] = useState("");

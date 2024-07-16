@@ -24,13 +24,13 @@ const NotFound = () => {
         transition={{ duration: 0.5 }}
       >
         <FaExclamationTriangle className="text-6xl text-yellow-500 mb-4" />
-        <h1 className="text-5xl font-bold mb-4">404 - Página no encontrada</h1>
-        <p className="text-lg mb-8">La página que estás buscando no existe :(</p>
+        <h1 className="text-5xl font-bold mb-4">404 - Page Not Found</h1>
+        <p className="text-lg mb-8">The page you are looking for does not exist :(</p>
         <button
           onClick={handleButtonClick}
           className="bg-buttonColor text-white py-2 px-6 rounded-full hover:bg-buttonHover transition duration-300"
         >
-          {hasToken ? 'Ir al Dashboard' : 'Ir al Login'}
+          {hasToken ? 'Go to Dashboard' : 'Go to Login'}
         </button>
       </motion.div>
     </div>

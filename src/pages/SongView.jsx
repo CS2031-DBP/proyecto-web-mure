@@ -1,4 +1,3 @@
-// SongView.jsx
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { fetchSongs } from '../services/songs/getAllSongs';
 import { searchSongsByTitle, searchSongsByGenre, searchSongsByArtistName } from '../services/songs/searchSongBy';
@@ -7,8 +6,8 @@ import { getRoleBasedOnToken } from '../services/auth/getRoleToken';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchInput from '../components/search/SearchInput';
-import { useMusicPlayer } from '../contexts/MusicContext'; // Import the MusicPlayer context
-import VolumeUpIcon from '@mui/icons-material/VolumeUp'; // Import VolumeUpIcon
+import { useMusicPlayer } from '../contexts/MusicContext'; 
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'; 
 
 const SongView = ({ showSearchBar }) => {
     const [songs, setSongs] = useState([]);
@@ -23,9 +22,9 @@ const SongView = ({ showSearchBar }) => {
     const observer = useRef();
     const navigate = useNavigate();
     const location = useLocation();
-    const { volume, changeVolume } = useMusicPlayer(); // Use the context
-    const [showVolumeControl, setShowVolumeControl] = useState(false); // State to show/hide volume control
-
+    const { volume, changeVolume } = useMusicPlayer(); 
+    const [showVolumeControl, setShowVolumeControl] = useState(false); 
+    
     const fetchData = async () => {
         try {
             const titleResults = await searchSongsByTitle(searchTerm, page, size);
@@ -132,7 +131,7 @@ const SongView = ({ showSearchBar }) => {
             )}
             <div className="hide-scrollbar overflow-auto w-full max-w-5xl flex-1">
                 {noResults && !isLoading && (
-                    <p className="text-center mt-4 text-spotify-black ">No se encontraron canciones con esas características</p>
+                    <p className="text-center mt-4 text-spotify-black ">No songs found with those characteristics</p>
                 )}
                 <AnimatePresence>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
@@ -221,12 +220,12 @@ const SongView = ({ showSearchBar }) => {
                 </motion.div>
             )}
             {isLoading && <p className="text-center mt-4">Loading...</p>}
-            {!hasMore && !isLoading && songs.length > 0 && <p className="text-center mt-4 text-spotify-black">No hay más canciones</p>}
+            {!hasMore && !isLoading && songs.length > 0 && <p className="text-center mt-4 text-spotify-black">No more songs available</p>}
             {role === 'ROLE_ADMIN' && (
                 <button
                     onClick={handleAddSongClick}
                     className="fixed bottom-4 right-4 bg-buttonColor text-white p-3 rounded-full shadow-lg hover:bg-color3 transition duration-300"
-                    title="Agregar Canción"
+                    title="Add Song"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
