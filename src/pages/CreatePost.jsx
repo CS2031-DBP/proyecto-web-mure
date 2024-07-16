@@ -59,20 +59,6 @@ const CreatePost = () => {
   }, []);
 
   useEffect(() => {
-    if (initialSongId) {
-      const fetchSongDetails = async () => {
-        try {
-          const response = await searchSongById(initialSongId);
-          setSelectedItem({ ...response.data, type: "song" });
-        } catch (error) {
-          console.error("Error fetching initial song details:", error);
-        }
-      };
-      fetchSongDetails();
-    }
-  }, [initialSongId]);
-
-  useEffect(() => {
     if (searchTerm.length > 2) {
       fetchData();
     } else {
@@ -220,9 +206,9 @@ const CreatePost = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-1 flex flex-col">
+        <div className="col-span-1 flex flex-col" style={{ maxHeight: "600px" }}>
           {selectedItem ? (
-            <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center h-full">
+            <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center h-full overflow-auto">
               <p className="font-bold text-lg">{selectedItem.title}</p>
               <img
                 src={selectedItem.coverImageUrl || "default-image-url"}
@@ -249,7 +235,7 @@ const CreatePost = () => {
                   </p>
                 </>
               )}
-              <div className="flex justify-between w-3/4 mt-4">
+              <div className="flex justify-between w-full mt-4">
                 {selectedItem.spotifyPreviewUrl ? (
                   <PlayArrowIcon
                     className="text-gray-500 cursor-pointer"
@@ -269,7 +255,7 @@ const CreatePost = () => {
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-auto">
               <SearchResults
                 results={searchResults}
                 handleAdd={handleAdd}
