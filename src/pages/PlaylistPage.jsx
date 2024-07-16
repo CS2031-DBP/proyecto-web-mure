@@ -9,9 +9,11 @@ import Stop from "@mui/icons-material/Stop";
 import Headphones from "@mui/icons-material/Headphones";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import EditIcon from "@mui/icons-material/Edit";
 
 const PlaylistPage = () => {
   const { id } = useParams();
+  const [userId, setUserId] = useState();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState(null);
   const [songs, setSongs] = useState([]);
@@ -19,11 +21,15 @@ const PlaylistPage = () => {
   const [playingTrack, setPlayingTrack] = useState(null);
   const [volume, setVolume] = useState(1);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
+  const fetchedFromMyPlaylists = localStorage.getItem("fetchedFromMyPlaylists") === 'true';
+
+
 
   useEffect(() => {
     const fetchPlaylistData = async () => {
       try {
         const userData = await fetchCurrentUser();
+        setUserId(userData.data.id);
         const playlistData = await getPlaylistById(id);
         console.log(playlistData);
         setPlaylist(playlistData.data);
@@ -44,6 +50,7 @@ const PlaylistPage = () => {
     };
 
     fetchPlaylistData();
+
   }, [id]);
 
   const handlePlayPause = async (song) => {
@@ -99,10 +106,10 @@ const PlaylistPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 pt-6 pb-3 bg-bgColor max-w-screen-md mb-4">
+    <div className="container mx-auto px-6 pt-6 pb-3 mt-10 bg-bgColor max-w-screen-md mb-4">
       <motion.button
-        onClick={() => navigate(-1)}
-        className="text-white bg-textPrimary p-2 rounded-full fixed top-24 left-4 shadow-lg hover:bg-buttonHover transition duration-300" // Cambiado top-4 a top-16
+        onClick={() => navigate(`/user/${userId}/playlists`)}
+        className="text-white bg-textPrimary p-2 rounded-full fixed top-24 left-4 shadow-lg hover:bg-buttonHover transition duration-300"
         initial={{ opacity: 0, y: -70 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -219,6 +226,18 @@ const PlaylistPage = () => {
             className="w-full"
           />
         </motion.div>
+      )}
+      {fetchedFromMyPlaylists && (
+        <motion.button
+          onClick={() => navigate(`/playlist/edit/${id}`)}
+          className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
+          title="Edit Playlist"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <EditIcon className="text-2xl" />
+        </motion.button>
       )}
     </div>
   );

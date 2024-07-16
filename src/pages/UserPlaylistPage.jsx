@@ -16,7 +16,7 @@ const UserPlaylistsPage = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [owner, setOwner] = useState(null);
   const [page, setPage] = useState(0);
-  const [size] = useState(6); // Change to 8 to fetch only 8 playlists per page
+  const [size] = useState(6);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [fetchedFromMyPlaylists, setFetchedFromMyPlaylists] = useState(false);
@@ -60,6 +60,11 @@ const UserPlaylistsPage = () => {
     setPage(page + 1);
   };
 
+  const handleNavigateToPlaylist = (playlistId) => {
+    localStorage.setItem("fetchedFromMyPlaylists", fetchedFromMyPlaylists);
+    navigate(`/playlist/${playlistId}`);
+  };
+
   return (
     <div className="container mx-auto py-8">
       {errors && (
@@ -78,7 +83,9 @@ const UserPlaylistsPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" style={{ height: '450px' }}>
         {playlists.length > 0 ? (
           playlists.map((playlist, index) => (
-            <PlaylistItem key={playlist.id} playlist={playlist} index={index} />
+            <div key={playlist.id} onClick={() => handleNavigateToPlaylist(playlist.id)}>
+              <PlaylistItem playlist={playlist} index={index} />
+            </div>
           ))
         ) : (
           <motion.p
@@ -100,7 +107,7 @@ const UserPlaylistsPage = () => {
             &larr; Previous
           </button>
         )}
-        <div className="flex-grow"></div> {/* This will push the next button to the right */}
+        <div className="flex-grow"></div>
         {hasMore && (
           <button
             onClick={handleNextPage}

@@ -146,7 +146,7 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 h-648px mt-6">
+      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8  mt-6" style={{ height: '600px' }}>
         <div className="col-span-1 flex flex-col">
           <SearchInput
             searchTerm={searchTerm}

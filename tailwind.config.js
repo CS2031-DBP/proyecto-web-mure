@@ -26,6 +26,9 @@ export default {
         poppins: ['Poppins', 'sans-serif'],
         oleo: ['Oleo Script Swash Caps', 'cursive'],
       },
+      transitionDelay: {
+        '500': '500ms',
+      },
     },
   },
   plugins: [],
