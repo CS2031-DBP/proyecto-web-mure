@@ -141,12 +141,12 @@ const CreatePost = () => {
 
   return (
     <motion.div
-      className="flex items-center justify-center px-6 pt-8"
+      className="flex items-center justify-center px-6 pt-2"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8  mt-6" style={{ height: '600px' }}>
+      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-6" style={{ minHeight: '600px' }}>
         <div className="col-span-1 flex flex-col">
           <SearchInput
             searchTerm={searchTerm}
@@ -157,9 +157,9 @@ const CreatePost = () => {
             value={data.description}
             onChange={handleChange}
             placeholder="What are you thinking about..."
-            className="w-full h-32 p-3 border rounded-lg bg-inputBgColor  text-black border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor mb-4"
+            className="w-full h-32 p-3 border rounded-lg bg-inputBgColor text-black border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor mb-4"
           />
-          <div className="bg-inputBgColor border rounded-lg px-3 pt-3 h-full max-h-fit border-buttonColor">
+          <div className="bg-inputBgColor border rounded-lg px-3 pt-3 border-buttonColor mb-2" style={{ minHeight: '410px' }}>
             <div className="grid grid-cols-2 items-center">
               <label className="block text-sm font-medium mb-1 text-black">
                 Add Image
@@ -174,7 +174,7 @@ const CreatePost = () => {
                 </button>
               )}
             </div>
-            <div className="relative flex items-center  rounded-lg w-full h-full max-h-72 ">
+            <div className="relative flex items-center rounded-lg w-full h-full max-h-72 ">
               {imagePreviewUrl ? (
                 <img
                   src={imagePreviewUrl}
@@ -198,7 +198,7 @@ const CreatePost = () => {
         </div>
         <div className="col-span-1 flex flex-col">
           {selectedItem ? (
-            <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center">
+            <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center h-full">
               <p className="font-bold text-lg">{selectedItem.title}</p>
               <img
                 src={selectedItem.coverImageUrl || 'default-image-url'}
@@ -284,7 +284,6 @@ const CreatePost = () => {
           }}
           transition={{ duration: 0.3 }}
         >
-
           <input
             id="volume"
             type="range"

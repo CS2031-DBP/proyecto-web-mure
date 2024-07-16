@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const SearchResults = ({ results = [], handleAdd, handleRemove, page, setPage, totalPages }) => {
+const SearchResults = ({ results = [], handleAdd, page, setPage, totalPages }) => {
   const renderResults = () => {
     return results.map((result, index) => (
       <motion.div
@@ -29,14 +29,7 @@ const SearchResults = ({ results = [], handleAdd, handleRemove, page, setPage, t
             onClick={() => handleAdd(result.id, result)}
             className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
           >
-            Add +
-          </button>
-          <button
-            type="button"
-            onClick={() => handleRemove(result.id)}
-            className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg"
-          >
-            Remove -
+            +
           </button>
         </div>
       </motion.div>
