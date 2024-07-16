@@ -8,6 +8,7 @@ import Headphones from "@mui/icons-material/Headphones";
 import { useMusicPlayer } from '../../contexts/MusicContext'; 
 
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
+  console.log(song);
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const { playTrack, stopTrack, currentTrack } = useMusicPlayer();

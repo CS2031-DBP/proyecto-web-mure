@@ -13,9 +13,8 @@ const CreateSpotify = () => {
   const handleSearch = async () => {
     try {
       const token = await getToken();
-
       const results = await searchTracks(title, token);
-      setTracks(results.slice(0, 5)); 
+      setTracks(results.slice(0, 5));
     } catch (error) {
       setError('Error searching on Spotify.');
     }
@@ -51,16 +50,18 @@ const CreateSpotify = () => {
       releaseDate: track.album.release_date,
       genre: '',
       duration: `${Math.floor(track.duration_ms / 60000)}:${Math.floor((track.duration_ms % 60000) / 1000).toFixed(0).padStart(2, '0')}`,
-      coverImage: track.album.images[0]?.url || '',
-      link: track.external_urls.spotify,
+      coverImageUrl: track.album.images[0]?.url || '',
+      spotifyUrl: track.external_urls.spotify,
+      spotifyPreviewUrl: track.preview_url || ''
     };
+    console.log(songData);
     localStorage.setItem('selectedSong', JSON.stringify(songData));
     navigate('/addsong');
   };
 
   return (
     <motion.div
-      className="flex items-center justify-center bg-[#FFFDF1] px-4 pt-16 " 
+      className="flex items-center justify-center bg-[#FFFDF1] px-4 pt-16" 
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

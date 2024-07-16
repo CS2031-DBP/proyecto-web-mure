@@ -35,13 +35,3 @@ export async function getTrackDetails(trackId) {
   });
   return res.data;
 }
-
-export async function getTrackDetailsByTitle(trackTitle) {
-  const token = await getToken();
-  const tracks = await searchTracks(trackTitle, token);
-  if (tracks.length > 0) {
-    return getTrackDetails(tracks[0].id);
-  } else {
-    throw new Error('Track not found');
-  }
-}

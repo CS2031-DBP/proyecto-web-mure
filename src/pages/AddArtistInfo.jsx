@@ -54,8 +54,9 @@ const AddArtistInfo = () => {
         releaseDate: track.album.release_date,
         genre: '',
         duration: `${Math.floor(track.duration_ms / 60000)}:${Math.floor((track.duration_ms % 60000) / 1000).toFixed(0).padStart(2, '0')}`,
-        coverImage: track.album.images[0]?.url || '',
-        link: track.external_urls.spotify,
+        coverImageUrl: track.album.images[0]?.url || '',
+        spotifyUrl: track.external_urls.spotify,
+        spotifyPreviewUrl: track.preview_url || ''
       };
       localStorage.setItem('selectedSong', JSON.stringify(songData));
       navigate('/addsong');
