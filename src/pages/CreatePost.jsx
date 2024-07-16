@@ -36,7 +36,7 @@ const CreatePost = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [page, setPage] = useState(0);
-  const [size] = useState(2); // Define the page size for the search results
+  const [size] = useState(2);
   const { volume, changeVolume } = useMusicPlayer();
   const [showVolumeControl, setShowVolumeControl] = useState(false);
 
@@ -57,6 +57,20 @@ const CreatePost = () => {
 
     getId();
   }, []);
+
+  useEffect(() => {
+    if (initialSongId) {
+      const fetchSongDetails = async () => {
+        try {
+          const response = await searchSongById(initialSongId);
+          setSelectedItem({ ...response.data, type: "song" });
+        } catch (error) {
+          console.error("Error fetching initial song details:", error);
+        }
+      };
+      fetchSongDetails();
+    }
+  }, [initialSongId]);
 
   useEffect(() => {
     if (searchTerm.length > 2) {
@@ -148,7 +162,7 @@ const CreatePost = () => {
       transition={{ duration: 0.5 }}
     >
       <div
-        className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-6"
+        className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-3"
         style={{ minHeight: "600px" }}
       >
         <div className="col-span-1 flex flex-col">
@@ -165,7 +179,7 @@ const CreatePost = () => {
           />
           <div
             className="bg-inputBgColor border rounded-lg px-3 pt-3 border-buttonColor mb-2"
-            style={{ minHeight: "410px" }}
+            style={{ minHeight: "200px" }}
           >
             <div className="grid grid-cols-2 items-center">
               <label className="block text-sm font-medium mb-1 text-black">
@@ -181,7 +195,7 @@ const CreatePost = () => {
                 </button>
               )}
             </div>
-            <div className="relative flex items-center justify-center rounded-lg w-full h-96 border-gray-300 cursor-pointer">
+            <div className="relative flex items-center justify-center rounded-lg w-full h-80 border-gray-300 cursor-pointer">
               <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
                 {imagePreviewUrl ? (
                   <img
@@ -206,7 +220,7 @@ const CreatePost = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-1 flex flex-col" style={{ maxHeight: "600px" }}>
+        <div className="col-span-1 flex flex-col" style={{ maxHeight: "550px" }}>
           {selectedItem ? (
             <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center h-full overflow-auto">
               <p className="font-bold text-lg">{selectedItem.title}</p>
