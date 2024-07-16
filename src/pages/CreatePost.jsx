@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { searchSongsByTitle } from '../services/songs/searchSongBy';
+import { searchSongsByTitle } from "../services/songs/searchSongBy";
 import { searchAlbum } from "../services/album/searchAlbum";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
-import { motion } from 'framer-motion';
-import ImageIcon from '@mui/icons-material/Image';
+import { motion } from "framer-motion";
+import ImageIcon from "@mui/icons-material/Image";
 import Cancel from "@mui/icons-material/Cancel";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import HeadsetIcon from '@mui/icons-material/Headset';
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import HeadsetIcon from "@mui/icons-material/Headset";
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { useMusicPlayer } from '../contexts/MusicContext';
+import { useMusicPlayer } from "../contexts/MusicContext";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -70,8 +70,8 @@ const CreatePost = () => {
       const songs = await searchSongsByTitle(searchTerm, page, size);
       const albums = await searchAlbum(searchTerm, page, size);
       setSearchResults([
-        ...songs.data.content.map(song => ({ ...song, type: "song" })),
-        ...albums.data.content.map(album => ({ ...album, type: "album" }))
+        ...songs.data.content.map((song) => ({ ...song, type: "song" })),
+        ...albums.data.content.map((album) => ({ ...album, type: "album" })),
       ]);
       setTotalPages(Math.max(songs.data.totalPages, albums.data.totalPages));
     } catch (error) {
@@ -146,7 +146,10 @@ const CreatePost = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-6" style={{ minHeight: '600px' }}>
+      <div
+        className="bg-bgColor p-6 rounded-xl w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-6"
+        style={{ minHeight: "600px" }}
+      >
         <div className="col-span-1 flex flex-col">
           <SearchInput
             searchTerm={searchTerm}
@@ -159,7 +162,10 @@ const CreatePost = () => {
             placeholder="What are you thinking about..."
             className="w-full h-32 p-3 border rounded-lg bg-inputBgColor text-black border-buttonColor focus:outline-none focus:ring-1 focus:ring-buttonColor mb-4"
           />
-          <div className="bg-inputBgColor border rounded-lg px-3 pt-3 border-buttonColor mb-2" style={{ minHeight: '410px' }}>
+          <div
+            className="bg-inputBgColor border rounded-lg px-3 pt-3 border-buttonColor mb-2"
+            style={{ minHeight: "410px" }}
+          >
             <div className="grid grid-cols-2 items-center">
               <label className="block text-sm font-medium mb-1 text-black">
                 Add Image
@@ -174,25 +180,28 @@ const CreatePost = () => {
                 </button>
               )}
             </div>
-            <div className="relative flex items-center rounded-lg w-full h-full max-h-72 ">
-              {imagePreviewUrl ? (
-                <img
-                  src={imagePreviewUrl}
-                  alt="Preview"
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              ) : (
-                <label className="flex items-center justify-center w-full h-full cursor-pointer">
-                  <ImageIcon className="text-gray-500 w-16 h-16" />
-                  <input
-                    type="file"
-                    name="image"
-                    accept=".png,.jpg"
-                    onChange={handleChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            <div className="relative flex items-center justify-center rounded-lg w-full h-96 border-gray-300 cursor-pointer">
+              <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
+                {imagePreviewUrl ? (
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-lg"
                   />
-                </label>
-              )}
+                ) : (
+                  <>
+                    <ImageIcon className="text-gray-500 w-16 h-16" />
+                    <span className="text-gray-500">Upload Image</span>
+                  </>
+                )}
+                <input
+                  type="file"
+                  name="image"
+                  accept=".png,.jpg"
+                  onChange={handleChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </label>
             </div>
           </div>
         </div>
@@ -201,7 +210,7 @@ const CreatePost = () => {
             <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center h-full">
               <p className="font-bold text-lg">{selectedItem.title}</p>
               <img
-                src={selectedItem.coverImageUrl || 'default-image-url'}
+                src={selectedItem.coverImageUrl || "default-image-url"}
                 alt={`${selectedItem.title} cover`}
                 className="w-8/12 h-8/12 object-cover mb-4"
               />
@@ -217,14 +226,25 @@ const CreatePost = () => {
                 <>
                   <p>Artist: {selectedItem.artistName}</p>
                   <p>Total Duration: {selectedItem.totalDuration}</p>
-                  <p>Songs: {selectedItem.songsTitles ? selectedItem.songsTitles.slice(0, 4).join(", ") : "No songs available"}</p>
+                  <p>
+                    Songs:{" "}
+                    {selectedItem.songsTitles
+                      ? selectedItem.songsTitles.slice(0, 4).join(", ")
+                      : "No songs available"}
+                  </p>
                 </>
               )}
               <div className="flex justify-between w-3/4 mt-4">
                 {selectedItem.spotifyPreviewUrl ? (
-                  <PlayArrowIcon className="text-gray-500 cursor-pointer" style={{ fontSize: 40 }} />
+                  <PlayArrowIcon
+                    className="text-gray-500 cursor-pointer"
+                    style={{ fontSize: 40 }}
+                  />
                 ) : (
-                  <HeadsetIcon className="text-gray-500 cursor-pointer" style={{ fontSize: 40 }} />
+                  <HeadsetIcon
+                    className="text-gray-500 cursor-pointer"
+                    style={{ fontSize: 40 }}
+                  />
                 )}
                 <DoNotDisturbOnIcon
                   onClick={handleClearSelection}
@@ -272,7 +292,7 @@ const CreatePost = () => {
         <VolumeUpIcon className="text-2xl" />
       </motion.button>
       {showVolumeControl && (
-        <motion.div 
+        <motion.div
           className="fixed left-5 bottom-24 bg-white p-2 rounded-lg shadow-lg w-24"
           initial="hidden"
           animate="visible"
