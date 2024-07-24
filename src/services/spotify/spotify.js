@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const clientId = 'eedbe20cd6234f6cba3a6364d1b527a7';
-const clientSecret = '41b7f5ce89524a03bb41f099afc21224';
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
 export const getToken = async () => {
   const response = await axios.post('https://accounts.spotify.com/api/token', null, {
