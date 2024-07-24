@@ -1,165 +1,171 @@
-# Mure 🎵
+# Mure: Share Your Music Taste 🎧 🎶
+___
 
-Mure es una aplicación  creada por estudiantes de la Universidad de Ingeniería y Tecnología como parte del proyecto para el curso de Desarrollo Basado en Plataformas. La plataforma permite a los usuarios explorar, compartir y gestionar música y playlists, así como interactuar socialmente mediante publicaciones y listas de amigos. Desarrollada utilizando Spring Boot como framework principal, Mure integra diversas funcionalidades aprendidas durante el curso para ofrecer una experiencia completa y dinámica a sus usuarios.
+**Mure**, the winner of the *Berners Lee Award 2024-1* for the UTEC course *Platform-Based Development* (CS2031), is a platform designed for users to share their music preferences with friends and followers. With Mure, you can create and share posts, playlists, and explore music content 🎙️
 
-## Miembros del Proyecto 🤝
+The project is developed using **Java and Spring Boot 🌱** for the backend, while the frontend is built with **React ⚛️**, and the mobile application is developed with **React Native 📱**
 
-| Nombre | Email |
-| --- | --- |
-| Alejandro Escobar | mailto:alejandro.escobar@utec.edu.pe |
-| Joaquin Salinas | mailto:joaquin.salinas@utec.edu.pe |
-| Benjamin Ayra | mailto:gussephe.ayra@utec.edu.pe |
-| Guillermo Galvez | mailto:jose.galvez.p@utec.edu.pe |
+## Project Members 🤝
+___
+| Name              | Email                                                               |
+|-------------------|---------------------------------------------------------------------|
+| Joaquin Salinas   | [joaquin.salinas@utec.edu.pe](mailto:joaquin.salinas@utec.edu.pe)   |
+| Guillermo Galvez  | [jose.galvez.p@utec.edu.pe](mailto:jose.galvez.p@utec.edu.pe)       |
+| Alejandro Escobar | [alejandro.escobar@utec.edu.pe](mailto:alejandro.escobar@utec.edu.pe)|
 
-## Estructura del Proyecto 🏗️
+## Prerequisites 🔧
+___
+Before setting up the project, ensure you have the following installed on your machine:
 
-### Backend 🚀
+- **Node.js**: Latest version
 
-- **Framework**: Spring Boot 🌱
-- **Lenguaje**: Java ☕
-- **Dependencias**:
-    - JPA 🗃️
-    - Spring Security 🔐
-    - Spring Web 🌐
-    - Lombok 📚
-    - JWT 🔑
-- **Base de Datos**: PostgreSQL 🐘
+## Getting Started 🚀
+___
+
+To set up the project on your local machine, follow these steps:
+
+1. **Clone the Repository**
+
+   Open your terminal and clone the repository using the following command:
+
+   ```sh
+   git clone <https://github.com/CS2031-DBP/proyecto-web-mure>
+   ```
+
+2. **Navigate to the Project Directory**
+
+   Change to the project directory:
+
+   ```sh
+   cd proyecto-web-mure
+   ```
+
+3. **Install Dependencies**
+
+   Install the necessary dependencies:
+
+   ```sh
+   npm install
+   ```
+
+4. **Set Up Environment Variables**
+
+Create a Spotify Developer account and create an app with at least the Web API and Web Playback SDK. Obtain your client ID and client secret, then define them in the `.env` file in the root of your project. This will enable the functionality to search and play songs from Spotify if the user in an Admin.
+
+```plaintext
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+```
+
+5. **Start the Application**
+
+   Start the application using the following command:
+
+   ```sh
+   npm run dev
+   ```
+
+## Project Structure 🏗️
 
 ### Frontend 🌐
 
 - **Framework**: React ⚛️
-- **Librerías**:
-    - Axios 📡
-    - React Router 🛣️
-    - Framer Motion 🎨
-- **Estilos**: Tailwind CSS 🌈
+- **Libraries**:
+    - **Material-UI (MUI)**
+    - **Axios**
+    - **Framer Motion**
+    - **JWT Decode**
+    - **Moment**
+    - **React Icons**
+    - **React Player**
+    - **React Router DOM**
+    - **Standardized Audio Context**
+- **Styling**: Tailwind CSS 🌈
 
-## Configuración del Entorno de Desarrollo 🛠️
-
-### Requisitos Previos 📋
-
-- Node.js 🌟
-- Java  ☕
-- PostgreSQL  🐘
-
-### Variables de Entorno 🔧
-
-Asegúrate de configurar las siguientes variables de entorno en tu archivo `.env` para que el proyecto funcione correctamente:
-
-- `DB_HOST`: Dirección del host de la base de datos 🌐
-- `DB_PORT`: Puerto de la base de datos 🚪
-- `DB_NAME`: Nombre de la base de datos 📛
-- `DB_USER`: Usuario de la base de datos 👤
-- `DB_PASSWORD`: Contraseña de la base de datos 🔑
-- `JWT_SECRET`: Llave secreta para JWT 🔒
-
-## Cómo Clonar el Proyecto 🚀
-
-1. Clona el repositorio:
-    
-    ```bash
-    git clone <https://github.com/CS2031-DBP/proyecto-web-mure>
-    ```
-    
-2. Navega al directorio del proyecto:
-    
-    ```bash
-    cd proyecto-web-mure
-    ```
-    
-3. Instala las dependencias:
-    
-    ```bash
-    npm install
-    ```
-    
-4. Inicia la aplicación:
-    
-    ```bash
-    npm start
-    ```
-    
-
-## Páginas Principales 📄
+## Main Pages 📄
 
 ### Login 🔑
 
-Página de inicio de sesión para autenticar a los usuarios mediante correo electrónico y contraseña, redirigiendo al dashboard tras la autenticación exitosa.
+Login page to authenticate users using email and password, redirecting to the dashboard upon successful authentication.
 
 ### Register 📝
 
-Página de registro para nuevos usuarios, permitiendo la creación de una cuenta con nombre de usuario, correo electrónico, contraseña y fecha de cumpleaños.
+Registration page for new users, allowing account creation with username, email, password, and birthday.
 
 ### Dashboard 🏠
 
-Página principal después de iniciar sesión, mostrando un feed de posts de todos los usuarios. Permite la interacción con publicaciones y la carga continua de contenido mediante “Scroll Infinito”.
+Main page after logging in, showing a feed of posts from all users. Allows interaction with posts and continuous content loading via "Infinite Scroll."
 
 ### SongView 🎵
 
-Permite explorar todas las canciones disponibles en la base de datos, con opciones de búsqueda por título, género o nombre de artista.
+Allows exploring all songs available in the database, with search options by title, genre, or artist name.
 
 ### Add Song ➕🎶
 
-Permite agregar una nueva canción a la base de datos en caso de tener el rol de administrador, buscando y seleccionando artistas, y proporcionando detalles como título, fecha de lanzamiento, género, duración, imagen de portada y enlace a Spotify.
+Allows administrators to add a new song to the database by searching and selecting artists and providing details like title, release date, genre, duration, cover image, and Spotify link.
 
 ### Create Spotify 🔍🎧
 
-Facilita la búsqueda de canciones en Spotify usando la API de Spotify. Los administradores pueden seleccionar canciones y la página junto con el backend verifican si los artistas de la canción ya se encuentran en la base de datos. En caso no se encuentren, se hace una redirección a "Add Artist Info".
+Makes easy to search for songs on Spotify using the Spotify API. Administrators can select songs, and the page and backend verify if the song's artists are already in the database. If not, it redirects to "Add Artist Info."
 
 ### Add Artist Info ➕🎤
 
-Esta página se utiliza para agregar información adicional sobre los artistas que no están presentes en la base de datos antes de añadir una nueva canción. Aquí se completan datos como la fecha de nacimiento y una breve descripción.
+This page is used to add additional information about artists not present in the database before adding a new song. Here, data such as birthdate and a brief description are completed.
 
 ### Create Post ➕📝
 
-Permite a los usuarios crear publicaciones con descripciones, imágenes y con la capacidad de añadir información sobre una canción o álbum, fomentando la interacción social en la plataforma. Además de esto, mediante el Song View los usuarios pueden buscar una canción y añadirla directamente a un post.
+Allows users to create posts with descriptions, images, and the ability to add information about a song or album, promoting social interaction on the platform. Additionally, users can search for a song using Song View and add it directly to a post.
 
 ### User Profile 👤
 
-Muestra la información de un usuario específico, incluyendo sus posts y playlists. Permite a otros usuarios ver el perfil, agregar o eliminar amigos.
-
-### Profile 👥
-
-Muestra la información del usuario actual, incluyendo sus posts y playlists. Permite editar el perfil, ver la lista de amigos y gestionar publicaciones y playlists.
+Shows information about a user, including their posts and playlists. Allows other users to view the profile, add or remove friends. For the current user, it allows editing the profile, viewing the friends list, and managing posts and playlists.
 
 ### Edit ✏️
 
-Permite a los usuarios editar su perfil, incluyendo nombre, correo electrónico e imagen de perfil, manteniendo la información actualizada.
+Allows users to edit their profile, including name, email, and profile picture, keeping the information up to date.
 
 ### Friend List 👥
 
-Muestra la lista de amigos del usuario actual, permitiendo ver sus perfiles, eliminar amigos y navegar a sus perfiles individuales.
+Shows the current user's friends list, allowing viewing of their profiles, removing friends, and navigating to individual profiles.
 
 ### Create Playlist ➕📋
 
-Permite a los usuarios crear nuevas playlists, buscar canciones por título e ir agregándolas a su playlist, ingresando el nombre de la playlist y listando las canciones añadidas.
+Allows users to create new playlists, search for songs by title, and add them to their playlist, entering the playlist name and listing the added songs.
 
 ### Edit Playlist 📝📋
 
-Permite modificar playlists existentes, añadiendo o eliminando canciones.
+Allows modifying existing playlists by adding or removing songs.
 
 ### NotFound ❓
 
-Página de error 404 que se muestra cuando un usuario intenta acceder a una ruta inexistente, ofreciendo opciones para redirigir al login o al dashboard.
+404 error page displayed when a user tries to access a non-existent route, offering options to redirect to login or dashboard.
 
-## Servicios Relevantes 🛠️
+## Relevant Services 🛠️
 
-### Autenticación y Usuarios 🔒
+### Authentication and Users 🔒
 
-Manejamos la autenticación y gestión de usuarios mediante servicios que se comunican con el backend para validar credenciales, crear nuevas cuentas y recuperar información del usuario actual o de otros usuarios. Además, ofrecemos la funcionalidad para que los usuarios actualicen su información personal, como nombre, correo electrónico y la imagen de perfil.
+Handles user authentication and management through services that communicate with the backend to validate credentials, create new accounts, and retrieve information about the current user or other users. Additionally, users can update their personal information such as name, email, and profile picture.
 
-### Música y Artistas 🎤🎵
+### Music and Artists 🎤🎵
 
-Gestionamos la música y los artistas permitiendo la búsqueda de álbumes y artistas en la base de datos, así como la creación de nuevos registros. También facilitamos la adición de nuevas canciones, incluyendo detalles como título, artistas, fecha de lanzamiento, género, duración y enlaces a plataformas externas.
+Manages music and artists by allowing the search of albums and artists in the database, as well as the creation of new records. Facilitates the addition of new songs, including details such as title, artists, release date, genre, duration, and links to external platforms.
 
 ### Playlists 📋
 
-Para la gestión de playlists, nuestros servicios permiten crear nuevas playlists, recuperar playlists específicas por ID, obtener las playlists del usuario actual y las playlists de otros usuarios. También proporcionamos funcionalidades para añadir y eliminar canciones dentro de una playlist.
+For managing playlists, our services allow creating new playlists, retrieving specific playlists by ID, getting the current user's playlists, and the playlists of other users. Also provides functionalities for adding and removing songs within a playlist.
 
 ### Posts 📝
 
-Los posts en nuestra plataforma son gestionados mediante servicios que permiten la creación de nuevos posts, así como la recuperación de posts globales y específicos de cada usuario, por los cuales se puede dar Like o Dislike a los mismos. También ofrecemos la funcionalidad para eliminar posts, asegurando que los usuarios tengan control total sobre su contenido.
+Posts on our platform are managed through services that allow creating new posts, retrieving global posts, and user-specific posts, with options to like or dislike them. Also offers functionality to delete posts, ensuring users have full control over their content.
 
-### Interacción Social 💬
+### Social Interaction 💬
 
-Fomentamos la interacción social entre los usuarios a través de servicios que permiten gestionar relaciones de amistad, añadiendo o eliminando amigos y verificando el estado de amistad. También ofrecemos funcionalidades para que los usuarios interactúen con los posts mediante likes y dislikes, creando una experiencia más envolvente y participativa.
+Promotes social interaction between users through services that manage friendship relationships, adding or removing friends, and verifying friendship status. Additionally, users can interact with posts through likes and dislikes, creating a more engaging and participatory experience.
+
+## Acknowledgments 🫶
+___
+We would like to thank everyone who supported the project by testing it and providing valuable feedback. Special thanks to our professor, Jorge Rios, whose guidance and encouragement were crucial to the successful development of this project 🗣️ 🙌
+
+## License 📄
+
+This project is licensed under the [GNU General Public License v3.0](http://www.gnu.org/licenses/gpl-3.0.html).
