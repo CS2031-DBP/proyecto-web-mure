@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getToken, searchTracks } from '../services/spotify/spotify';
-import { checkArtistInDatabase } from '../services/artist/artist';
+import { checkArtistInDatabase } from '../services/artist/checkArtistInDatabase';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
