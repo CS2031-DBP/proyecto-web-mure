@@ -113,7 +113,7 @@ const AddSong = () => {
 
   return (
     <motion.div
-      className="flex items-center justify-center bg-[#FFFDF1] px-4 pt-4"
+      className="flex items-center justify-center bg-inputBgColor px-4 pt-4"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

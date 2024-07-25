@@ -20,7 +20,9 @@ export default {
         atColor2: '#5C98C3',
         navbarHover: '#bf4167',
         navbarFocus: '#8A2E50',
-        buttonColorPl: '#C5205A'
+        buttonColorPl: '#C5205A',
+        playlistBg1: '#F39560',
+        playlistBg2: '#C7486A',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

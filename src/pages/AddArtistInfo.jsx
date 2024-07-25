@@ -68,7 +68,7 @@ const AddArtistInfo = () => {
 
   return (
     <motion.div
-      className="flex items-center justify-center bg-[#FFFDF1] px-6 pt-8 min-h-screen"
+      className="flex items-center justify-center bg-inputBgColor px-6 pt-8 min-h-screen"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -78,7 +78,7 @@ const AddArtistInfo = () => {
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-6">
           {artistDetails.map((artist, index) => (
-            <div key={index} className="bg-[#FFFDF1] p-6 rounded-lg shadow-md">
+            <div key={index} className="bg-inputBgColor p-6 rounded-lg shadow-md">
               <div className="flex justify-center items-center mb-4">
                 <h2 className="text-xl font-poppins font-bold text-black mr-2">{artist.name}</h2>
                 <VerifiedIcon

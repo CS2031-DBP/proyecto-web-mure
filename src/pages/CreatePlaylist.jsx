@@ -125,7 +125,7 @@ const CreatePlaylist = () => {
   return (
     <div className="flex items-center justify-center mt-10">
       <motion.div
-        className="bg-gradient-to-b from-[#F39560] to-[#C7486A] text-white px-8 py-4 rounded-lg shadow-lg w-full max-w-2xl"
+        className="bg-gradient-to-b from-playlistBg1 to-playlistBg2 text-white px-8 py-4 rounded-lg shadow-lg w-full max-w-2xl"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

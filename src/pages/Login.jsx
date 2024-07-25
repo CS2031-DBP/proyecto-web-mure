@@ -49,7 +49,7 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-[#FFFDF1] min-h-screen">
+    <div className="flex items-center justify-center bg-inputBgColor min-h-screen">
       <div className="grid grid-cols-2 gap-6 max-w-4xl w-full p-4">
         <div className="col-span-1 flex flex-col items-center justify-center h-auto">
           <motion.h1
