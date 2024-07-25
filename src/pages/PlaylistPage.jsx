@@ -23,15 +23,12 @@ const PlaylistPage = () => {
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const fetchedFromMyPlaylists = localStorage.getItem("fetchedFromMyPlaylists") === 'true';
 
-
-
   useEffect(() => {
     const fetchPlaylistData = async () => {
       try {
         const userData = await fetchCurrentUser();
         setUserId(userData.data.id);
         const playlistData = await getPlaylistById(id);
-        console.log(playlistData);
         setPlaylist(playlistData.data);
 
         if (playlistData.data.songsIds) {
@@ -44,7 +41,6 @@ const PlaylistPage = () => {
           setSongs(songDetails);
         }
       } catch (err) {
-        console.error("Error fetching playlist data:", err);
         setError(`Failed to load playlist data: ${err.message}`);
       }
     };

@@ -8,21 +8,25 @@ import Headphones from "@mui/icons-material/Headphones";
 import { useMusicPlayer } from '../../contexts/MusicContext'; 
 
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
-  console.log(song);
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const { playTrack, stopTrack, currentTrack } = useMusicPlayer();
+  const [error, setError] = useState("");
 
   const handlePlayPause = async () => {
-    if (isPlaying) {
-      await stopTrack();
-      setIsPlaying(false);
-    } else {
-      if (currentTrack) {
+    try {
+      if (isPlaying) {
         await stopTrack();
+        setIsPlaying(false);
+      } else {
+        if (currentTrack) {
+          await stopTrack();
+        }
+        await playTrack(song.spotifyPreviewUrl);
+        setIsPlaying(true);
       }
-      await playTrack(song.spotifyPreviewUrl);
-      setIsPlaying(true);
+    } catch (err) {
+      setError("Failed to play or stop the track.");
     }
   };
 
@@ -40,8 +44,8 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
       if (res.status === 204) {
         onDelete(id);
       }
-    } catch (error) {
-      console.error(`Failed to delete song ${id}`, error);
+    } catch (err) {
+      setError(`Failed to delete song ${id}`);
     }
   };
 
@@ -54,6 +58,7 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
       ref={ref}
       className="border rounded-2xl shadow-lg bg-[#D9D9D9] text-black w-80 flex flex-col justify-between min-h-[450px] p-4"
     >
+      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
       <div className="relative">
         <div className="flex justify-between items-center mb-4">
           <Send className="text-[#676A6F] cursor-pointer" onClick={handleCreatePost} />

@@ -52,7 +52,6 @@ const User = () => {
         }
       } catch (err) {
         setError("Error fetching data.");
-        console.error(err);
       }
     };
     fetchData();
@@ -77,7 +76,7 @@ const User = () => {
         setHasMore(res.data.content.length > 0);
       }
     } catch (error) {
-      console.error(error);
+      setError("Error loading posts.");
     }
     setIsLoading(false);
   };
@@ -115,7 +114,7 @@ const User = () => {
       await addFriend(id);
       setFriends(true);
     } catch (error) {
-      console.error(error);
+      setError("Error adding friend.");
     }
   };
 
@@ -124,7 +123,7 @@ const User = () => {
       await deleteFriend(id);
       setFriends(false);
     } catch (error) {
-      console.error(error);
+      setError("Error deleting friend.");
     }
   };
 

@@ -1,4 +1,3 @@
-// Dashboard.jsx
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Post from "../components/post/Post";
 import { fetchPosts } from "../services/posts/getAllPosts";
@@ -33,7 +32,7 @@ const Dashboard = () => {
         setHasMore(res.data.content.length > 0);
       }
     } catch (error) {
-      console.error(error);
+      setError("Error loading posts.");
     }
     setIsLoading(false);
   };
@@ -46,7 +45,7 @@ const Dashboard = () => {
         setCurrId(res.data.id);
       }
     } catch (error) {
-      console.error(error);
+      setError("Error fetching user info.");
     }
   };
 
@@ -153,7 +152,6 @@ const Dashboard = () => {
           }}
           transition={{ duration: 0.3 }}
         >
-
           <input
             id="volume"
             type="range"

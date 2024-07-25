@@ -18,6 +18,7 @@ ___
 Before setting up the project, ensure you have the following installed on your machine:
 
 - **Node.js**: Latest version
+- **Backend**: You'll need to run the backend before using the app, use the following repository "Repo". Also, in case you don't use "localhost:8080" to comunicate to your local API, feel free to change it in the "services/api.js" file to match your direction.
 
 ## Getting Started 🚀
 ___
@@ -104,7 +105,7 @@ Allows exploring all songs available in the database, with search options by tit
 
 Allows administrators to add a new song to the database by searching and selecting artists and providing details like title, release date, genre, duration, cover image, and Spotify link.
 
-### Create Spotify 🔍🎧
+### Spotify Create 🔍🎧
 
 Makes easy to search for songs on Spotify using the Spotify API. Administrators can select songs, and the page and backend verify if the song's artists are already in the database. If not, it redirects to "Add Artist Info."
 
@@ -122,11 +123,15 @@ Shows information about a user, including their posts and playlists. Allows othe
 
 ### Edit ✏️
 
-Allows users to edit their profile, including name, email, and profile picture, keeping the information up to date.
+Allows users to edit their profile, including name and profile picture, keeping the information up to date.
 
-### Friend List 👥
+### Change Credentials ⚔
 
-Shows the current user's friends list, allowing viewing of their profiles, removing friends, and navigating to individual profiles.
+Allows users to change their password or their email, redirecting them to the login page to use their new credentials.
+
+### User Playlist Page
+
+View where users can watch either their playlists or other user playlists, depending where they requested the playlist to be shown
 
 ### Create Playlist ➕📋
 
@@ -136,6 +141,18 @@ Allows users to create new playlists, search for songs by title, and add them to
 
 Allows modifying existing playlists by adding or removing songs.
 
+### Playlist Page
+
+Shows a simple view of the selected playlist, allowing to play songs if they have a "preview link"
+
+### Album View
+
+Similar to the playlist page, shows a simple view of the selected album, including all the songs of the album, and allowing the users to play it in the app if tere exist a "preview link".
+
+### Friend List 👥
+
+Shows the current user's friends list, allowing viewing of their profiles, removing friends, and navigating to individual profiles.
+
 ### NotFound ❓
 
 404 error page displayed when a user tries to access a non-existent route, offering options to redirect to login or dashboard.
@@ -144,7 +161,7 @@ Allows modifying existing playlists by adding or removing songs.
 
 ### Authentication and Users 🔒
 
-Handles user authentication and management through services that communicate with the backend to validate credentials, create new accounts, and retrieve information about the current user or other users. Additionally, users can update their personal information such as name, email, and profile picture.
+Handles user authentication and management through services that communicate with the backend to validate credentials, create new accounts, and retrieve information about the current user or other users. Additionally, users can update their personal information such as name, email, and profile picture through the "Edit" or "Change Credentials" pages. 
 
 ### Music and Artists 🎤🎵
 
@@ -156,7 +173,7 @@ For managing playlists, our services allow creating new playlists, retrieving sp
 
 ### Posts 📝
 
-Posts on our platform are managed through services that allow creating new posts, retrieving global posts, and user-specific posts, with options to like or dislike them. Also offers functionality to delete posts, ensuring users have full control over their content.
+Posts on our platform are managed through services that allow creating new posts, retrieving global posts, and user-specific posts, with options to like or dislike them. Posts are "separated" into 2 parts, one that contains the musical information and the other the post details. In the post information, users can either play the song in the app, go to an album view and listen to some songs, or go to Spotify and enjoy anything they enjoy! Also offers functionality to delete posts, ensuring users have full control over their content.
 
 ### Social Interaction 💬
 

@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { fetchSongs } from "../services/songs/getAllSongs";
-import {
-  searchSongsByTitle,
-  searchSongsByGenre,
-  searchSongsByArtistName,
-} from "../services/songs/searchSongBy";
+import {  searchSongsByArtistName} from "../services/songs/searchSongByArtistName";
+import { searchSongsByTitle } from "../services/songs/searchSongByTitle";
+import { searchSongsByGenre } from "../services/songs/searchSongByGenre";
 import Song from "../components/songs/Song";
 import { getRoleBasedOnToken } from "../services/auth/getRoleToken";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -59,7 +57,7 @@ const SongView = ({ showSearchBar }) => {
       setHasMore(fetchedData.length === size);
       setNoResults(fetchedData.length === 0 && currentPage === 0);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      setError("Error fetching data.");
     }
   };
 
@@ -79,13 +77,7 @@ const SongView = ({ showSearchBar }) => {
         setNoResults(fetchedData.length === 0 && currentPage === 0);
       }
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setSongs([]);
-        setHasMore(false);
-        setNoResults(true);
-      } else {
-        console.error(error);
-      }
+      setError("Error loading songs.");
     }
     setIsLoading(false);
   };

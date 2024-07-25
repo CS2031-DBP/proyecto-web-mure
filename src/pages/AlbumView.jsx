@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAlbumById, isAlbumLikedByUser, likeAlbum, dislikeAlbum } from '../services/album/moreAlbumServices';
+import { getAlbumById } from '../services/album/getAlbumById';
+import { likeAlbum } from '../services/album/likeAlbum';
+import { dislikeAlbum } from '../services/album/dislikeAlbum';
+import { isAlbumLikedByUser } from '../services/album/isAlbumLikedByUser';
 import { searchSongById } from '../services/songs/searchSongById';
 import { fetchCurrentUser } from '../services/profile/getUserInfo';
 import Favorite from '@mui/icons-material/Favorite';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { searchSongsByTitle } from "../services/songs/searchSongBy";
+import { searchSongsByTitle } from "../services/songs/searchSongByTitle";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +54,7 @@ const CreatePlaylist = () => {
       const results = await searchSongsByTitle(songSearchTerm, page, size);
       setSearchResults(results.data.content);
     } catch (error) {
-      console.error("Error in handleSearchText:", error);
+      setError("Error in handleSearchText.");
     }
   };
 
@@ -92,7 +92,6 @@ const CreatePlaylist = () => {
         }
       } catch (error) {
         setError("Error fetching user info.");
-        console.error("Error getting id:", error);
       }
     };
     getId();
@@ -119,7 +118,6 @@ const CreatePlaylist = () => {
         setError("Error creating the playlist.");
       }
     } catch (error) {
-      console.error(error);
       setError("Error creating the playlist.");
     }
   };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { createArtists, checkArtistInDatabase } from '../services/artist/artist';
+import { checkArtistInDatabase } from '../services/artist/checkArtistInDatabase';
+import { createArtists } from '../services/artist/createArtist';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -60,8 +61,7 @@ const AddArtistInfo = () => {
       };
       localStorage.setItem('selectedSong', JSON.stringify(songData));
       navigate('/addsong');
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       setError('Error saving artist information.');
     }
   };

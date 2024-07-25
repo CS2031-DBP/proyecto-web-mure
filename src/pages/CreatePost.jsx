@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { createPost } from "../services/posts/createPost";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { searchSongsByTitle } from "../services/songs/searchSongBy";
+import { searchSongsByTitle } from "../services/songs/searchSongByTitle";
 import { searchSongById } from "../services/songs/searchSongById";
-import { searchAlbum } from "../services/album/searchAlbum";
+import { getAlbumByTitle } from "../services/album/gettAlbumByTitle";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
@@ -51,7 +51,6 @@ const CreatePost = () => {
         }
       } catch (error) {
         setError("Error fetching user info.");
-        console.error("Error getting id:", error);
       }
     };
 
@@ -65,7 +64,7 @@ const CreatePost = () => {
           const response = await searchSongById(initialSongId);
           setSelectedItem({ ...response.data, type: "song" });
         } catch (error) {
-          console.error("Error fetching initial song details:", error);
+          setError("Error fetching initial song details.");
         }
       };
       fetchSongDetails();
@@ -83,14 +82,14 @@ const CreatePost = () => {
   const fetchData = async () => {
     try {
       const songs = await searchSongsByTitle(searchTerm, page, size);
-      const albums = await searchAlbum(searchTerm, page, size);
+      const albums = await getAlbumByTitle(searchTerm, page, size);
       setSearchResults([
         ...songs.data.content.map((song) => ({ ...song, type: "song" })),
         ...albums.data.content.map((album) => ({ ...album, type: "album" })),
       ]);
       setTotalPages(Math.max(songs.data.totalPages, albums.data.totalPages));
     } catch (error) {
-      console.error("Error in handleSearchText:", error);
+      setError("Error in handleSearchText.");
     }
   };
 
@@ -150,7 +149,6 @@ const CreatePost = () => {
       }
     } catch (error) {
       setError("Error creating the post.");
-      console.error("Error creating post:", error);
     }
   };
 

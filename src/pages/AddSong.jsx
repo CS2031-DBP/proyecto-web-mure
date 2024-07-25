@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createSong } from "../services/songs/createSong";
-import { searchArtist } from "../services/artist/getArtistByName";
+import { getArtistByName } from "../services/artist/getArtistByName";
 import { useNavigate } from "react-router-dom";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
@@ -31,7 +31,6 @@ const AddSong = () => {
     if (songData) {
       const parsedData = JSON.parse(songData);
       setData(parsedData);
-      console.log(parsedData);
       setAddedArtists(parsedData.addedArtists || []);
       localStorage.removeItem("selectedSong");
     }
@@ -51,7 +50,7 @@ const AddSong = () => {
 
     try {
       if (type === "artist") {
-        const results = await searchArtist(artistSearchTerm, 0, 10);
+        const results = await getArtistByName(artistSearchTerm, 0, 10);
         if (results.status === 200) {
           setArtistSearchResults(results.data.content);
         } else if (results.response && results.response.status === 404) {
@@ -61,7 +60,7 @@ const AddSong = () => {
           setError("Error searching for artists.");
         }
       }
-    } catch (error) {
+    } catch (err) {
       setError("Error searching.");
     }
   };
@@ -107,8 +106,7 @@ const AddSong = () => {
       } else {
         setError("Error creating the song.");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       setError("Error creating the song.");
     }
   };

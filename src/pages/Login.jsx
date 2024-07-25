@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/auth/auth";
+import { login } from "../services/auth/login";
 import logo from "../img/Logo_Fondo-removebg-preview.png";
 import { motion } from "framer-motion";
 

@@ -35,7 +35,7 @@ const Edit = () => {
 
         setImagePreviewUrl(user.data.profileImageUrl);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        setError("Error fetching user data.");
       }
     };
 
@@ -79,7 +79,6 @@ const Edit = () => {
       }
     } catch (error) {
       setError("Error updating profile.");
-      console.error(error);
     }
   };
 
@@ -105,18 +104,17 @@ const Edit = () => {
                 alt="Profile"
                 className="object-cover w-full h-full"
               />
-
             </div>
             {imagePreviewUrl !== oldData.profileImage && (
-                <button
-                  type="button"
-                  onClick={handleClearImage}
-                  className="absolute top-0 right-0 p-1 transition duration-300 transform mr-28 "
-                  title="Clear Image"
-                >
-                  <Cancel style={{ fill: "#8E3356" }} />
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={handleClearImage}
+                className="absolute top-0 right-0 p-1 transition duration-300 transform mr-28 "
+                title="Clear Image"
+              >
+                <Cancel style={{ fill: "#8E3356" }} />
+              </button>
+            )}
             <label
               htmlFor="profileImage"
               className="absolute bottom-0 right-0 mr-28 transform translate-y-1/4 translate-x-1/2 cursor-pointer bg-buttonColor rounded-full p-2 transition duration-300 border border-white text-white focus:input-focus focus:outline-none focus:ring-1 focus:ring-white"
@@ -141,17 +139,17 @@ const Edit = () => {
             </label>
           </div>
           <motion.input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Name"
-              value={data.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border bg-white border-buttonColor text-buttonColor focus:input-focus focus:outline-none focus:ring-1 focus:ring-buttonColor rounded-sm "
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            />
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Name"
+            value={data.name}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border bg-white border-buttonColor text-buttonColor focus:input-focus focus:outline-none focus:ring-1 focus:ring-buttonColor rounded-sm "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          />
           <div className="col-span-1">
             <button
               type="submit"

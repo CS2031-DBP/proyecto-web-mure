@@ -41,7 +41,6 @@ const UserPlaylistsPage = () => {
       setHasMore(playlistsData.data.content ? playlistsData.data.content.length === size : playlistsData.data.length === size);
       setLoading(false);
     } catch (error) {
-      console.error("Error loading playlists:", error);
       setErrors("Failed to load playlists");
     }
   };

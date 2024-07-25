@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { useMusicPlayer } from '../../contexts/MusicContext';
 
 const MusicPost = ({ post }) => {
-  console.log(post);
   const { song, album } = post;
   const [isPlaying, setIsPlaying] = useState(false);
   const { playTrack, stopTrack, currentTrack } = useMusicPlayer();

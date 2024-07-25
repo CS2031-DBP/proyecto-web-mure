@@ -4,7 +4,7 @@ const api = new Api({});
 
 export async function addSongToPlaylist(playlistId, songId) {
   let options = {
-    url: `/playlist/${playlistId}/addSong/${songId}`,
+    url: `/playlist/${playlistId}/addSong/${songId}`
   };
 
   try {

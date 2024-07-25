@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPlaylistById } from "../services/playlists/getPlaylistById";
-import { updatePlaylist, addSongToPlaylist, removeSongFromPlaylist } from "../services/playlists/playlistService";
+import { updatePlaylist} from "../services/playlists/updatePlaylist";
+import { removeSongFromPlaylist } from "../services/playlists/removeSongFromPlaylist";
+import { addSongToPlaylist } from "../services/playlists/addSongToPlaylist";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import { searchSongById } from "../services/songs/searchSongById";
-import { searchSongsByTitle} from "../services/songs/searchSongBy";
+import { searchSongsByTitle } from "../services/songs/searchSongByTitle";
 import { motion } from 'framer-motion';
 import ImageIcon from "@mui/icons-material/Image";
 import Cancel from "@mui/icons-material/Cancel";
@@ -39,7 +41,6 @@ const EditPlaylist = () => {
         setSongsDetails(details);
       }
     } catch (err) {
-      console.error(err);
       setFetchError("Failed to fetch playlist data.");
     }
   };
@@ -61,7 +62,7 @@ const EditPlaylist = () => {
       const results = await searchSongsByTitle(songSearchTerm, page, size);
       setSongSearchResults(results.data.content);
     } catch (error) {
-      console.error("Error in handleSearchText:", error);
+      setError("Error in handleSearchText.");
     }
   };
 
@@ -83,7 +84,6 @@ const EditPlaylist = () => {
       setSongSearchTerm("");
       fetchPlaylist();
     } catch (error) {
-      console.error("Error adding song to playlist:", error);
       setError("Error adding song to playlist.");
     }
   };
@@ -96,7 +96,6 @@ const EditPlaylist = () => {
       );
       fetchPlaylist();
     } catch (error) {
-      console.error("Error removing song from playlist:", error);
       setError("Error removing song from playlist.");
     }
   };
@@ -121,7 +120,6 @@ const EditPlaylist = () => {
       await updatePlaylist(formData);
       navigate(-2);
     } catch (err) {
-      console.error("Error updating playlist:", err);
       setError("Error updating playlist.");
     }
   };

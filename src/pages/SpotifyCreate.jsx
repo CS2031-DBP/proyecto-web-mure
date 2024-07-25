@@ -4,7 +4,7 @@ import { checkArtistInDatabase } from '../services/artist/artist';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const CreateSpotify = () => {
+const SpotifyCreate = () => {
   const [title, setTitle] = useState('');
   const [tracks, setTracks] = useState([]);
   const [error, setError] = useState('');
@@ -54,7 +54,7 @@ const CreateSpotify = () => {
       spotifyUrl: track.external_urls.spotify,
       spotifyPreviewUrl: track.preview_url || ''
     };
-    console.log(songData);
+
     localStorage.setItem('selectedSong', JSON.stringify(songData));
     navigate('/addsong');
   };
@@ -138,4 +138,4 @@ const CreateSpotify = () => {
   );
 };
 
-export default CreateSpotify;
+export default SpotifyCreate;

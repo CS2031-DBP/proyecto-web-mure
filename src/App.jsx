@@ -17,7 +17,7 @@ import SongView from "./pages/SongView";
 import AddSong from "./pages/AddSong";
 import CreatePlaylist from "./pages/CreatePlaylist";
 import EditPlaylist from "./pages/EditPlaylist";
-import CreateSpotify from "./pages/CrearSpotify";
+import SpotifyCreate from "./pages/SpotifyCreate";
 import Navbar from "./components/navbar/navbar";
 import { useState, useEffect } from "react";
 import NotFound from "./pages/NotFound";
@@ -130,7 +130,7 @@ function App() {
               <Route path="/playlist/create" element={<CreatePlaylist />} />
               <Route path="/playlist/edit/:id" element={<EditPlaylist />} />
               <Route path="/friends" element={<FriendList />} />
-              <Route path="/song/create/spotify" element={<CreateSpotify />} />
+              <Route path="/song/create/spotify" element={<SpotifyCreate />} />
               <Route path="/add-artist-info" element={<AddArtistInfo />} />
               <Route path="/album/:albumId" element={<AlbumView />} />
               <Route

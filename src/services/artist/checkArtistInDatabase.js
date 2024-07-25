@@ -2,7 +2,6 @@ import Api from '../api';
 
 const api = new Api({});
 
-
 export async function checkArtistInDatabase(name, page = 0, size = 10) {
     let options = {
         url: `/artist/name?name=${name}&page=${page}&size=${size}`, 
@@ -19,16 +18,3 @@ export async function checkArtistInDatabase(name, page = 0, size = 10) {
     }
 }
 
-export async function createArtists(artists) {
-    let options = {
-        url: `/artist`,
-    };
-
-    try {
-        const res = await api.post(artists, options); 
-
-        return res;
-    } catch (error) {
-        throw error;
-    }
-}

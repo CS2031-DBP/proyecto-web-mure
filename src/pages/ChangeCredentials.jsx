@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { verifyPassword } from "../services/auth/checkPassword";
+import { verifyPassword } from "../services/auth/verifyPassword";
 import { editProfile } from "../services/profile/editProfile";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { motion } from 'framer-motion';
@@ -27,7 +27,6 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
         }));
       } catch (error) {
         setError("Error fetching user data.");
-        console.error(error);
       }
     };
 
@@ -79,7 +78,6 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
 
     } catch (error) {
       setError("Error updating credentials.");
-      console.error(error);
     }
   };
 

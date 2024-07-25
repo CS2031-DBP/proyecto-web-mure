@@ -15,6 +15,10 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
   const [likes, setLikes] = useState(post.likes);
   const [liked, setLiked] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [error, setError] = useState("");
+  const [ownershipError, setOwnershipError] = useState("");
+  const [likeError, setLikeError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +29,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
           setIsOwner(currentUser.data.id === post.ownerId);
         }
       } catch (err) {
-        console.error("Error verifying post ownership:", err);
+        setOwnershipError("Error verifying post ownership.");
       }
     };
     checkOwnership();
@@ -57,7 +61,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
         setLiked(true);
       }
     } catch (error) {
-      console.error("Error liking/disliking the post:", error);
+      setLikeError("Error liking/disliking the post.");
     }
   };
 
@@ -66,7 +70,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
       await deletePost(post.id);
       onDelete(post.id);
     } catch (err) {
-      console.error("Error deleting post:", err);
+      setDeleteError("Error deleting post.");
     }
   };
 
@@ -91,6 +95,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
           <Cancel style={{ fill: "red" }} />
         </button>
       )}
+      {ownershipError && <p className="text-red-500 text-sm mt-1">{ownershipError}</p>}
       <div className="flex mb-4">
         <div className="flex flex-col items-center mr-4">
           <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-black mb-2">
@@ -139,6 +144,8 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
           </motion.button>
         </div>
       </div>
+      {likeError && <p className="text-red-500 text-sm mt-1">{likeError}</p>}
+      {deleteError && <p className="text-red-500 text-sm mt-1">{deleteError}</p>}
     </motion.div>
   );
 });
