@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { fetchSongs } from "../services/songs/getAllSongs";
-import {  searchSongsByArtistName} from "../services/songs/searchSongByArtistName";
+import { searchSongsByArtistName } from "../services/songs/searchSongByArtistName";
 import { searchSongsByTitle } from "../services/songs/searchSongByTitle";
 import { searchSongsByGenre } from "../services/songs/searchSongByGenre";
 import Song from "../components/songs/Song";

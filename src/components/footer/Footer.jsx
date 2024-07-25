@@ -10,9 +10,7 @@ const Footer = () => {
       transition={{ duration: 0.6 }}
     >
       <div className="container mx-auto text-center">
-        <p className="text-sm">
-          © 2024 Mure - Share Your Music Taste
-        </p>
+        <p className="text-sm">© 2024 Mure - Share Your Music Taste</p>
       </div>
     </motion.footer>
   );

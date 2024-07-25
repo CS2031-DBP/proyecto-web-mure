@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { verifyPassword } from "../services/auth/verifyPassword";
 import { editProfile } from "../services/profile/editProfile";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const ChangeCredentials = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     oldPassword: "",
-    newPassword: ""
+    newPassword: "",
   });
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState("");
@@ -23,7 +23,7 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
         setUserId(user.data.id);
         setData((prevData) => ({
           ...prevData,
-          email: user.data.email
+          email: user.data.email,
         }));
       } catch (error) {
         setError("Error fetching user data.");
@@ -54,7 +54,7 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
       if (data.newPassword) {
         const valid = {
           userId: userId,
-          password: data.oldPassword
+          password: data.oldPassword,
         };
 
         const isValid = await verifyPassword(valid);
@@ -65,17 +65,16 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
       }
 
       const formData = new FormData();
-      formData.append('userId', userId);
+      formData.append("userId", userId);
       if (data.email) {
-        formData.append('email', data.email);
+        formData.append("email", data.email);
       }
       if (data.newPassword) {
-        formData.append('password', data.newPassword);
+        formData.append("password", data.newPassword);
       }
 
       await editProfile(formData);
       handleLogout();
-
     } catch (error) {
       setError("Error updating credentials.");
     }
@@ -93,7 +92,10 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
           <div className="col-span-1 relative">
-            <label htmlFor="email" className="block text-sm font-medium mb-1 text-left text-buttonColor">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium mb-1 text-left text-buttonColor"
+            >
               New Email
             </label>
             <motion.input
@@ -110,7 +112,10 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
             />
           </div>
           <div className="col-span-1 relative">
-            <label htmlFor="oldPassword" className="block text-sm font-medium mb-1 text-left text-buttonColor">
+            <label
+              htmlFor="oldPassword"
+              className="block text-sm font-medium mb-1 text-left text-buttonColor"
+            >
               Old Password
             </label>
             <motion.input
@@ -127,7 +132,10 @@ const ChangeCredentials = ({ setIsAuthenticated }) => {
             />
           </div>
           <div className="col-span-1 relative">
-            <label htmlFor="newPassword" className="block text-sm font-medium mb-1 text-left text-buttonColor">
+            <label
+              htmlFor="newPassword"
+              className="block text-sm font-medium mb-1 text-left text-buttonColor"
+            >
               New Password
             </label>
             <motion.input

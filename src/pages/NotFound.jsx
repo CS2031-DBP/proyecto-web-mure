@@ -1,17 +1,17 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaExclamationTriangle } from 'react-icons/fa';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 const NotFound = () => {
   const navigate = useNavigate();
-  const hasToken = localStorage.getItem('token');
+  const hasToken = localStorage.getItem("token");
 
   const handleButtonClick = () => {
     if (hasToken) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     } else {
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
   };
 
@@ -25,12 +25,14 @@ const NotFound = () => {
       >
         <FaExclamationTriangle className="text-6xl text-yellow-500 mb-4" />
         <h1 className="text-5xl font-bold mb-4">404 - Page Not Found</h1>
-        <p className="text-lg mb-8">The page you are looking for does not exist :(</p>
+        <p className="text-lg mb-8">
+          The page you are looking for does not exist :(
+        </p>
         <button
           onClick={handleButtonClick}
           className="bg-buttonColor text-white py-2 px-6 rounded-full hover:bg-buttonHover transition duration-300"
         >
-          {hasToken ? 'Go to Dashboard' : 'Go to Login'}
+          {hasToken ? "Go to Dashboard" : "Go to Login"}
         </button>
       </motion.div>
     </div>

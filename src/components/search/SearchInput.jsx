@@ -1,12 +1,7 @@
-
-
 import React from "react";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-const SearchInput = ({
-  searchTerm,
-  handleSearchTermChange
-}) => {
+const SearchInput = ({ searchTerm, handleSearchTermChange }) => {
   return (
     <motion.div
       className="mb-4 flex"

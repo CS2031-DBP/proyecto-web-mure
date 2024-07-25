@@ -38,7 +38,11 @@ const UserPlaylistsPage = () => {
       }
 
       setPlaylists(playlistsData.data.content || playlistsData.data);
-      setHasMore(playlistsData.data.content ? playlistsData.data.content.length === size : playlistsData.data.length === size);
+      setHasMore(
+        playlistsData.data.content
+          ? playlistsData.data.content.length === size
+          : playlistsData.data.length === size
+      );
       setLoading(false);
     } catch (error) {
       setErrors("Failed to load playlists");
@@ -79,10 +83,16 @@ const UserPlaylistsPage = () => {
       <h1 className="text-3xl font-bold mb-6 text-black">
         {fetchedFromMyPlaylists ? "My Playlists" : `${owner?.name}'s Playlists`}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" style={{ height: '450px' }}>
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+        style={{ height: "450px" }}
+      >
         {playlists.length > 0 ? (
           playlists.map((playlist, index) => (
-            <div key={playlist.id} onClick={() => handleNavigateToPlaylist(playlist.id)}>
+            <div
+              key={playlist.id}
+              onClick={() => handleNavigateToPlaylist(playlist.id)}
+            >
               <PlaylistItem playlist={playlist} index={index} />
             </div>
           ))

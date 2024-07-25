@@ -21,7 +21,8 @@ const PlaylistPage = () => {
   const [playingTrack, setPlayingTrack] = useState(null);
   const [volume, setVolume] = useState(1);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
-  const fetchedFromMyPlaylists = localStorage.getItem("fetchedFromMyPlaylists") === 'true';
+  const fetchedFromMyPlaylists =
+    localStorage.getItem("fetchedFromMyPlaylists") === "true";
 
   useEffect(() => {
     const fetchPlaylistData = async () => {
@@ -46,7 +47,6 @@ const PlaylistPage = () => {
     };
 
     fetchPlaylistData();
-
   }, [id]);
 
   const handlePlayPause = async (song) => {

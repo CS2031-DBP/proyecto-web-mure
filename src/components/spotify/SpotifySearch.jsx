@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaSpotify } from "react-icons/fa";
-import { getToken, searchTracks } from "../../services/spotify/spotify"; 
+import { getToken, searchTracks } from "../../services/spotify/spotify";
 
 const SpotifySearch = ({ onSelectSong }) => {
   const [query, setQuery] = useState("");
@@ -50,7 +50,8 @@ const SpotifySearch = ({ onSelectSong }) => {
             className="cursor-pointer mb-2"
             onClick={() => onSelectSong(track)}
           >
-            {track.name} by {track.artists.map((artist) => artist.name).join(", ")}
+            {track.name} by{" "}
+            {track.artists.map((artist) => artist.name).join(", ")}
           </li>
         ))}
       </ul>

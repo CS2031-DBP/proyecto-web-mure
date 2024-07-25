@@ -146,7 +146,7 @@ const Login = ({ setIsAuthenticated }) => {
                 >
                   Log In
                 </motion.button>
-                <motion.button 
+                <motion.button
                   type="button"
                   onClick={() => navigate("/auth/register")}
                   className="w-full py-2 px-3 ml-2 rounded-full font-semibold transition duration-300 bg-buttonColor text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-buttonColor"

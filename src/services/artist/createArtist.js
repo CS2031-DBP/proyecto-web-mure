@@ -1,17 +1,17 @@
-import Api from '../api';
+import Api from "../api";
 
 const api = new Api({});
 
 export async function createArtists(artists) {
-    let options = {
-        url: `/artist`,
-    };
+  let options = {
+    url: `/artist`,
+  };
 
-    try {
-        const res = await api.post(artists, options); 
+  try {
+    const res = await api.post(artists, options);
 
-        return res;
-    } catch (error) {
-        throw error;
-    }
+    return res;
+  } catch (error) {
+    throw error;
+  }
 }

@@ -1,7 +1,7 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import PlayArrow from '@mui/icons-material/PlayArrow';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import PlayArrow from "@mui/icons-material/PlayArrow";
 
 const PlaylistItem = ({ playlist, index }) => {
   const navigate = useNavigate();
@@ -11,11 +11,11 @@ const PlaylistItem = ({ playlist, index }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="p-4 bg-white rounded-lg shadow-md flex flex-col items-center space-y-4 text-black cursor-pointer"
       whileHover={{ scale: 1.02 }}
-      initial={{ opacity: 0, y: 20 }} 
-      animate={{ opacity: 1, y: 0 }} 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       onClick={handleNavigate}
     >

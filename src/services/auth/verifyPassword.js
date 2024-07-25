@@ -1,16 +1,16 @@
-import Api from '../api';
+import Api from "../api";
 
-const api = new Api({ });
+const api = new Api({});
 
 export async function verifyPassword(data) {
-    let options = {
-        url: `/auth/verify-password`,
-      };
+  let options = {
+    url: `/auth/verify-password`,
+  };
 
-    try {
-        const response = await api.post(data, options);
-        return response;
-    } catch (error) {
-        throw error;
-    }
+  try {
+    const response = await api.post(data, options);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 }

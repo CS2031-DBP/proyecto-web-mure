@@ -18,7 +18,7 @@ const AddSong = () => {
     duration: "",
     coverImageUrl: "",
     spotifyUrl: "",
-    spotifyPreviewUrl: ""
+    spotifyPreviewUrl: "",
   });
   const [artistSearchTerm, setArtistSearchTerm] = useState("");
   const [artistSearchResults, setArtistSearchResults] = useState([]);
@@ -95,7 +95,7 @@ const AddSong = () => {
       duration: data.duration,
       coverImageUrl: data.coverImageUrl,
       spotifyUrl: data.spotifyUrl,
-      spotifyPreviewUrl: data.spotifyPreviewUrl
+      spotifyPreviewUrl: data.spotifyPreviewUrl,
     };
 
     try {
@@ -125,7 +125,6 @@ const AddSong = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-        
           <div className="col-span-1 md:col-span-2">
             <label
               htmlFor="title"

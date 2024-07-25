@@ -3,8 +3,8 @@ import Post from "../components/post/Post";
 import { fetchPosts } from "../services/posts/getAllPosts";
 import { fetchCurrentUser } from "../services/profile/getUserInfo";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion } from 'framer-motion';
-import { useMusicPlayer } from '../contexts/MusicContext';
+import { motion } from "framer-motion";
+import { useMusicPlayer } from "../contexts/MusicContext";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 const Dashboard = () => {

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPlaylistById } from "../services/playlists/getPlaylistById";
-import { updatePlaylist} from "../services/playlists/updatePlaylist";
+import { updatePlaylist } from "../services/playlists/updatePlaylist";
 import { removeSongFromPlaylist } from "../services/playlists/removeSongFromPlaylist";
 import { addSongToPlaylist } from "../services/playlists/addSongToPlaylist";
 import SearchInput from "../components/search/SearchInput";
 import SearchResults from "../components/search/SearchResults";
 import { searchSongById } from "../services/songs/searchSongById";
 import { searchSongsByTitle } from "../services/songs/searchSongByTitle";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import ImageIcon from "@mui/icons-material/Image";
 import Cancel from "@mui/icons-material/Cancel";
 
@@ -141,7 +141,10 @@ const EditPlaylist = () => {
         transition={{ duration: 0.5 }}
       >
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleUpdatePlaylist} className="grid grid-cols-1 gap-2">
+        <form
+          onSubmit={handleUpdatePlaylist}
+          className="grid grid-cols-1 gap-2"
+        >
           <div className="flex flex-col">
             <div className="grid grid-cols-2 gap-2">
               <div className="flex flex-col items-center">
@@ -183,7 +186,9 @@ const EditPlaylist = () => {
                   type="text"
                   name="name"
                   value={playlist.name}
-                  onChange={(e) => setPlaylist({ ...playlist, name: e.target.value })}
+                  onChange={(e) =>
+                    setPlaylist({ ...playlist, name: e.target.value })
+                  }
                   placeholder="Edit playlist name"
                   className="w-full px-3 py-2 border rounded-lg bg-inputBgColor text-black mb-4"
                   required
@@ -214,7 +219,7 @@ const EditPlaylist = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.3 }}
-                      style={{ paddingRight: '64px' }}
+                      style={{ paddingRight: "64px" }}
                     >
                       <div className="flex items-center w-4/5 ml-16">
                         <img
@@ -224,7 +229,9 @@ const EditPlaylist = () => {
                         />
                         <div className="flex flex-col">
                           <p className="font-bold text-sm">{song.title}</p>
-                          <p className="text-xs">{song.artistsNames.join(", ")}</p>
+                          <p className="text-xs">
+                            {song.artistsNames.join(", ")}
+                          </p>
                         </div>
                       </div>
                       <button

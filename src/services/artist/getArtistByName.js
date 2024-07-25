@@ -3,14 +3,14 @@ import Api from "../api";
 const api = new Api({});
 
 export async function getArtistByName(name, page = 0, size = 10) {
-    let options = {
-        url: `/artist/name?name=${name}&page=${page}&size=${size}`,
-    };
+  let options = {
+    url: `/artist/name?name=${name}&page=${page}&size=${size}`,
+  };
 
-    try {
-        const res = await api.get(options);
-        return res;
-    } catch (error) {
-        throw error; 
-    }
+  try {
+    const res = await api.get(options);
+    return res;
+  } catch (error) {
+    throw error;
+  }
 }

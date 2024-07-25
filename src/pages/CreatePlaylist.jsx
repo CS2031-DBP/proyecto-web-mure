@@ -208,7 +208,7 @@ const CreatePlaylist = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.3 }}
-                      style={{ paddingRight: '64px' }}
+                      style={{ paddingRight: "64px" }}
                     >
                       <div className="flex items-center w-4/5 ml-16">
                         <img
@@ -218,7 +218,9 @@ const CreatePlaylist = () => {
                         />
                         <div className="flex flex-col">
                           <p className="font-bold text-sm">{song.title}</p>
-                          <p className="text-xs">{song.artistsNames.join(", ")}</p>
+                          <p className="text-xs">
+                            {song.artistsNames.join(", ")}
+                          </p>
                         </div>
                       </div>
                       <button

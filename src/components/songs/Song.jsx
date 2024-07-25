@@ -5,7 +5,7 @@ import Send from "@mui/icons-material/Send";
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import Stop from "@mui/icons-material/Stop";
 import Headphones from "@mui/icons-material/Headphones";
-import { useMusicPlayer } from '../../contexts/MusicContext'; 
+import { useMusicPlayer } from "../../contexts/MusicContext";
 
 const Song = forwardRef(({ song, role, onDelete }, ref) => {
   const navigate = useNavigate();
@@ -33,8 +33,8 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
   useEffect(() => {
     if (currentTrack) {
       const handleEnded = () => setIsPlaying(false);
-      currentTrack.addEventListener('ended', handleEnded);
-      return () => currentTrack.removeEventListener('ended', handleEnded);
+      currentTrack.addEventListener("ended", handleEnded);
+      return () => currentTrack.removeEventListener("ended", handleEnded);
     }
   }, [currentTrack]);
 
@@ -61,7 +61,10 @@ const Song = forwardRef(({ song, role, onDelete }, ref) => {
       {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
       <div className="relative">
         <div className="flex justify-between items-center mb-4">
-          <Send className="text-[#676A6F] cursor-pointer" onClick={handleCreatePost} />
+          <Send
+            className="text-[#676A6F] cursor-pointer"
+            onClick={handleCreatePost}
+          />
           <h2 className="text-xl font-bold">{song.title}</h2>
           {song.spotifyPreviewUrl ? (
             <button onClick={handlePlayPause}>

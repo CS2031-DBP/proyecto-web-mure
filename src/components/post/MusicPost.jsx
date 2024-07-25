@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import PlayArrow from '@mui/icons-material/PlayArrow';
-import Stop from '@mui/icons-material/Stop';
-import Headphones from '@mui/icons-material/Headphones';
-import LibraryMusic from '@mui/icons-material/LibraryMusic';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { useMusicPlayer } from '../../contexts/MusicContext';
+import React, { useState, useEffect } from "react";
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import Stop from "@mui/icons-material/Stop";
+import Headphones from "@mui/icons-material/Headphones";
+import LibraryMusic from "@mui/icons-material/LibraryMusic";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useMusicPlayer } from "../../contexts/MusicContext";
 
 const MusicPost = ({ post }) => {
   const { song, album } = post;
@@ -29,8 +29,8 @@ const MusicPost = ({ post }) => {
   useEffect(() => {
     if (currentTrack) {
       const handleEnded = () => setIsPlaying(false);
-      currentTrack.addEventListener('ended', handleEnded);
-      return () => currentTrack.removeEventListener('ended', handleEnded);
+      currentTrack.addEventListener("ended", handleEnded);
+      return () => currentTrack.removeEventListener("ended", handleEnded);
     }
   }, [currentTrack]);
 
@@ -58,7 +58,7 @@ const MusicPost = ({ post }) => {
         {song ? (
           <>
             <p className="font-semibold">Song: {song.title}</p>
-            <p>Artists: {song.artistsNames?.join(', ') || 'Unknown'}</p>
+            <p>Artists: {song.artistsNames?.join(", ") || "Unknown"}</p>
             <p>Genre: {song.genre}</p>
             <p>Duration: {song.duration}</p>
           </>
@@ -67,7 +67,10 @@ const MusicPost = ({ post }) => {
             <p className="font-semibold">Album: {album.title}</p>
             <p>Artist: {album.artist}</p>
             <p>Duration: {album.duration}</p>
-            <p>Songs: {album.songs?.slice(0, 3).join(', ') || 'No songs available'}</p>
+            <p>
+              Songs:{" "}
+              {album.songs?.slice(0, 3).join(", ") || "No songs available"}
+            </p>
           </>
         ) : (
           <p className="font-semibold">Untitled</p>
@@ -76,7 +79,11 @@ const MusicPost = ({ post }) => {
       {song ? (
         song.spotifyPreviewUrl ? (
           <button onClick={handlePlayPause}>
-            {isPlaying ? <Stop className="text-lg text-black" /> : <PlayArrow className="text-lg text-black" />}
+            {isPlaying ? (
+              <Stop className="text-lg text-black" />
+            ) : (
+              <PlayArrow className="text-lg text-black" />
+            )}
           </button>
         ) : (
           <a href={song.spotifyUrl} target="_blank" rel="noopener noreferrer">

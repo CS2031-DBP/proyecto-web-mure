@@ -205,7 +205,8 @@ const User = () => {
                     transition={{ duration: 0.5 }}
                     className="text-white"
                   >
-                    You don't have any friends yet. Try viewing posts to meet people.
+                    You don't have any friends yet. Try viewing posts to meet
+                    people.
                   </motion.p>
                 )
               ) : friends ? (
@@ -328,9 +329,7 @@ const User = () => {
         </motion.button>
       )}
       <motion.button
-        onClick={() =>
-          navigate(`/user${"/"+user.id}/playlists`)
-        }
+        onClick={() => navigate(`/user${"/" + user.id}/playlists`)}
         className="fixed bottom-5 right-5 bg-buttonColor text-white p-4 rounded-full shadow-lg hover:bg-buttonHover transition duration-300"
         title="View Playlists"
         initial="hidden"

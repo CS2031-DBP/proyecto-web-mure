@@ -218,7 +218,10 @@ const CreatePost = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-1 flex flex-col" style={{ maxHeight: "550px" }}>
+        <div
+          className="col-span-1 flex flex-col"
+          style={{ maxHeight: "550px" }}
+        >
           {selectedItem ? (
             <div className="bg-white text-black p-1 rounded-lg flex flex-col justify-center items-center h-full overflow-auto">
               <p className="font-bold text-lg">{selectedItem.title}</p>

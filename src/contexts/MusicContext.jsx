@@ -1,4 +1,10 @@
-import React, { createContext, useState, useContext, useRef, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useRef,
+  useEffect,
+} from "react";
 
 const MusicPlayerContext = createContext();
 
@@ -34,13 +40,13 @@ export const MusicPlayerProvider = ({ children }) => {
     audioRef.current = audio;
     audio.volume = volume;
 
-    audio.addEventListener('canplaythrough', () => {
+    audio.addEventListener("canplaythrough", () => {
       audio.play();
       setCurrentTrack(audio);
     });
 
-    audio.addEventListener('error', (e) => {
-      console.error('Error playing track:', e);
+    audio.addEventListener("error", (e) => {
+      console.error("Error playing track:", e);
     });
   };
 
@@ -58,7 +64,9 @@ export const MusicPlayerProvider = ({ children }) => {
   };
 
   return (
-    <MusicPlayerContext.Provider value={{ playTrack, stopTrack, currentTrack, volume, changeVolume }}>
+    <MusicPlayerContext.Provider
+      value={{ playTrack, stopTrack, currentTrack, volume, changeVolume }}
+    >
       {children}
     </MusicPlayerContext.Provider>
   );

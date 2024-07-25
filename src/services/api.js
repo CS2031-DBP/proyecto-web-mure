@@ -39,8 +39,7 @@ class Api {
   postForm(data, options) {
     return this.post(data, {
       ...options,
-      headers: {
-      },
+      headers: {},
     });
   }
 
@@ -49,16 +48,14 @@ class Api {
       ...options,
       method: "patch",
       data,
-      headers: {
-      },
+      headers: {},
     });
   }
 
   patchForm(data, options) {
     return this.patch(data, {
       ...options,
-      headers: {
-      },
+      headers: {},
     });
   }
 

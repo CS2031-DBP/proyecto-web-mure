@@ -7,6 +7,6 @@ export async function getAlbumByTitle(title, page = 0, size = 10) {
     url: `/album/title?title=${title}&page=${page}&size=${size}`,
   };
 
-  const res = await api.get(options); 
+  const res = await api.get(options);
   return res;
 }

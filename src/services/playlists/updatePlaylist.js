@@ -1,10 +1,10 @@
-import Api from '../api';
+import Api from "../api";
 
 const api = new Api({});
 
 export async function updatePlaylist(formData) {
   let options = {
-    url: '/playlist'
+    url: "/playlist",
   };
 
   try {
@@ -14,5 +14,3 @@ export async function updatePlaylist(formData) {
     throw error;
   }
 }
-
-

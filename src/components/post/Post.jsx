@@ -9,7 +9,7 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Cancel from "@mui/icons-material/Cancel";
 import moment from "moment";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
   const [likes, setLikes] = useState(post.likes);
@@ -90,12 +90,14 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
           onClick={handleDeleteClick}
           className="absolute top-2 right-2 p-1 transition duration-300"
           title="Delete Post"
-          style={{ top: '1rem', right: '1rem' }}
+          style={{ top: "1rem", right: "1rem" }}
         >
           <Cancel style={{ fill: "red" }} />
         </button>
       )}
-      {ownershipError && <p className="text-red-500 text-sm mt-1">{ownershipError}</p>}
+      {ownershipError && (
+        <p className="text-red-500 text-sm mt-1">{ownershipError}</p>
+      )}
       <div className="flex mb-4">
         <div className="flex flex-col items-center mr-4">
           <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-black mb-2">
@@ -105,7 +107,10 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
               className="object-cover w-full h-full"
             />
           </div>
-          <a onClick={handleUserClick} className="text-atColor text-lg text-center cursor-pointer hover:text-atColor2">
+          <a
+            onClick={handleUserClick}
+            className="text-atColor text-lg text-center cursor-pointer hover:text-atColor2"
+          >
             @{post.owner}
           </a>
           <p className="text-sm text-gray-500">
@@ -122,7 +127,7 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
             src={post.imageUrl}
             alt="Post"
             className="w-full object-cover rounded-lg"
-            style={{ maxHeight: '500px' }}
+            style={{ maxHeight: "500px" }}
           />
         </div>
       )}
@@ -145,7 +150,9 @@ const Post = forwardRef(({ post, currUserName, currId, onDelete }, ref) => {
         </div>
       </div>
       {likeError && <p className="text-red-500 text-sm mt-1">{likeError}</p>}
-      {deleteError && <p className="text-red-500 text-sm mt-1">{deleteError}</p>}
+      {deleteError && (
+        <p className="text-red-500 text-sm mt-1">{deleteError}</p>
+      )}
     </motion.div>
   );
 });

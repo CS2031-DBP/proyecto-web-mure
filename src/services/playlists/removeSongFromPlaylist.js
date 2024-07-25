@@ -1,17 +1,16 @@
-import Api from '../api';
+import Api from "../api";
 
 const api = new Api({});
 
 export async function removeSongFromPlaylist(playlistId, songId) {
-    let options = {
-      url: `/playlist/${playlistId}/removeSong/${songId}`
-    };
-  
-    try {
-      const res = await api.patch({}, options);
-      return res;
-    } catch (error) {
-      throw error;
-    }
+  let options = {
+    url: `/playlist/${playlistId}/removeSong/${songId}`,
+  };
+
+  try {
+    const res = await api.patch({}, options);
+    return res;
+  } catch (error) {
+    throw error;
   }
-  
+}
