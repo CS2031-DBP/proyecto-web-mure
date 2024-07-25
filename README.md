@@ -3,7 +3,7 @@ ___
 
 **Mure**, the winner of the *Berners Lee Award 2024-1* for the UTEC course *Platform-Based Development* (CS2031), is a platform designed for users to share their music preferences with friends and followers. With Mure, you can create and share posts, playlists, and explore music content 🎙️
 
-The project is developed using **Java and Spring Boot 🌱** for the backend, while the frontend is built with **React ⚛️**, and the mobile application is developed with **React Native 📱**
+The project is developed using **Java and Spring Boot 🌱** for the backend, while the frontend is built with **React ⚛️**, and the mobile application is developed with **React Native 📱**.
 
 ## Project Members 🤝
 ___
@@ -18,7 +18,7 @@ ___
 Before setting up the project, ensure you have the following installed on your machine:
 
 - **Node.js**: Latest version
-- **Backend**: You'll need to run the backend before using the app, use the following repository "Repo". Also, in case you don't use "localhost:8080" to comunicate to your local API, feel free to change it in the "services/api.js" file to match your direction.
+- **Backend**: You'll need to run the backend before using the app. Use the following repository: [Mure Backend](https://github.com/CS2031-DBP/proyecto-backend-mure). Also, if you don't use "localhost:8080" to communicate with your local API, feel free to change it in the `services/api.js` file to match your URL.
 
 ## Getting Started 🚀
 ___
@@ -30,7 +30,7 @@ To set up the project on your local machine, follow these steps:
    Open your terminal and clone the repository using the following command:
 
    ```sh
-   git clone <https://github.com/CS2031-DBP/proyecto-web-mure>
+   git clone https://github.com/CS2031-DBP/proyecto-web-mure
    ```
 
 2. **Navigate to the Project Directory**
@@ -51,12 +51,12 @@ To set up the project on your local machine, follow these steps:
 
 4. **Set Up Environment Variables**
 
-Create a Spotify Developer account and create an app with at least the Web API and Web Playback SDK. Obtain your client ID and client secret, then define them in the `.env` file in the root of your project. This will enable the functionality to search and play songs from Spotify if the user in an Admin.
+   Create a Spotify Developer account and create an app with at least the Web API and Web Playback SDK. Obtain your client ID and client secret, then define them in the `.env` file in the root of your project. This will enable the functionality to search and play songs from Spotify if the user is an admin.
 
-```plaintext
-VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
-VITE_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-```
+   ```plaintext
+   VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+   VITE_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+   ```
 
 5. **Start the Application**
 
@@ -107,7 +107,7 @@ Allows administrators to add a new song to the database by searching and selecti
 
 ### Spotify Create 🔍🎧
 
-Makes easy to search for songs on Spotify using the Spotify API. Administrators can select songs, and the page and backend verify if the song's artists are already in the database. If not, it redirects to "Add Artist Info."
+Makes it easy to search for songs on Spotify using the Spotify API. Administrators can select songs, and the page and backend verify if the song's artists are already in the database. If not, it redirects to "Add Artist Info."
 
 ### Add Artist Info ➕🎤
 
@@ -121,7 +121,7 @@ Allows users to create posts with descriptions, images, and the ability to add i
 
 Shows information about a user, including their posts and playlists. Allows other users to view the profile, add or remove friends. For the current user, it allows editing the profile, viewing the friends list, and managing posts and playlists.
 
-### Edit ✏️
+### Edit Profile ✏️
 
 Allows users to edit their profile, including name and profile picture, keeping the information up to date.
 
@@ -129,9 +129,9 @@ Allows users to edit their profile, including name and profile picture, keeping 
 
 Allows users to change their password or their email, redirecting them to the login page to use their new credentials.
 
-### User Playlist Page
+### User Playlist Page 📃
 
-View where users can watch either their playlists or other user playlists, depending where they requested the playlist to be shown
+View where users can watch either their playlists or other user playlists, depending on where they requested the playlist to be shown.
 
 ### Create Playlist ➕📋
 
@@ -141,13 +141,13 @@ Allows users to create new playlists, search for songs by title, and add them to
 
 Allows modifying existing playlists by adding or removing songs.
 
-### Playlist Page
+### Playlist Page 📃
 
-Shows a simple view of the selected playlist, allowing to play songs if they have a "preview link"
+Shows a simple view of the selected playlist, allowing to play songs if they have a "preview link".
 
-### Album View
+### Album View 💿
 
-Similar to the playlist page, shows a simple view of the selected album, including all the songs of the album, and allowing the users to play it in the app if tere exist a "preview link".
+Similar to the playlist page, shows a simple view of the selected album, including all the songs of the album, and allowing the users to play it in the app if there is a "preview link".
 
 ### Friend List 👥
 
@@ -173,7 +173,7 @@ For managing playlists, our services allow creating new playlists, retrieving sp
 
 ### Posts 📝
 
-Posts on our platform are managed through services that allow creating new posts, retrieving global posts, and user-specific posts, with options to like or dislike them. Posts are "separated" into 2 parts, one that contains the musical information and the other the post details. In the post information, users can either play the song in the app, go to an album view and listen to some songs, or go to Spotify and enjoy anything they enjoy! Also offers functionality to delete posts, ensuring users have full control over their content.
+Posts on our platform are managed through services that allow creating new posts, retrieving global posts, and user-specific posts, with options to like or dislike them. Posts are divided into two parts: one containing musical information and the other the post details. In the post information, users can either play the song in the app, go to an album view and listen to some songs, or go to Spotify to enjoy anything they like! Also offers functionality to delete posts, ensuring users have full control over their content.
 
 ### Social Interaction 💬
 
