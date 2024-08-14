@@ -1,27 +1,28 @@
 # Mure: Share Your Music Taste 🎧 🎶
-___
 
-**Mure**, the winner of the *Berners Lee Award 2024-1* for the UTEC course *Platform-Based Development* (CS2031), is a platform designed for users to share their music preferences with friends and followers. With Mure, you can create and share posts, playlists, and explore music content 🎙️
+**Mure**, the winner of the *Berners Lee Award 2024-1* for the UTEC course *Platform-Based Development* (CS2031), is a platform designed for users to share their music preferences with friends and followers. With Mure, you can create and share posts, playlists, and explore music content 🎙️.
 
-The project is developed using **Java and Spring Boot 🌱** for the backend, while the frontend is built with **React ⚛️**, and the mobile application is developed with **React Native 📱**.
+This repository contains the source code for the web frontend of the project, developed with React ⚛️. For the backend and mobile frontend, please refer to the following repositories:
+
+- **Backend**: [Mure Backend Repository](https://github.com/CS2031-DBP/proyecto-backend-mure.git)
+- **Frontend Mobile**: [Mure Frontend Mobile Repository](https://github.com/CS2031-DBP/proyecto-mobile-mure.git)
 
 ## Project Members 🤝
-___
-| Name              | Email                                                               |
-|-------------------|---------------------------------------------------------------------|
-| Joaquin Salinas   | [joaquin.salinas@utec.edu.pe](mailto:joaquin.salinas@utec.edu.pe)   |
-| Guillermo Galvez  | [jose.galvez.p@utec.edu.pe](mailto:jose.galvez.p@utec.edu.pe)       |
-| Alejandro Escobar | [alejandro.escobar@utec.edu.pe](mailto:alejandro.escobar@utec.edu.pe)|
+
+| Name              | GitHub User                                              |  Email                                                                |
+|-------------------|----------------------------------------------------------|-----------------------------------------------------------------------|
+| Joaquin Salinas   | [joaquinsalinas06](https://github.com/joaquinsalinas06)  |[joaquin.salinas@utec.edu.pe](mailto:joaquin.salinas@utec.edu.pe)      |
+| Guillermo Galvez  | [KarTaGo124](https://github.com/KarTaGo124)              |[jose.galvez.p@utec.edu.pe](mailto:jose.galvez.p@utec.edu.pe)          |
+| Alejandro Escobar | [AlejandroEN](https://github.com/AlejandroEN )           |[alejandro.escobar@utec.edu.pe](mailto:alejandro.escobar@utec.edu.pe)  |
 
 ## Prerequisites 🔧
-___
+
 Before setting up the project, ensure you have the following installed on your machine:
 
 - **Node.js**: Latest version
 - **Backend**: You'll need to run the backend before using the app. Use the following repository: [Mure Backend](https://github.com/CS2031-DBP/proyecto-backend-mure). Also, if you don't use "localhost:8080" to communicate with your local API, feel free to change it in the `services/api.js` file to match your URL.
 
 ## Getting Started 🚀
-___
 
 To set up the project on your local machine, follow these steps:
 
@@ -72,15 +73,15 @@ To set up the project on your local machine, follow these steps:
 
 - **Framework**: React ⚛️
 - **Libraries**:
-    - **Material-UI (MUI)**
-    - **Axios**
-    - **Framer Motion**
-    - **JWT Decode**
-    - **Moment**
-    - **React Icons**
-    - **React Player**
-    - **React Router DOM**
-    - **Standardized Audio Context**
+  - **Material-UI (MUI)**
+  - **Axios**
+  - **Framer Motion**
+  - **JWT Decode**
+  - **Moment**
+  - **React Icons**
+  - **React Player**
+  - **React Router DOM**
+  - **Standardized Audio Context**
 - **Styling**: Tailwind CSS 🌈
 
 ## Main Pages 📄
@@ -161,7 +162,7 @@ Shows the current user's friends list, allowing viewing of their profiles, remov
 
 ### Authentication and Users 🔒
 
-Handles user authentication and management through services that communicate with the backend to validate credentials, create new accounts, and retrieve information about the current user or other users. Additionally, users can update their personal information such as name, email, and profile picture through the "Edit" or "Change Credentials" pages. 
+Handles user authentication and management through services that communicate with the backend to validate credentials, create new accounts, and retrieve information about the current user or other users. Additionally, users can update their personal information such as name, email, and profile picture through the "Edit" or "Change Credentials" pages.
 
 ### Music and Artists 🎤🎵
 
@@ -180,7 +181,7 @@ Posts on our platform are managed through services that allow creating new posts
 Promotes social interaction between users through services that manage friendship relationships, adding or removing friends, and verifying friendship status. Additionally, users can interact with posts through likes and dislikes, creating a more engaging and participatory experience.
 
 ## Acknowledgments 🫶
-___
+
 We would like to thank everyone who supported the project by testing it and providing valuable feedback. Special thanks to our professor, Jorge Rios, whose guidance and encouragement were crucial to the successful development of this project 🗣️ 🙌
 
 ## License 📄
